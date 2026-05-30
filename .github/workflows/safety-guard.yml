@@ -1,0 +1,29 @@
+name: Safety Guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  safety-check:
+    name: SCOPE/SAFETY pre-merge check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run safety guard
+        run: bash scripts/safety-check.sh
+
+      - name: Annotate failure
+        if: failure()
+        run: |
+          echo "::error title=Safety guard failed::See docs/safety-policy.md. The guard blocks CSAM hash lists, raw image binaries outside the allowlist, and credential patterns. If this is a false positive, document the reasoning in the PR description."

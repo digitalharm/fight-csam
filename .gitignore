@@ -1,0 +1,54 @@
+# Per-language build artifacts
+target/
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+*.lcov
+
+# Lock and meta — keep package-locks per package; not at root
+# (each package has its own)
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local fixtures and scratch (deliberate: prevent accidental commit of
+# real CSAM-adjacent material from local experimentation)
+fixtures/local/
+fixtures/scratch/
+.local/
+
+# WASM artifacts (we publish from CI, not commit)
+*.wasm
+pkg/
