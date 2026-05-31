@@ -1,0 +1,28 @@
+{
+  "name": "@digitalharm/example-messenger",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Open-source messenger boilerplate with all 10 digitalharm-oss CSAM detection/prevention tools wired in. Server-visible-content threat model (NOT end-to-end encrypted).",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
