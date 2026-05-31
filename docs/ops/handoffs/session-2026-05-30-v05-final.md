@@ -16,38 +16,37 @@ origin, **CI green** (Rust + Go + Python + Node matrices all pass).
 | hashstream | **Alpha** | Operator hash-file ingestion (Local source) + Ed25519 signed snapshots; Go + TS SDK |
 | trainguard | **v0.5** | LAION reader + file-backed provider + Ed25519-signed ComplianceReport; 21 tests |
 | evidencevault | **v0.5** | HTTP API (full lifecycle) + disk persistence + KMS interface; Go tests |
-| **cybertip-cli** | **In Progress (Wave 4)** | Data model + validation + redaction + dry-run wire payload; Node 11 + Python 11. *See note.* |
+| **cybertip-cli** | **v0.5** | Data model + validation + redaction + dry-run wire payload + sandbox-simulation path + production-blocked submit; Node 15 + Python 16. Merged 2026-05-31 (`b61805c`). |
 | safemod | **Deferred** | Intentionally out of scope (GDPR special-category data) |
 
-**9 of 10 active tools at v0.5+ with real implementations. SafeMod deferred
-by design.**
+**All 10 active tools at v0.5+ with real implementations. SafeMod deferred
+by design.** (cybertip-cli closed the last gap on 2026-05-31 — see below.)
 
-## cybertip-cli — the one honest gap
+## cybertip-cli — gap closed (2026-05-31)
 
-cybertip-cli is back at its **Wave 4 scaffold** (validated data model +
-dry-run wire payload, no sandbox path). The v0.5 sandbox-simulation +
-production-blocked design (commit `db6430b` in history) was **never
-internally consistent on main**: a two-writer race during the parallel push
-committed the v0.5 *test* files while the *source* edits to `submit.ts` /
-`submit.py` silently failed to apply (the degraded local environment was
-returning "String not found" on Edits and misdirecting writes). No single
-commit ever had matching impl+tests, so CI stayed red until the package was
-reverted to the last consistent state (`f5c2f49`).
+**Resolved.** cybertip-cli reached **v0.5** via merge `b61805c` (feature
+commit `8297705`, branch `feat/cybertip-cli-v05-sandbox`). The three-mode
+submit API now lands source + tests together in both languages: `submit`,
+`SubmitMode`, `ProductionSubmitBlocked`, `COUNSEL_REQUIRED_MESSAGE`, the
+`--mode` / `--sandbox-url` CLI flags, and the counsel-brief "Sandbox vs
+production" section. Verified before push: Node `tsc --noEmit` clean +
+**15/15** tests; Python `ruff` clean + **16/16** tests; `safety-check`
+clean. The merge was fully package-scoped (0 files outside
+`packages/cybertip-cli/`).
 
-The design is sound and worth finishing. **Next session, in a clean
-environment:**
-1. Write `submit.ts` and `submit.py` with the three-mode API (`submit`,
-   `SubmitMode`, `ProductionSubmitBlocked`, `COUNSEL_REQUIRED_MESSAGE`) —
-   the full text is recoverable from commit `db6430b`'s test files, which
-   document the exact expected surface.
-2. Re-add the sandbox/production tests to `report.test.ts` and
-   `test_model.py`.
-3. Add the `--mode`/`--sandbox-url` CLI flags and the counsel-brief
-   "Sandbox vs production" section.
-4. Build + test BOTH languages locally before committing; push as ONE
-   commit so impl and tests land together.
+This succeeded where the earlier attempt failed precisely because it
+respected the single-writer rule below: source and tests were authored and
+verified together on an isolated branch, then integrated in one merge while
+`origin/main` was confirmed unchanged. The prior failure (a two-writer race
+that committed v0.5 *tests* without matching *source*, leaving CI red until
+the package was reverted to `f5c2f49`) is preserved here as the cautionary
+tale that motivated the rule.
 
-Production submission stays counsel-gated regardless.
+Production submission stays counsel-gated regardless: the production mode
+raises `ProductionSubmitBlocked` until outside counsel signs off on the
+scope brief. Sandbox mode *simulates* a submission (validates + builds the
+payload, emits no live request) so the path is exercisable without
+credentials or legal exposure.
 
 ## Hard lesson: never run two writers against one repo
 
