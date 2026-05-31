@@ -78,6 +78,20 @@ class PromptClassifier:
         return cls()
 
     @classmethod
+    def from_baseline(
+        cls,
+        thresholds: Thresholds = _DEFAULT_THRESHOLDS,
+    ) -> "PromptClassifier":
+        """Return a classifier with Stage 1 plus the honest heuristic Stage 2
+        baseline (``HeuristicBaseline``). No model download, no network — the
+        baseline is transparent feature scoring that does strictly more than
+        the Stage 1 conjunction gate on the ambiguous middle band.
+        """
+        from .neural import HeuristicBaseline
+
+        return cls(thresholds=thresholds, neural=HeuristicBaseline())
+
+    @classmethod
     def from_huggingface(
         cls,
         model_id: str,
