@@ -121,11 +121,7 @@ pub mod pdq {
     ///
     /// * [`PdqError::InvalidDimensions`] if `width == 0 || height == 0`
     /// * [`PdqError::LumaBufferMismatch`] if `luma.len() != width * height`
-    pub fn hash_from_luma(
-        _luma: &[u8],
-        _width: u32,
-        _height: u32,
-    ) -> Result<PdqResult, PdqError> {
+    pub fn hash_from_luma(_luma: &[u8], _width: u32, _height: u32) -> Result<PdqResult, PdqError> {
         // TODO(hashkit): port from facebook/ThreatExchange/pdq/cpp/.
         //   The reference implementation:
         //   - Downsamples the image to 64×64 via separable box filter

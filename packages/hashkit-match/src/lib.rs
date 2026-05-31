@@ -61,7 +61,10 @@ pub struct MatchResult {
 
 impl PdqMatcher {
     /// Build a matcher from a known-bad set with a custom threshold.
-    pub fn new(_known_bad: impl IntoIterator<Item = PdqHash>, threshold: u32) -> Result<Self, MatchError> {
+    pub fn new(
+        _known_bad: impl IntoIterator<Item = PdqHash>,
+        threshold: u32,
+    ) -> Result<Self, MatchError> {
         if threshold > 256 {
             return Err(MatchError::InvalidThreshold(threshold));
         }
@@ -73,7 +76,9 @@ impl PdqMatcher {
     }
 
     /// Build a matcher with the industry-standard threshold of 31.
-    pub fn with_default_threshold(known_bad: impl IntoIterator<Item = PdqHash>) -> Result<Self, MatchError> {
+    pub fn with_default_threshold(
+        known_bad: impl IntoIterator<Item = PdqHash>,
+    ) -> Result<Self, MatchError> {
         Self::new(known_bad, DEFAULT_HAMMING_THRESHOLD)
     }
 
