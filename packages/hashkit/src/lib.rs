@@ -178,9 +178,7 @@ pub mod tmk {
     }
 }
 
-// Note: `thiserror` is referenced by the error types above. It is intentionally
-// not yet added to Cargo.toml — the scaffold compiles only the API surface.
-// Add `thiserror = "1"` to dependencies when porting begins.
+// `thiserror` powers the typed error variants above.
 
 #[cfg(test)]
 mod tests {
