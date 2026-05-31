@@ -28,6 +28,26 @@ counsel needs to resolve, and the operational handoffs.
 - **Does not provide legal advice.** Outputs include disclaimers; the
   CLI prints a counsel-review reminder on first run.
 
+## Sandbox vs production (implemented in v0.5)
+
+The CLI exposes three submission modes; **none performs real network I/O**:
+
+- `--mode dry-run` (default): validates the report and builds the NCMEC wire
+  payload. No network.
+- `--mode sandbox` (alias `--sandbox`): additionally emits the **curl-equivalent**
+  of the request that *would* be sent, against an **operator-supplied** sandbox URL
+  passed via `--sandbox-url` or the `NCMEC_SANDBOX_URL` environment variable. There
+  is **no default URL**, the `Authorization` header is always the literal
+  `<ESP_CREDENTIAL>` placeholder, and no credential is ever read, stored, or
+  emitted. The operator runs the emitted command themselves.
+- `--mode production`: **blocked.** Raises `ProductionSubmitBlocked` with a
+  counsel-required error. The real POST path is *absent*, not merely disabled — it
+  cannot be enabled by a flag. It lands only after this brief is reviewed (see open
+  question #2) and the operator supplies an ESP credential.
+
+This keeps the project credential-free and counsel-gated while still letting an
+operator dry-run and stage a real submission they execute under their own authority.
+
 ## Open questions for counsel
 
 1. **Mandatory reporter scope.** The ESP framework applies to providers

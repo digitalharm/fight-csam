@@ -6,7 +6,12 @@ import {
   validateReport,
   type CyberTipReport,
 } from "./report.js";
-import { submitDryRun } from "../submit.js";
+import {
+  submitDryRun,
+  submit,
+  ProductionSubmitBlocked,
+  COUNSEL_REQUIRED_MESSAGE,
+} from "../submit.js";
 
 function validReport(): CyberTipReport {
   return {
@@ -100,4 +105,45 @@ test("submitDryRun: returns errors on invalid report", () => {
   const result = submitDryRun(r);
   assert.equal(result.ok, false);
   assert.ok(result.errors.length > 0);
+});
+
+test("submit dry-run: builds payload, no curl preview", () => {
+  const result = submit(validReport(), "dry-run");
+  assert.equal(result.ok, true);
+  assert.equal(result.mode, "dry-run");
+  assert.equal(result.curlPreview, "");
+});
+
+test("submit sandbox: emits curl preview, no real POST", () => {
+  const result = submit(validReport(), "sandbox", "https://sandbox.example/report");
+  assert.equal(result.ok, true);
+  assert.equal(result.mode, "sandbox");
+  assert.ok(result.curlPreview.startsWith("curl -X POST"));
+  assert.ok(result.curlPreview.includes("https://sandbox.example/report"));
+  // Never emits a real credential — only the placeholder.
+  assert.ok(result.curlPreview.includes("<ESP_CREDENTIAL>"));
+  assert.ok(result.logLines.some((l) => l.includes("SIMULATED")));
+});
+
+test("submit sandbox: requires a URL", () => {
+  const saved = process.env.NCMEC_SANDBOX_URL;
+  delete process.env.NCMEC_SANDBOX_URL;
+  try {
+    const result = submit(validReport(), "sandbox");
+    assert.equal(result.ok, false);
+    assert.ok(result.errors.some((e) => e.includes("NCMEC_SANDBOX_URL")));
+  } finally {
+    if (saved !== undefined) process.env.NCMEC_SANDBOX_URL = saved;
+  }
+});
+
+test("submit production: blocked with counsel-required error", () => {
+  assert.throws(
+    () => submit(validReport(), "production"),
+    (err: unknown) => {
+      assert.ok(err instanceof ProductionSubmitBlocked);
+      assert.equal((err as Error).message, COUNSEL_REQUIRED_MESSAGE);
+      return true;
+    },
+  );
 });
