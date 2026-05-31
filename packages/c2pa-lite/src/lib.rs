@@ -133,62 +133,105 @@ impl ManifestClaim {
     }
 }
 
-/// A signed asset: the original bytes plus the attached manifest.
+/// A signed asset: the source path, the attribution claim, and an Ed25519
+/// signature over the claim's canonical form.
 ///
-/// In the scaffold the signature is a placeholder (the canonical form
-/// hashed with a stub). Production builds use c2pa-rs.
+/// The signature is real (Ed25519, RFC 8032). The full C2PA manifest
+/// embedding into the asset bytes lands behind the `upstream` feature.
 #[derive(Debug, Clone)]
 pub struct SignedAsset {
     /// The path the asset was loaded from.
     pub source_path: String,
     /// The claim associated with the asset.
     pub claim: ManifestClaim,
-    /// The placeholder signature.
+    /// The Ed25519 signature (64 bytes) over the claim's canonical form.
     pub signature: Vec<u8>,
 }
 
-/// Sign an asset on disk with the given claim.
+/// Sign a claim for an asset on disk, producing an Ed25519 signature over
+/// the claim's canonical form.
 ///
-/// Scaffold: produces a deterministic placeholder signature so the API
-/// surface is exercised. Real signing lands behind the `upstream`
-/// feature, delegating to c2pa-rs.
+/// `signing_key_seed` is a 32-byte Ed25519 seed (the private key). Use
+/// [`verifying_key_from_seed`] to derive the public key a verifier needs.
+/// The full C2PA manifest embedding (JWS via c2pa-rs) lands behind the
+/// `upstream` feature; this signs the attribution claim itself, which is
+/// the part a downstream verifier checks.
+///
+/// # Errors
+///
+/// [`C2paError::InvalidKey`] if the seed is not exactly 32 bytes;
+/// [`C2paError::Io`] if the path is not valid UTF-8.
 pub fn sign_image(
     path: impl AsRef<Path>,
     claim: ManifestClaim,
-    _key_pem: &[u8],
+    signing_key_seed: &[u8],
 ) -> Result<SignedAsset, C2paError> {
-    let path_ref = path.as_ref();
-    let source_path = path_ref
+    use ed25519_dalek::{Signer, SigningKey};
+
+    let source_path = path
+        .as_ref()
         .to_str()
         .ok_or_else(|| C2paError::Io("non-utf8 path".into()))?
         .to_string();
 
-    let canonical = claim.to_canonical();
-    let placeholder_signature = stub_signature(canonical.as_bytes());
+    let seed: [u8; 32] = signing_key_seed
+        .try_into()
+        .map_err(|_| C2paError::InvalidKey)?;
+    let signing_key = SigningKey::from_bytes(&seed);
+    let signature = signing_key.sign(claim.to_canonical().as_bytes());
 
     Ok(SignedAsset {
         source_path,
         claim,
-        signature: placeholder_signature,
+        signature: signature.to_bytes().to_vec(),
     })
 }
 
-/// Verification result.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct VerificationResult {
-    /// True if the asset bears a structurally valid c2pa-lite manifest.
-    pub valid: bool,
-    /// The claim recovered from the asset, if verification succeeded.
-    pub claim: Option<ManifestClaim>,
+/// Derive the 32-byte Ed25519 verifying (public) key from a 32-byte seed.
+///
+/// # Errors
+///
+/// [`C2paError::InvalidKey`] if the seed is not exactly 32 bytes.
+pub fn verifying_key_from_seed(signing_key_seed: &[u8]) -> Result<Vec<u8>, C2paError> {
+    use ed25519_dalek::SigningKey;
+
+    let seed: [u8; 32] = signing_key_seed
+        .try_into()
+        .map_err(|_| C2paError::InvalidKey)?;
+    Ok(SigningKey::from_bytes(&seed)
+        .verifying_key()
+        .to_bytes()
+        .to_vec())
 }
 
-/// Verify a signed asset.
+/// Verify an Ed25519 signature over a claim's canonical form.
 ///
-/// Scaffold: returns NotImplemented. The real verification path lands
-/// once the manifest is embedded in the asset bytes (currently it's
-/// only attached in memory).
-pub fn verify(_path: impl AsRef<Path>) -> Result<VerificationResult, C2paError> {
-    Err(C2paError::NotImplemented("verify"))
+/// Returns `Ok(())` if `signature` is valid for `verifying_key` (a 32-byte
+/// Ed25519 public key), or [`C2paError::ManifestInvalid`] if it does not
+/// match — including when the claim was modified after signing.
+///
+/// # Errors
+///
+/// [`C2paError::InvalidKey`] for a malformed key; [`C2paError::ManifestInvalid`]
+/// for a wrong-length or non-matching signature.
+pub fn verify_signature(
+    claim: &ManifestClaim,
+    signature: &[u8],
+    verifying_key: &[u8],
+) -> Result<(), C2paError> {
+    use ed25519_dalek::{Signature, VerifyingKey};
+
+    let vk_bytes: [u8; 32] = verifying_key
+        .try_into()
+        .map_err(|_| C2paError::InvalidKey)?;
+    let vk = VerifyingKey::from_bytes(&vk_bytes).map_err(|_| C2paError::InvalidKey)?;
+    let sig_bytes: [u8; 64] = signature
+        .try_into()
+        .map_err(|_| C2paError::ManifestInvalid("signature must be 64 bytes".into()))?;
+    let sig = Signature::from_bytes(&sig_bytes);
+
+    vk.verify_strict(claim.to_canonical().as_bytes(), &sig)
+        .map_err(|e| C2paError::ManifestInvalid(e.to_string()))
 }
 
 /// Soft-binding watermark embedder.
@@ -216,18 +259,6 @@ pub mod watermark {
     }
 }
 
-// Deterministic placeholder signature so the scaffold round-trips.
-// NOT cryptographic — produces a length-32 byte vector hashing the
-// input via a simple sum-of-bytes prefix. The `upstream` feature
-// replaces this with the c2pa-rs signing path.
-fn stub_signature(canonical: &[u8]) -> Vec<u8> {
-    let mut out = vec![0u8; 32];
-    for (i, b) in canonical.iter().enumerate() {
-        out[i % 32] = out[i % 32].wrapping_add(*b);
-    }
-    out
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -252,26 +283,56 @@ mod tests {
         assert_eq!(claim.to_canonical(), again.to_canonical());
     }
 
+    // A fixed 32-byte Ed25519 seed for deterministic tests.
+    const TEST_SEED: [u8; 32] = [7u8; 32];
+
     #[test]
-    fn sign_image_produces_signature() {
+    fn sign_image_produces_64_byte_signature() {
         let claim = ManifestClaim::new("c-1", "P", true).with_generator("Test Gen v1");
-        let asset = sign_image("/tmp/dummy.png", claim.clone(), b"stub-key").unwrap();
+        let asset = sign_image("/tmp/dummy.png", claim.clone(), &TEST_SEED).unwrap();
         assert_eq!(asset.claim, claim);
-        assert_eq!(asset.signature.len(), 32);
+        assert_eq!(asset.signature.len(), 64);
     }
 
     #[test]
-    fn sign_image_signature_deterministic_for_same_claim() {
+    fn sign_image_signature_is_deterministic() {
+        // Ed25519 (RFC 8032) signatures are deterministic for the same key+msg.
         let claim = ManifestClaim::new("c-1", "P", true);
-        let a = sign_image("/tmp/x.png", claim.clone(), b"k").unwrap();
-        let b = sign_image("/tmp/x.png", claim, b"k").unwrap();
+        let a = sign_image("/tmp/x.png", claim.clone(), &TEST_SEED).unwrap();
+        let b = sign_image("/tmp/x.png", claim, &TEST_SEED).unwrap();
         assert_eq!(a.signature, b.signature);
     }
 
     #[test]
-    fn verify_returns_not_implemented_in_scaffold() {
-        let result = verify("/tmp/x.png");
-        assert!(matches!(result, Err(C2paError::NotImplemented(_))));
+    fn sign_then_verify_roundtrip() {
+        let claim = ManifestClaim::new("c-1", "Producer", true).with_generator("SDXL");
+        let asset = sign_image("/tmp/x.png", claim.clone(), &TEST_SEED).unwrap();
+        let vk = verifying_key_from_seed(&TEST_SEED).unwrap();
+        assert!(verify_signature(&asset.claim, &asset.signature, &vk).is_ok());
+    }
+
+    #[test]
+    fn verify_rejects_tampered_claim() {
+        let claim = ManifestClaim::new("c-1", "Producer", true);
+        let asset = sign_image("/tmp/x.png", claim, &TEST_SEED).unwrap();
+        let vk = verifying_key_from_seed(&TEST_SEED).unwrap();
+        let tampered = ManifestClaim::new("c-1", "Attacker", true);
+        assert!(verify_signature(&tampered, &asset.signature, &vk).is_err());
+    }
+
+    #[test]
+    fn verify_rejects_wrong_key() {
+        let claim = ManifestClaim::new("c-1", "Producer", true);
+        let asset = sign_image("/tmp/x.png", claim.clone(), &TEST_SEED).unwrap();
+        let other_vk = verifying_key_from_seed(&[9u8; 32]).unwrap();
+        assert!(verify_signature(&asset.claim, &asset.signature, &other_vk).is_err());
+    }
+
+    #[test]
+    fn sign_rejects_bad_seed_length() {
+        let claim = ManifestClaim::new("c-1", "P", true);
+        let err = sign_image("/tmp/x.png", claim, b"too-short").unwrap_err();
+        assert!(matches!(err, C2paError::InvalidKey));
     }
 
     #[test]

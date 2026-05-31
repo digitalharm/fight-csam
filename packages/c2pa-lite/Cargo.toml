@@ -22,7 +22,11 @@ upstream = []
 
 [dependencies]
 thiserror = "1"
+# Real Ed25519 signing of the canonical manifest claim. Lightweight,
+# pure-Rust, no native deps — safe to compile on every CI run. The full
+# C2PA manifest embedding (JWS via c2pa-rs) stays behind the `upstream`
+# feature.
+ed25519-dalek = "2"
 # Future:
-#   c2pa = { version = "...", optional = true }
+#   c2pa = { version = "0.85", optional = true } behind `upstream`
 #   serde + serde_json for manifest serialization
-#   ring or rust-crypto for signature primitives (defer to c2pa-rs)
