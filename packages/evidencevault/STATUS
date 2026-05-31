@@ -1,1 +1,1 @@
-In Progress — Wave 4: custody log (tamper-evident chain), retention schedules (US/EU/UK/AU), and in-memory vault implementation. ~22 Go unit tests planned; CI will validate. Counsel scope brief in docs/. HTTP server gated on counsel review.
+v0.5 — Wave 4: HTTP API (full package lifecycle) + disk persistence backend + KMS interface (noop default). Go service; build/vet/test pass. Retention schedules queryable but unenforced pending counsel review; production submission paths remain counsel-gated. Next: outside counsel review (v1.0).

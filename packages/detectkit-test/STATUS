@@ -1,1 +1,1 @@
-Planned — Wave 1: Foundation
+v0.5 — Wave 1: deterministic generate_image for 3 patterns (gradient-horizontal/vertical, checkerboard) via Pillow+numpy; same inputs → byte-identical PNG; real CLI generate command. Tests pass. generate_video + generate_corpus (needs hashkit corpus loop) remain NotImplementedError. Next: record expected PDQ hashes into hashkit/vectors corpus (v1.0).

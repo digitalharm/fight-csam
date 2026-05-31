@@ -1,1 +1,1 @@
-In Progress — Wave 3: scan pipeline + JSONL reader + InMemoryHashListProvider + CLI (10 tests pass). LAION and WebDataset readers are scaffold stubs. Awaiting hashstream-backed provider for production use.
+v0.5 — Wave 3: LaionJsonReader + HashListFileProvider + end-to-end scan_dataset producing Ed25519-signed ComplianceReport with chain-of-custody. Tests pass. Next: consume HashStream snapshots as the production hash-list provider (v1.0).

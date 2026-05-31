@@ -1,1 +1,1 @@
-Planned — ships alongside hashkit
+v0.5 — Wave 1: naive linear-scan query/query_all implemented, matching ground truth (1,000-hash × 100-query parity test) with deterministic tie-breaking; empty-reference-set + threshold>256 rejected. 9 tests pass. Next: multi-index hashing (MIH) outperforming linear scan at ≥10,000-hash sets (v2.0).
