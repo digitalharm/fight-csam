@@ -59,3 +59,9 @@ Cargo.lock
 
 # Outreach status — maintainer-private; not for commit
 docs/outreach/STATUS.md
+
+# Local release/workflow worktrees
+.worktrees/
+
+# Local agent / CLI state (Gemini CLI symlink dir; not for commit)
+.antigravitycli/
