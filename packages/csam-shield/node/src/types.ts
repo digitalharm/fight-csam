@@ -85,9 +85,49 @@ export interface DetectorConfig {
   config: Record<string, unknown>;
   /** If true, this detector's failures are non-fatal. Default: true. */
   optional?: boolean;
-  /** Timeout in milliseconds. Default: 5000. */
+  /**
+   * Per-detector timeout override, in milliseconds. Falls back to
+   * `ShieldConfig.timeoutMs`, then to 5000.
+   */
   timeoutMs?: number;
+  /**
+   * Per-detector retry override. Falls back to `ShieldConfig.retryPolicy`.
+   * Set `{ maxRetries: 0 }` to disable retries for this detector even when
+   * a shield-wide policy is configured.
+   */
+  retryPolicy?: RetryPolicy;
 }
+
+/**
+ * Retry policy for a detector invocation. Retries apply to the whole
+ * timed call: if a detector throws or times out, it is retried up to
+ * `maxRetries` additional times with a fixed `backoffMs` delay between
+ * attempts. A detector that returns a clean `nomatch`/`match` is never
+ * retried.
+ */
+export interface RetryPolicy {
+  /** Number of *additional* attempts after the first. 0 disables retries. */
+  maxRetries: number;
+  /** Delay between attempts, in milliseconds. */
+  backoffMs: number;
+}
+
+/**
+ * What to do when a detector ultimately fails (errors or times out, after
+ * any retries) and the unified decision would otherwise be unresolved.
+ *
+ * - `allow` — *fail-open*: a failed detector is treated as no-match. The
+ *   request proceeds. Choose this when availability matters more than
+ *   catching every item and another control will catch escapes.
+ * - `deny`  — *fail-closed*: a failed detector forces a blocking decision
+ *   (the response surfaces `error`, which the adapters block on). Choose
+ *   this for a CSAM shield where a missed scan is worse than a false block.
+ *
+ * Default is `error` reporting (the legacy behavior): the shield reports
+ * `error` and lets the platform's adapter decide. Set `onError` to take an
+ * explicit, documented stance.
+ */
+export type OnErrorPolicy = "allow" | "deny";
 
 /**
  * Shield configuration. The minimum useful config wires at least one
@@ -108,6 +148,24 @@ export interface ShieldConfig {
    * UUID. Override to plumb in your own tracing identifier.
    */
   requestId?: () => string;
+  /**
+   * Shield-wide default timeout per detector, in milliseconds. A
+   * detector's own `timeoutMs` takes precedence. Falls back to 5000.
+   */
+  timeoutMs?: number;
+  /**
+   * Shield-wide default retry policy applied to each detector. A
+   * detector's own `retryPolicy` takes precedence. Omit to disable
+   * retries by default.
+   */
+  retryPolicy?: RetryPolicy;
+  /**
+   * Failure policy applied when forming the unified decision: `allow`
+   * (fail-open) or `deny` (fail-closed). See {@link OnErrorPolicy}. When
+   * omitted, the shield reports `error` for failed scans and leaves the
+   * action to the adapter.
+   */
+  onError?: OnErrorPolicy;
   /**
    * Optional structured-event emitter. Called on every match decision
    * for audit logging and metrics. The platform owns the sink.
