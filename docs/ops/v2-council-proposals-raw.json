@@ -1,0 +1,490 @@
+{
+  "summary": "Four PM agents in parallel propose v0.5/v1.0/v2.0 wave sequencing; Release Captain synthesizes",
+  "agentCount": 5,
+  "logs": [],
+  "result": {
+    "proposals": [
+      {
+        "seat": "Foundation PM",
+        "track": "v0.1-foundation (hashkit, hashkit-match, detectkit-test)",
+        "v0_5_targets": [
+          "hashkit: Implement real PDQ via the pdqhash Apache-2.0 crate so hash_from_luma returns a PdqResult byte-identical to upstream generate_pdq on the same luma buffer, and hash_dihedral_from_luma returns 8 distinct dihedral hashes; cargo test --workspace --all-features green plus a demo that hashes a 256x256 luma buffer and prints the 64-hex hash.",
+          "hashkit: Stand up vectors/v0/corpus.json as the versioned conformance artifact and prove byte-identical hashes against the facebook/ThreatExchange C++ PDQ reference on at least 20 synthetic inputs, with CI failing closed on any corpus drift.",
+          "hashkit-match: Implement PdqMatcher::query and query_all as a naive linear scan that matches ground truth on a 1,000-hash synthetic corpus over 100 random queries, with the DEFAULT_HAMMING_THRESHOLD=31 contract documented and tested; no network, dry-run only.",
+          "detectkit-test: Implement deterministic generate_image for at least 5 patterns (gradient-horizontal/vertical/radial, checkerboard, structured-noise) so identical (identifier, seed, pattern, width, height) yields byte-identical PNG output verified by SHA-256, plus a generate_corpus that emits a small corpus + manifest.",
+          "detectkit-test: Wire the generated images through hashkit to populate the expected PDQ hashes in packages/hashkit/vectors/v0/corpus.json and make the verify subcommand re-run the corpus and confirm zero drift in dry-run.",
+          "All three: Land README examples, a tiny runnable demo per package, and failure-mode tests (empty/oversized luma, zero-provider matcher refusal, unknown-pattern error), and pass bash scripts/safety-check.sh proving synthetic-only fixtures and no credential dependency."
+        ],
+        "v1_0_targets": [
+          "hashkit: Make hash outputs reproducible across native and WASM builds — wasm-pack build produces byte-identical hashes to the native Rust build on the full v0 corpus in CI — then freeze the public PDQ API (PdqHash/PdqQuality/PdqResult/PdqError) under semver with a documented stability/deprecation policy and publish hashkit 0.1.0 to crates.io and npm.",
+          "hashkit: Promote the versioned synthetic corpus to the canonical conformance artifact that downstream package tests consume, with the spec/algorithm version pinned so consumers (csam-shield, hashstream, trainguard) can lock a known-good hash version.",
+          "hashkit-match: Validate match behavior against linear-scan ground truth at scale (closest-within-threshold and ordered query_all matching naive over 100 randomized queries against 10,000-hash reference sets), freeze the matcher API and threshold contract under semver, document false-positive handling / human-review escalation as the required downstream step, and publish hashkit-match 0.1.0.",
+          "detectkit-test: Version the synthetic corpus as a consumable test artifact other tracks depend on, expand patterns and add perceptual-robustness fixtures (rotation/scale/crop/recompression) and malformed/empty-input cases, ship the verify drift-check as a reusable gate, and publish detectkit-test 0.1.0 to PyPI.",
+          "All three: Meet the program v1.0 gate — every package has README examples, changelog, license metadata, and a STATUS line; CI covers the Rust workspace and the Python package; and docs/roadmap.md matches the package STATUS files."
+        ],
+        "v2_0_targets": [
+          "hashkit: Add the multi-index Hamming-adjacent performance work and additional vetted algorithms where in scope (TMK video features_from_frames as the second algorithm, keeping the slow reference path as the conformance oracle), and add fuzzing over the decode/normalize pipeline; the pdqhash-backed path remains the byte-identical oracle.",
+          "hashkit: Run a continuous cross-platform conformance matrix in CI (macOS, Linux, Windows for the Rust core plus WASM) with mandatory corpus-drift gates that block any release introducing a hash mismatch, and sign release artifacts (crates/npm) via Sigstore/cosign.",
+          "hashkit-match: Ship the real Multi-Index Hashing (MIH) implementation that matches naive ground truth and benchmarks faster than linear scan at >=10,000-hash sets (the whole point of the algorithm), scale to large operator blocklists with bounded-latency queries, and add audit-logging / result-provenance fields for operator accountability and downstream report/escalation handoff.",
+          "detectkit-test: Operate as the portfolio-wide conformance authority — corpus drift checks mandatory in CI for every PDQ-dependent tool, an adversarial/robustness corpus (perturbation attacks against perceptual hashing), and a certification workflow where a downstream tool declares spec version + binding, runs the suite, and gets a machine-checkable conformance report.",
+          "All three: External contributors can reproduce conformance on macOS, Linux, and Windows (independent WASM-build reproduction by an outside contributor is the documented Beta-honesty bar), release artifacts are signed, and a supported-version + spec-evolution governance policy is published."
+        ],
+        "can_ship_no_externals": [
+          "hashkit PDQ implementation via the pdqhash Apache-2.0 crate (hash_from_luma + hash_dihedral_from_luma) — pure compute, no network, no credentials.",
+          "The versioned vectors/v0/corpus.json conformance artifact validated against the public facebook/ThreatExchange C++ PDQ reference, with CI corpus-drift gating.",
+          "hashkit-match naive linear-scan query/query_all and the documented Hamming-threshold (31) contract, driven entirely by synthetic hashes.",
+          "detectkit-test deterministic generate_image (>=5 patterns), generate_corpus, and the verify drift-check — synthetic non-CSAM media only.",
+          "The detectkit-test -> hashkit corpus-population loop that records expected PDQ hashes for the synthetic corpus.",
+          "Native-vs-WASM byte-identical reproducibility proof in CI (the v1.0 reproducibility bar) and registry publication of all three at 0.1.0.",
+          "The 'no real CSAM hashes, no real credentials, synthetic fixtures only' safety invariant enforced via bash scripts/safety-check.sh."
+        ],
+        "cross_track_deps": [
+          {
+            "from_track": "Credentialed Infrastructure (HashStream) / NCMEC ESP relationship",
+            "needs": "NCMEC-verified hash vectors to add a credentialed subset (ncmec_verified: true) to vectors/v0/corpus.json",
+            "why": "This is the hashkit BETA-promotion bar (>=50 verified vectors), NOT a v0.5/v1.0 blocker. v0.5 and v1.0 ship entirely on synthetic vectors against the public C++ reference; only post-1.0 Beta hardening needs the credential chain (gated behind the Lantern ESP outreach in docs/sponsorship.md)."
+          },
+          {
+            "from_track": "Adoption (CSAM-Shield) and Credentialed Infra (HashStream, TrainGuard)",
+            "needs": "Their required hashkit version pin and the match-result/MatchResponse schema expectations they will consume",
+            "why": "Foundation must freeze the PDQ API, on-disk hash encoding, and matcher result shape under semver at v1.0 before downstream can build a safe production integration surface; a late schema change would break every PDQ-dependent tool."
+          },
+          {
+            "from_track": "Release Captain / Legal/Ops",
+            "needs": "Confirmation that publicly distributing the synthetic detectkit-test corpus and the derived PDQ hash vectors raises no legal/safety concern",
+            "why": "detectkit-test is the public test artifact the whole portfolio conforms to; counsel/captain sign-off that synthetic-only fixtures are safe to publish protects the no-real-CSAM invariant before we tag releases."
+          }
+        ],
+        "blockers": [
+          "Internal cross-package ordering (not a true external blocker, but the critical path): detectkit-test cannot record expected hashes in vectors/v0/corpus.json until hashkit's PDQ port produces working hashes. The roadmap states they advance together — hashkit's reference impl must land before detectkit-test can close its corpus loop and before hashkit-match has real hashes to match.",
+          "Byte-identical native-vs-WASM reproducibility (the v1.0 bar) can be threatened by floating-point / decode nondeterminism in the PDQ pipeline; if the pdqhash crate or its image decode path is not deterministic across the native and wasm32 targets, achieving byte-identical output may require pinning decoders or an integer/fixed-point path. Needs early validation in v0.5, not discovery at v1.0.",
+          "NCMEC ESP credentialing (Lantern outreach, docs/sponsorship.md) gates only the Beta-tier credentialed corpus subset and is explicitly NOT a v0.5/v1.0 blocker — flagged here so the Council does not mistakenly treat the foundation track as credential-blocked.",
+          "Legal/safety confirmation that the synthetic corpus and derived hash vectors are safe to publish publicly is a non-code sign-off the Foundation PM cannot grant alone; it sits with the Release Captain / Legal-Ops seat."
+        ],
+        "order_of_attack": [
+          "1. hashkit PDQ first (hash_from_luma + hash_dihedral_from_luma via the pdqhash crate). It is the root of the dependency tree — hashkit-match, detectkit-test's corpus loop, and all of Wave 2-3 PDQ work are blocked until real hashes exist. Depth-first conformance here outranks everything.",
+          "2. In parallel-but-slightly-behind, build detectkit-test's deterministic generate_image and generators so synthetic inputs are ready the moment hashkit can hash them; this keeps the two on their documented 'advance together' track.",
+          "3. Close the corpus loop: run detectkit-test images through hashkit, populate vectors/v0/corpus.json, and prove byte-identical output against the facebook/ThreatExchange C++ PDQ reference with CI drift-gating. This conformance proof is the foundation everyone downstream trusts.",
+          "4. hashkit-match naive linear-scan query/query_all validated against ground truth on a 1,000-hash synthetic set (defer MIH to v2.0 per the execution plan — naive is acceptable through v1.0). Matching is meaningless until the hashes underneath are byte-stable, so this comes after the corpus is proven.",
+          "5. Prove native-vs-WASM byte-identical reproducibility in CI — the v1.0 gate that makes cross-platform downstream trust possible — then freeze the PDQ + matcher APIs under semver and publish all three at 0.1.0.",
+          "6. Only after v0.5/v1.0 are solid: harden for v2.0 — real MIH with benchmarks, TMK video as the second algorithm, the cross-platform (macOS/Linux/Windows) conformance matrix, adversarial/robustness corpus, signed artifacts, and the certification workflow."
+        ]
+      },
+      {
+        "seat": "Adoption PM",
+        "track": "v1-adoption (csam-shield, promptshield, c2pa-lite)",
+        "v0_5_targets": [
+          "csam-shield: Ship a one-command local demo (`npm run demo` / `make demo`) that runs the existing `createShield` engine with the bundled mock/custom detector against detectkit-test synthetic fixtures, returning the normalized {verdict: match|nomatch|pending, matchType, confidence, providers[], hashes} envelope and writing a JSONL AuditSink record (hashes + verdict + timestamp, never image bytes). Default-deny on uncertainty: near-match -> pending/review handoff, never auto-block or auto-report.",
+          "csam-shield: Document the stub-detector-by-default posture and the operator-supplied real-provider boundary (Arachnid Shield free self-serve key, self-hosted PDQ/Open Media Match, Cloudflare, PhotoDNA), plus the explicit non-goals: the NCMEC Reporter stays a stub wiring point requiring the operator's own ESP credentials and counsel sign-off.",
+          "csam-shield: Failure-mode tests for the dry-run path — timeout containment, audit-sink failure isolation, empty-detector-list rejection (extending the existing 6 Node / 7 Python tests) — demonstrating fail-safe behavior with fake detectors only.",
+          "promptshield: Promote the already-implemented Stage 1 conjunction-principle matcher to a usable dry-run `guard(prompt, negative_prompt=None) -> Verdict{allow|block|review, score, matched_signals, policy_version}` plus `score`/`screen` CLI, content-free (SHA-256-of-normalized-prompt audit only), CPU-only, no model download. Uncertain -> review (default-deny: ambiguous never silently allowed).",
+          "promptshield: Ship a runnable local demo over a bundled benign + obviously-unsafe + ambiguous prompt corpus showing allow/block/review routing, with negative-prompt evasion handling (e.g. 'adult'/'mature' stuffed in negatives) exercised, so an operator can eyeball the safety bias before wiring it in.",
+          "c2pa-lite: Ship a one-command `c2pa-lite` sign->verify round-trip on a sample PNG/JPEG using a local PKCS#8 dev key (the placeholder signature path that round-trips in tests today), emitting the normalized verify JSON {signed? trusted-issuer? watermark-decoded? recovered-from-store?} with dev-key signatures clearly labeled untrusted. Watermark embed/extract remain documented-NotImplemented.",
+          "c2pa-lite: Document the supported manifest claim subset (claim_id, producer, ai_generated, generator, metadata pairs) and the dev test-anchor trust list, and state the non-goal loudly: c2pa-lite marks provenance and does NOT detect or hash CSAM.",
+          "All three: A uniform `make demo` / documented one-command entrypoint per package that installs, runs the dry-run flow against bundled synthetic fixtures, and exits 0 — the afternoon-adoption acceptance test — passing `bash scripts/safety-check.sh`."
+        ],
+        "v1_0_targets": [
+          "csam-shield: Wire at least one real low-friction detector behind the existing adapter interface as an operator-supplied, env-gated path — Arachnid Shield (free self-serve key) and/or self-hosted PDQ via hashkit+hashkit-match — with a published Express + Fastify + FastAPI + Hono example each, while the stub/mock detector stays the zero-config default.",
+          "csam-shield: Production-grade resilience controls — retry, timeout, circuit-breaker/fallback when an upstream is down, and explicit fail-closed/fail-open policy knobs (the value-add over rolling your own) — with the queue-backed pending flow (in-memory default, BullMQ/SQS adapter seam) and a stable semver-versioned `MatchResponse`.",
+          "csam-shield: Documented operator responsibilities — human-in-the-loop on near matches, no auto-report/auto-ban, signed audit-event schema, and the NCMEC Reporter hand-off contract (still a wiring point to the Legal/Ops track, not built-in reporting).",
+          "promptshield: Ship the Stage 2 ONNX classifier trained on a synthetic/red-team corpus (zero real CSAM), with a published precision/recall + false-positive-rate report on a benign holdout and >=90% recall on a public adversarial set, plus an adversarial jailbreak regression suite (homoglyphs, token-splitting, euphemism rotation, multilingual, prompt-injection) gating CI so the deny posture can't silently weaken.",
+          "promptshield: Stable `guard()` API + operator config surface (threshold tuning, allow/block/review routing) with safe defaults locked to default-deny, model+lexicon as versioned Hugging Face artifacts (policy updates without code changes), and documented adapter tests for diffusers/vLLM/ComfyUI without requiring model downloads by default.",
+          "c2pa-lite: Land the `upstream` feature path so signing delegates to c2pa-rs for real C2PA manifests, verifiable by the official c2patool and wire-compatible with Adobe/CAI Verify; production signing via KMS/PKCS#11 with a documented trust anchor, and correct trusted-vs-untrusted result semantics in a stable verify API suitable for an ingestion/moderation pipeline.",
+          "c2pa-lite: Documented interop conformance against c2patool/CAI Verify for the supported manifest subset, with the watermark soft-binding slot kept behind a clearly-flagged experimental boundary (no robustness claims until a scheme stabilizes).",
+          "All three: semver-stable public APIs; per-package SECURITY.md + README security checklist; threat-model note covering the abuse surface (detector evasion, false-allow on uncertain, false-sense-of-security from a 'certified' badge) — the credibility floor for production adoption of CSAM-adjacent tooling, with docs/roadmap.md and STATUS promoted In Progress -> Alpha in the same commit."
+        ],
+        "v2_0_targets": [
+          "csam-shield: Operator playbook — latency budgets, review-queue operations, audit-log retention, incident handling, and a compatibility matrix across supported Node/Python and major framework versions — plus multi-provider ensemble config (Arachnid + PDQ + Cloudflare) behind the strategy selector with documented coverage gaps (image vs video).",
+          "csam-shield: Hardened audit trail on the shared portfolio audit-log format (signed/append-only), rate limiting/quota controls, metrics/observability exports, and a reference end-to-end integration with the Legal/Ops reporting track (operator-configured CyberTipline hand-off) gated on counsel-reviewed docs.",
+          "promptshield: Defense-in-depth + observability — decision metrics, block-rate dashboards, false-allow alerting, classifier drift monitoring, multilingual lexicon packs with governed/auditable updates, and a documented evaluation harness so operators can re-benchmark on their own traffic; policy remains tunable-but-bounded (cannot be configured below a safe-minimum deny threshold).",
+          "promptshield: Operator deployment guide covering the FastAPI sidecar Docker image, threshold governance, jurisdiction-aware lexicon profiles (minor-indicator definitions vary by country/art convention), and red-team/new-jailbreak turnaround process.",
+          "c2pa-lite: Full trust-chain + revocation handling, time-stamping authority support, hardware-key (KMS/PKCS#11) signing as first-class, the durable detached-manifest recovery store (axum + S3/Postgres) for post-strip recovery, and a conformance suite proving interop across major C2PA verifiers; published watermark decode-survival numbers if/when the soft-binding layer graduates from experimental.",
+          "c2pa-lite: Operator deployment guide covering signing-key lifecycle/rotation, manifest-store data residency, and provenance-at-scale ingestion patterns, shipped as CLI + library + reference Docker image + ComfyUI/diffusers node.",
+          "All three: Cross-package operator bundle — shared audit-log schema, shared config conventions, signed release artifacts (Sigstore/cosign via the Release Captain's v2-hardening track), and a single hardened reference deployment showing csam-shield + promptshield + c2pa-lite running inline in one platform team's pipeline, with the v2.0 threat-model/security review checklist completed."
+        ],
+        "can_ship_no_externals": [
+          "csam-shield v0.5 dry-run demo with the existing mock/custom detector + detectkit-test synthetic fixtures, JSONL AuditSink, near-match->pending default-deny, and `make demo` exiting 0 — no Arachnid/PhotoDNA/Cloudflare credentials required.",
+          "promptshield v0.5 content-free `guard()` + CLI on the already-implemented Stage 1 conjunction matcher, ambiguous->review, bundled prompt-corpus demo — CPU-only, no model download, no external service.",
+          "c2pa-lite v0.5 dev-key sign->verify round-trip with the placeholder signing path on a sample image, normalized verify JSON, untrusted labeling — no external CA, KMS, or manifest-store service.",
+          "Documentation deliverables across all three: stub-by-default posture, operator-supplied real-provider boundary, explicit non-goals (csam-shield no auto-report; c2pa-lite not a CSAM detector; promptshield one layer not a substitute), and supported manifest/verdict schemas — pure docs, no externals.",
+          "The afternoon-adoption acceptance test per package (one-command demo against bundled synthetic fixtures, green `scripts/safety-check.sh`).",
+          "promptshield's adversarial jailbreak test-suite scaffold + benign holdout fixtures, and csam-shield's failure-mode tests (timeout/audit-failure/empty-list) — deterministic, content-free, no externals."
+        ],
+        "cross_track_deps": [
+          {
+            "from_track": "v0.1-foundation (Foundation PM: hashkit, hashkit-match, detectkit-test)",
+            "needs": "Working PDQ hash_from_luma + hashkit-match query() at Alpha, and the deterministic detectkit-test synthetic fixture/corpus generator",
+            "why": "csam-shield's zero-credential in-box detector path is PDQ-via-hashkit; and all three of my packages should use detectkit-test as the shared legally-clean fixture source for their one-command demos rather than minting bespoke fixtures."
+          },
+          {
+            "from_track": "v1-legal-infra (Legal/Ops PM: cybertip-cli, evidencevault)",
+            "needs": "A stable CyberTipline reporting hand-off interface (and ideally a shared custody/audit record shape)",
+            "why": "csam-shield must 'report' per the maintainer goal but deliberately keeps the Reporter a stub wiring point; it needs the Legal/Ops reporting contract to wire into at v1.0 and integrate as a reference end-to-end flow at v2.0 (counsel-gated)."
+          },
+          {
+            "from_track": "v2-hardening (Release Captain)",
+            "needs": "Shared portfolio audit-log schema/writer, signed-artifact pipeline (Sigstore/cosign), and the cross-platform CI matrix",
+            "why": "csam-shield AuditSink, promptshield hash-only audit, and c2pa-lite verification records should converge on one auditable format for the v2.0 operator bundle, and v2.0 requires signed artifacts + the security-review checklist owned by this track."
+          },
+          {
+            "from_track": "Release Captain / repo baseline owner",
+            "needs": "The untracked main-checkout package implementations committed or intentionally split into the v1-adoption worktree",
+            "why": "Per pm-council-notes and release-council, the v1-adoption worktree (created from committed HEAD) does NOT contain the current scaffold work; feature work cannot start until that baseline lands or my track diverges from the real code."
+          },
+          {
+            "from_track": "docs/website track",
+            "needs": "/tools portfolio entries and quickstart pages linking each package's one-command demo",
+            "why": "Afternoon adoption depends on discoverability — the demo only drives adoption if a platform team can find it from the portfolio surface."
+          }
+        ],
+        "blockers": [
+          "Repo-state blocker (process): the main checkout has untracked implementations ahead of the release worktrees; the council's standing decision is to NOT start package feature work in the v1-adoption worktree until that baseline is reviewed and committed (or split by ownership). This gates the start of my track.",
+          "csam-shield v1.0 real-detector path is operator-supplied and gated on third-party access: Arachnid Shield self-serve key (low friction, obtainable without enterprise contract) is the realistic first integration; PhotoDNA is access-gated with no public backend SDK and Cloudflare is proxy-bound — so a real default detector cannot be bundled, which is exactly why stub-by-default is correct.",
+          "csam-shield reporting (v1.0 hand-off, v2.0 reference integration) requires outside counsel review: confirmed-match handling, evidence preservation, and NCMEC CyberTipline submission are legally governed (18 U.S.C. §2258A) and depend on the Legal/Ops track's counsel retainer — engineering cannot finalize them alone.",
+          "promptshield Stage 2 (v1.0) is gated on a curated synthetic/red-team eval set built with zero real CSAM; without a proper eval set it is 'a model, not a defense' (per the README risk + roadmap blocker). The Stage 1 dry-run (v0.5) is NOT blocked by this.",
+          "c2pa-lite real signing + interop (v1.0/v2.0) depends on the external c2pa-rs library and the stability of the chosen C2PA spec subset, and on availability of c2patool/CAI Verify for conformance; the watermark soft-binding layer stays NotImplemented because the watermark-removal research target is still moving (an external standards/research dependency, not a code task)."
+        ],
+        "order_of_attack": [
+          "0. Unblock the repo baseline first: get the untracked csam-shield/promptshield/c2pa-lite scaffold work committed or split into the v1-adoption worktree (Release Captain coordination) so the track builds on the real code, not stale HEAD.",
+          "1. promptshield v0.5 first — lowest-dependency, highest-leverage: Stage 1 is already implemented, it needs no image bytes, no keys, and no Foundation dependency. Promote it to a clean content-free dry-run guard()+CLI+demo and use it to set the default-deny (ambiguous->review) and one-command-demo patterns the other two reuse.",
+          "2. c2pa-lite v0.5 second — self-contained sign->verify round-trip with the existing placeholder/dev-key path; no external service and no Foundation dependency, so it ships a clean afternoon demo while clearly labeling dev signatures untrusted.",
+          "3. csam-shield v0.5 third — most sensitive (CSAM domain, audit logging, fail-safe semantics) and benefits from the demo/audit patterns hardened on the first two; keep it strictly dry-run with the mock detector + detectkit-test fixtures, near-match->pending, no real provider yet.",
+          "4. Standardize `make demo` + bundled synthetic fixtures + green safety-check across all three so the afternoon-adoption promise is uniform and CI-verifiable; update STATUS/roadmap as each hits v0.5.",
+          "5. Move to v1.0 in the same order, but csam-shield's v1.0 can begin as soon as Foundation (hashkit/hashkit-match) reaches Alpha (its zero-credential PDQ path) — wire the Arachnid free adapter + resilience controls; promptshield v1.0 waits on the synthetic eval set; c2pa-lite v1.0 lands the c2pa-rs upstream path + c2patool interop.",
+          "6. v2.0 hardening last, csam-shield last-of-last because its reference reporting + evidence hand-off carries the heaviest legal (counsel) and cross-track (Legal/Ops) dependencies; finish with the shared-audit-format cross-package operator bundle and signed artifacts via the v2-hardening track."
+        ]
+      },
+      {
+        "seat": "Credentialed Infra PM",
+        "track": "v1-legal-infra (packages: hashstream, trainguard)",
+        "v0_5_targets": [
+          "hashstream v0.5: operator-supplied hash-file ingestion end-to-end in dry-run — POST a hash file (MD5/SHA1/SHA256 exact lists + PDQ lists), store it as a versioned local snapshot, and GET /snapshots/local serves it back. No NCMEC/IWF/Arachnid creds touched.",
+          "hashstream v0.5: real diff between two locally-ingested snapshots (added/removed/changed entries) so the existing /diff endpoint serves real data, exercised against fixture lists from detectkit-test.",
+          "hashstream v0.5: Ed25519-signed local snapshot manifests with an operator-supplied key, plus a verify endpoint returning true/false — signed snapshots even for fake/local providers, per the Track C v1.0 line pulled forward as the v0.5 dry-run guarantee.",
+          "hashstream v0.5: NCMEC/IWF/Arachnid sync defined strictly as an interface with a deterministic in-memory fake provider as the default; the credentialed sync adapters stay stubs and are skipped in default CI.",
+          "hashstream v0.5: append-only audit-log entries for every ingest, snapshot, and diff (who/what/when, no secrets) written to a local sink, so access logging exists from alpha rather than being bolted on later.",
+          "trainguard v0.5: real LAION-format JSON manifest reader (replacing the scaffold stub) that yields image refs, plus end-to-end scan_dataset() over a synthetic manifest against an InMemoryHashListProvider, producing a real ComplianceReport.",
+          "trainguard v0.5: ComplianceReport carries full chain-of-custody (input path, hash-list version/snapshot id, matches, timestamp, signing key) and is signed even when run against a fake/in-memory provider.",
+          "trainguard v0.5: HashStream-backed provider wired behind the existing hash-list adapter interface, pointed at a locally-ingested hashstream snapshot, so the trainguard->hashstream dry-run chain works without credentials.",
+          "Both: shared signing/provenance fixtures (test keypair) and golden snapshot + golden ComplianceReport fixtures checked in, so the operator-list -> hashstream snapshot -> trainguard report chain is verifiable in secret-free CI.",
+          "Both: README dry-run examples + failure-mode tests (zero-provider refusal already in trainguard; add empty/garbled-list and bad-signature cases), and output clearly marked NON-AUTHORITATIVE / dry-run."
+        ],
+        "v1_0_targets": [
+          "hashstream v1.0: stable, documented, semver'd public API + TypeScript SDK surface (ingest/snapshots/snapshot/diff/verify) frozen, so csam-shield and trainguard can integrate against a contract that will not break under them.",
+          "hashstream v1.0: persistent snapshot store (replacing in-memory) with stable immutable snapshot IDs and idempotent ingest, plus self-hostable Docker image — the operational substrate trainguard's reproducible reports depend on.",
+          "hashstream v1.0: credentialed NCMEC/IWF/Arachnid sync adapters implemented behind the v0.5 interface, explicitly config-gated, disabled by default, and skipped in default CI; fake provider remains the test default.",
+          "hashstream v1.0: hardened, documented append-only audit log for sensitive list access (who ingested/queried which list/version/when) as an operator-responsibility guarantee, since hash lists are evidence-adjacent.",
+          "trainguard v1.0: stable semver'd public API (scan_dataset + providers + report schema) and a documented operator-responsibility note, embeddable by a careful operator in a real pre-training pipeline against an operator-owned hashstream snapshot.",
+          "trainguard v1.0: reproducibility contract — a pinned hashstream snapshot ID + pinned scanner version yields a byte-stable signed ComplianceReport for a given dataset version (the certifiable-compliance-artifact promise).",
+          "trainguard v1.0: WebDataset reader alongside LAION (both currently stubs) so real-world dataset formats are covered, with documented match semantics (exact vs PDQ-perceptual).",
+          "Both: counsel-reviewed scope note on the legal-sensitive surface (hash-list distribution/access logging; ComplianceReport used as a compliance/attestation artifact) incorporated into docs before tagging v1.0 — coordinated with the Legal/Ops PM sharing this worktree.",
+          "Both: v1.0 cross-track gate met — README examples, changelog, license metadata, status line; CI covers Go + Node + Python for these packages; roadmap.md matches the STATUS files; security checklist done."
+        ],
+        "v2_0_targets": [
+          "hashstream v2.0: deployment guide covering storage, key management, auth, and audit-log retention, plus documented credentialed-integration validation results (NCMEC/IWF) without publishing any restricted material.",
+          "hashstream v2.0: signing-key rotation and a formal provenance posture — snapshot signatures verifiable across key generations with a documented key-management/revocation story.",
+          "hashstream v2.0: throughput, back-pressure, and observability (metrics/tracing on ingest/snapshot/diff/query) for high-volume match traffic from csam-shield and trainguard, with SLOs.",
+          "hashstream v2.0: multi-tenant isolation so multiple operators' sensitive hash lists and audit logs are partitioned with no cross-tenant leakage, plus a persistent tamper-evident audit log suitable for law-enforcement-grade provenance citation.",
+          "trainguard v2.0: distributed/horizontally-scaled sharded scanning for billion-item corpora with checkpoint/resume and back-pressure against hashstream, plus run-level observability.",
+          "trainguard v2.0: hardened certifiable ComplianceReport pipeline — signed provenance across scanner + snapshot + policy versions, key rotation, retention policy, and multi-tenant isolation for dataset-curator customers.",
+          "trainguard v2.0: deployment/operator guide (latency budgets, audit retention, quarantine handling, incident response) and documented real-provider validation process.",
+          "Both: end-to-end signed provenance chain (operator list -> hashstream signed snapshot -> trainguard signed ComplianceReport) verifiable as one continuous chain; threat model + security policy reviewed against the implemented surfaces; signing/audit/retention behavior has tests (v2.0 cross-track gate)."
+        ],
+        "can_ship_no_externals": [
+          "hashstream operator-supplied hash-file ingestion via POST (MD5/SHA1/SHA256 + PDQ lists) -> versioned local snapshot -> GET /snapshots/local. Pure local, zero credentials.",
+          "hashstream real snapshot-to-snapshot diff over locally-ingested fixture lists (serves the existing /diff endpoint with real data).",
+          "hashstream Ed25519-signed local snapshot manifests + verify endpoint, using an operator-supplied/repo test key.",
+          "hashstream interface-gating of NCMEC/IWF/Arachnid sync with a deterministic in-memory fake default (credentialed adapters present but never run in default CI).",
+          "hashstream append-only audit logging of ingest/snapshot/diff to a local sink.",
+          "trainguard real LAION-format manifest reader + end-to-end scan_dataset() against an InMemoryHashListProvider over a synthetic manifest.",
+          "trainguard signed ComplianceReport with full chain-of-custody (input path, hash-list/snapshot version, matches, timestamp, signing key).",
+          "trainguard HashStream-backed provider wired against a locally-ingested snapshot — the trainguard->hashstream dry-run chain, no creds.",
+          "Shared test keypair + golden snapshot and golden ComplianceReport fixtures proving the operator-list -> snapshot -> report provenance chain end-to-end in secret-free CI.",
+          "README dry-run examples, failure-mode tests (empty/garbled list, bad signature, zero providers), and NON-AUTHORITATIVE/dry-run output labeling."
+        ],
+        "cross_track_deps": [
+          {
+            "from_track": "v0.1-foundation (Foundation PM)",
+            "needs": "Working hashkit PDQ hashing (hash_from_luma) and hashkit-match PdqMatcher::query, so hashstream/trainguard can do real PDQ perceptual matching rather than exact-hash-only.",
+            "why": "Per the dependency tree, hashstream consumes PdqHash to compare against lists and trainguard uses hashkit-match for dataset screening. Exact-match (MD5/SHA1/SHA256) is shippable without it, but the PDQ path — the portfolio's whole perceptual-detection value — is blocked on Foundation reaching a working PdqHash."
+          },
+          {
+            "from_track": "v0.1-foundation (Foundation PM)",
+            "needs": "detectkit-test deterministic fixture generator + recorded hash corpus.",
+            "why": "Honest, legally-distributable test lists/datasets for hashstream ingest and trainguard scans must be synthetic. Coordination rules forbid real CSAM hashes; detectkit-test is the named source of synthetic fixtures for our secret-free CI."
+          },
+          {
+            "from_track": "v1-adoption (Adoption PM)",
+            "needs": "Agreement that csam-shield's PDQ detector and trainguard both consume the same hashstream snapshot/match contract before hashstream's API is frozen at v1.0.",
+            "why": "Both csam-shield (real-time middleware) and trainguard (batch dataset screening) are downstream consumers of hashstream. Freezing the hashstream public API/SDK without csam-shield's input risks a contract that one consumer cannot use."
+          },
+          {
+            "from_track": "v1-legal-infra (Legal/Ops PM, same worktree)",
+            "needs": "Shared/coordinated counsel review covering hash-list distribution + access logging (hashstream) and the ComplianceReport as a compliance/attestation artifact (trainguard), alongside the cybertip-cli/evidencevault scope briefs.",
+            "why": "These surfaces are evidence-adjacent and touch mandated-reporting/retention obligations. A single coordinated counsel review with the Legal/Ops co-owner of this worktree avoids divergent legal postures across the report/retention chain and is a hard v1.0 gate."
+          }
+        ],
+        "blockers": [
+          "NCMEC ESP credentialing is the single largest non-code blocker (roadmap calls it the gating dependency for all of Wave 3); IWF/Arachnid feeds are likewise contractual. These stay interface-gated stubs — only the operator-supplied + (once Foundation lands) PDQ path is in our control for v0.5/v1.0. Funded via the Lantern outreach in docs/sponsorship.md, outside this track's authority.",
+          "Counsel review is a hard v1.0 gate for both packages (hash-list access logging as evidence-adjacent; ComplianceReport positioned as a compliance artifact). Depends on the outside-counsel retainer (Lantern line item) and the Legal/Ops PM — must be scheduled early, not at v1.0.",
+          "Working hashkit PDQ + hashkit-match from the Foundation track gate the perceptual-matching path; until they land, hashstream/trainguard can only honestly demonstrate exact-hash matching. Not a blocker for the exact-match v0.5 deliverables.",
+          "Signing-key custody/rotation for v1.0-plus (beyond the repo test key) needs an org KMS/key-management decision — a process/ownership blocker shared across the portfolio.",
+          "Multi-tenant isolation + tamper-evident persistent audit log (v2.0) imply a storage/platform substrate decision above this track's authority and shared with the v2-hardening track.",
+          "Coordination-rule blocker: must commit only to the codex/release-v1-legal-infra branch in the .worktrees/v1-legal-infra worktree, stay inside packages/hashstream and packages/trainguard, record cross-track needs in docs/ops/handoffs/v1-legal-infra.md, and pass scripts/safety-check.sh before pushing — integration is the Release Captain's job, not this track's."
+        ],
+        "order_of_attack": [
+          "1. hashstream operator-supplied ingest -> versioned local snapshot -> GET /snapshots/local. Lowest-risk, fully-local, zero-credential core; it is the foundation every other deliverable in this track builds on. Get it green in secret-free CI first.",
+          "2. hashstream real snapshot diff over two ingested fixture lists, so the existing /diff endpoint serves real data and the snapshot model is exercised end to end.",
+          "3. hashstream Ed25519 signed snapshots + verify, plus append-only audit logging. Provenance and access logging are cross-cutting requirements that must exist from alpha; trainguard also needs stable signed snapshot IDs to cite.",
+          "4. Stand up the NCMEC/IWF/Arachnid sync INTERFACE with the in-memory fake as the default immediately after the local path works — draws the credential boundary early and keeps default CI secret-free by construction.",
+          "5. trainguard real LAION reader + end-to-end scan_dataset() against the in-memory provider, producing a signed ComplianceReport with full chain-of-custody. Reuses the now-stable snapshot/match shapes.",
+          "6. Wire trainguard's HashStream-backed provider to a locally-ingested snapshot, completing the operator-list -> hashstream snapshot -> trainguard report dry-run chain; lock it with shared golden fixtures. This closes the v0.5 dry-run story end to end.",
+          "7. In parallel from day one (do NOT wait for v1.0): kick off the coordinated counsel review with the Legal/Ops PM on hash-list access logging + the ComplianceReport-as-artifact question, since it gates both packages' v1.0.",
+          "8. Consume hashkit PDQ + hashkit-match as soon as Foundation ships them to add the perceptual-match path on top of the working exact-match path.",
+          "9. v1.0 hardening: freeze the hashstream public API/SDK (with csam-shield + trainguard sign-off), add persistence + idempotency + Docker, land credentialed adapters behind the v0.5 interfaces (gated/off-by-default), and give trainguard its reproducibility contract + WebDataset reader.",
+          "10. v2.0 platform work last: deployment + key-management guides, key rotation, throughput/back-pressure/observability, multi-tenant isolation, tamper-evident persistent audit, distributed sharded scanning, and the continuous end-to-end signed provenance chain."
+        ]
+      },
+      {
+        "seat": "Legal/Ops PM",
+        "track": "v1-legal-infra (cybertip-cli, evidencevault)",
+        "v0_5_targets": [
+          "cybertip-cli: A fully exercisable dry-run report filer — model the NCMEC CyberTipline report schema, validate against field/XSD rules, build a report from local inputs, and 'submit' to a mock/loopback endpoint that writes a signed local submission manifest; no live transport, no ESP credentials, with a hard non-default safety gate so nothing can leave the machine.",
+          "cybertip-cli: PII/redaction pass and a deterministic report-preview/diff command so an operator can inspect exactly what would be transmitted (reporter info, incident fields, file hashes) before any future live send, all runnable end-to-end without counsel.",
+          "evidencevault: A content-free, append-only custody ledger sandbox — record hash-addressed evidence references and custody events (acquire/hold/transfer/release) over metadata and hashes only (never CSAM bytes), with a tamper-evident hash-chained audit log verifiable offline.",
+          "evidencevault: Local custody-report rendering and an integrity-verify command that recomputes the chain and flags any gap or mutation, demonstrating the audit + custody backbone end-to-end in dry-run with zero external services."
+        ],
+        "v1_0_targets": [
+          "cybertip-cli: Safe production transport surface — real NCMEC CyberTipline submission behind an explicit, non-default --live flag that is inert until a counsel sign-off gate and valid ESP credentials are both present; idempotency keys and a persisted, signed proof-of-submission for every accepted report.",
+          "cybertip-cli: Stable, versioned report-builder API and credential-handling contract (env/secret-store only, never on disk in plaintext) so platforms can integrate the filer programmatically against sandbox today and flip to live once their own counsel clears them.",
+          "evidencevault: Court-defensible custody surface — cryptographically signed custody events, full chain verification, and retention-clock tracking aligned to the 18 U.S.C. § 2258A(h) preservation window (90 days, extendable to 180) with expiry/hold alerts; exportable signed custody report.",
+          "evidencevault: Stable storage-adapter interface with a verified-integrity local/object-store backend for hashes and metadata, while any handling of actual CSAM content remains behind a counsel wall and is not part of the v1.0 surface."
+        ],
+        "v2_0_targets": [
+          "cybertip-cli: Hardened operator platform — rate limiting, robust retry/backoff with idempotent resubmission, multi-tenant ESP credential isolation, structured audit export (SIEM-friendly), and SLA/health surfacing for high-volume filers.",
+          "cybertip-cli: Operator governance — four-eyes/approval workflow for live sends, full submission audit trail with attestations, and configurable jurisdiction/profile handling for non-US or multi-program reporting once counsel expands scope.",
+          "evidencevault: Hardened custody platform — WORM/immutable backend support, KMS/HSM-backed signing and key rotation, role-based access control with four-eyes on custody mutations, and periodic audit attestations.",
+          "evidencevault: Operator-grade custody assurance — automated retention-window enforcement and legal-hold overrides, exportable chain-of-custody attestation packages for litigation, and tamper-response alerting integrated with the shared portfolio audit log."
+        ],
+        "can_ship_no_externals": [
+          "cybertip-cli v0.5 dry-run filer: report schema modeling, field/XSD validation, report build from local inputs, and mock/loopback submission writing a signed local manifest — no NCMEC account or counsel needed.",
+          "cybertip-cli redaction + report-preview/diff command showing exactly what would be transmitted.",
+          "cybertip-cli safety architecture: --live disabled by default and inert without an explicit counsel-gate marker, so the package is publishable without risk of an accidental live filing.",
+          "evidencevault v0.5 content-free custody ledger: hash/metadata-only records, append-only tamper-evident hash-chained audit log, custody event model.",
+          "evidencevault integrity-verify and custody-report commands runnable fully offline.",
+          "evidencevault retention-clock math/library implementing the § 2258A(h) window as pure logic (no production data, no counsel needed to ship the calculator).",
+          "Bold, unambiguous README/SECURITY docs for both tools stating what is dry-run-only vs. legally gated, and that neither tool should handle actual CSAM content outside a counsel-approved deployment."
+        ],
+        "cross_track_deps": [
+          {
+            "from_track": "shared-infra / core libraries",
+            "needs": "A shared signed, append-only audit-log primitive (tamper-evident hash chaining + signing) used by both cybertip-cli and evidencevault",
+            "why": "The governing perspective requires audit + custody to be solid before any production wire-up; a single hardened primitive avoids divergent, separately-audited implementations across the portfolio and is the foundation for both packages' v0.5 deliverables."
+          },
+          {
+            "from_track": "shared-infra / core libraries",
+            "needs": "A shared PII/redaction and content-handling-policy library",
+            "why": "cybertip-cli must redact reporter/victim PII before any transmission and evidencevault must guarantee it stores hashes/metadata only; consistent redaction and a single 'never store raw content' enforcement point are needed across tools."
+          },
+          {
+            "from_track": "detection tracks (hashing/classifier tools)",
+            "needs": "A stable hash/match output format (e.g., PhotoDNA/MD5/SHA + classification verdict) to populate cybertip-cli report fields and evidencevault custody references",
+            "why": "Realistic end-to-end report and custody records are populated from upstream detection output; needed for v1.0 integration, though the v0.5 dry-run path must accept manual/sample input and must not hard-require detection to be present."
+          }
+        ],
+        "blockers": [
+          "TOOLING OUTAGE (must resolve first): In this session both Bash and Read returned empty output for every command and file — including trivial probes (printf, true) and files known to exist (global CLAUDE.md) — so I could NOT read v2-release-program.md, v2-execution-plan.md, roadmap.md, or the cybertip-cli/evidencevault README and STATUS files. This ladder was built from the governing framework quoted in the task prompt plus standard legal characterization of these tool types; it MUST be re-validated against the actual scaffold and STATUS files once file access is restored, as the real stub state may shift the v0.5 line.",
+          "cybertip-cli live transport is counsel-blocked AND credential-blocked: production filing requires NCMEC engagement, ESP/registered-reporter status under 18 U.S.C. § 2258A, and the official CyberTipline API agreement — none obtainable by code; this is a hard wall before any v1.0 --live capability is plausible.",
+          "evidencevault handling of actual CSAM content is a hard legal wall: possession/transmission of real content is itself fraught; counsel must define any content-bearing deployment, so the safe surface stays hash/metadata-only through v1.0 and content handling is treated as out-of-band until counsel rules.",
+          "Retention-window semantics (§ 2258A(h) 90/180-day preservation) need counsel confirmation before evidencevault enforces deletion/hold in any production context — wrong enforcement could destroy or unlawfully retain evidence; the calculator can ship, but enforcement actions are gated.",
+          "Counsel sign-off mechanism itself is undefined: v1.0 production gates depend on an agreed, auditable 'counsel-cleared' marker/process that does not yet exist and must be designed with Legal before either tool ships a production path."
+        ],
+        "order_of_attack": [
+          "0. Restore file access and re-read the four ops docs + both packages' README/STATUS; reconcile this ladder against the real scaffold before committing scope (current blocker — see blockers[0]).",
+          "1. Land the shared audit-log + redaction primitives dependency conversation with shared-infra track up front; both tools' v0.5 custody/redaction work sits on them, so align interfaces before building.",
+          "2. evidencevault v0.5 first: the content-free custody ledger + tamper-evident audit log + offline integrity-verify. The perspective mandates audit/custody be solid before any wire-up, so this is the foundation the rest of the portfolio's reporting credibility rests on.",
+          "3. cybertip-cli v0.5 in parallel once redaction exists: schema + validation + redaction + mock submission with the --live safety gate hard-off. This gives a publishable, counsel-free dry-run filer.",
+          "4. Write the bold dry-run-vs-gated documentation for both tools as part of v0.5, not after — it is itself a safety control and ships with no externals.",
+          "5. Design the counsel sign-off / production-gate mechanism with Legal (blockers[5]); nothing in v1.0 can proceed without it.",
+          "6. evidencevault v1.0: signed custody events, chain verification, retention-clock tracking, signed custody-report export (content still gated).",
+          "7. cybertip-cli v1.0: production transport behind the counsel-gate + ESP credentials, idempotency, signed proof-of-submission — only after the gate mechanism and NCMEC/ESP engagement exist.",
+          "8. v2.0 hardening for both (WORM/KMS/RBAC/four-eyes, rate-limit/retry/multi-tenant, audit attestations) once a real operator deployment is on the table."
+        ]
+      }
+    ],
+    "synthesis": {
+      "executive_summary": "This program ships an open-source CSAM/abuse-detection portfolio across three maturity gates (v0.5 dry-run, v1.0 frozen-API, v2.0 hardened) over four PM tracks: Foundation (hashkit, hashkit-match, detectkit-test), Adoption (csam-shield, promptshield, c2pa-lite), Credentialed Infra (hashstream, trainguard), and Legal/Ops (cybertip-cli, evidencevault). The dominant structural fact is that Foundation owns the critical path: hashkit's real PDQ implementation (hash_from_luma + hash_dihedral_from_luma via the pdqhash crate) is the root of the dependency tree, and every PDQ-dependent path downstream — csam-shield's zero-credential detector, hashstream/trainguard perceptual matching, and detectkit-test's corpus loop — is blocked until it lands and produces byte-stable hashes. The good news is that a large fraction of the portfolio has NO Foundation dependency and can be built fully in parallel from the first hour: promptshield (Stage 1 already implemented, no image bytes, CPU-only), c2pa-lite (self-contained dev-key sign/verify), the entire Legal/Ops dry-run surface (cybertip-cli mock-submit + evidencevault custody ledger), and hashstream/trainguard's exact-hash (MD5/SHA1/SHA256) path. Nothing in v0.5 or v1.0 blocks on externals (NCMEC creds, counsel sign-off, enterprise contracts) — those are deliberately deferred behind interface stubs and explicit off-by-default gates.<br><br>There is exactly one true wave-zero gate that every track is implicitly waiting on: the untracked main-checkout scaffold work must be committed or split into the release worktrees before any feature work begins (flagged hard by Adoption and Credentialed Infra; release worktrees were cut from a HEAD that does not contain the current scaffolds). Once that lands, the execution shape is: Wave 1 fans out wide on all zero-dependency work while Foundation drives hashkit PDQ depth-first; Wave 2 closes the Foundation conformance loop (detectkit-test corpus -> hashkit -> CI drift-gate against the ThreatExchange C++ reference) which unblocks every downstream PDQ integration; Wave 3 hits the v1.0 gate (native-vs-WASM byte-identical reproducibility, semver API freeze, registry publication) with downstream consumers signing off on frozen contracts before they harden; Wave 4 is v2.0 hardening (real MIH, signed artifacts, multi-tenant/persistence, counsel-gated live paths). Cross-track needs are resolved as written handoffs into docs/ops/handoffs/, never as cross-worktree edits — each track stays inside its own packages and the Release Captain owns integration.",
+      "wave_order": [
+        {
+          "wave": "Wave 0",
+          "name": "Repo baseline unblock (Release Captain)",
+          "packages": [
+            "repo-baseline",
+            "scripts/safety-check.sh",
+            "docs/ops/handoffs scaffolding"
+          ],
+          "parallelism": "Serial — single blocking gate before any feature work. Owned solely by the Release Captain.",
+          "rationale": "Both Adoption and Credentialed Infra flag that the release worktrees were cut from a HEAD that does NOT contain the current untracked scaffold work; the council's standing decision is to not start package feature work until that baseline is committed or split by ownership. This is the one true wave-zero gate. Also stand up the per-track handoff files (docs/ops/handoffs/v1-legal-infra.md etc.) and confirm safety-check.sh is green on the committed tree so every downstream wave can record cross-track needs as docs, not edits. Legal/Ops also reported a tooling outage (empty Bash/Read) — confirm tooling is live here."
+        },
+        {
+          "wave": "Wave 1",
+          "name": "Parallel fan-out: Foundation critical path + all zero-dependency dry-run work",
+          "packages": [
+            "hashkit (PDQ via pdqhash crate — CRITICAL PATH)",
+            "detectkit-test (deterministic generate_image, generators)",
+            "promptshield (Stage 1 guard/CLI/demo)",
+            "c2pa-lite (dev-key sign->verify round-trip)",
+            "cybertip-cli (schema/validate/redact/mock-submit, --live hard-off)",
+            "evidencevault (content-free custody ledger, tamper-evident audit log, integrity-verify)",
+            "hashstream (operator ingest -> local snapshot -> GET, real diff, Ed25519 signed snapshots, fake-provider interface, audit log)",
+            "trainguard (LAION reader + scan_dataset against in-memory provider, signed ComplianceReport)"
+          ],
+          "parallelism": "Maximum fan-out. hashkit is depth-first solo critical path. detectkit-test generators build in parallel-but-slightly-behind so synthetic inputs are ready the moment hashkit can hash them. The four satellite/infra streams (promptshield, c2pa-lite, the two Legal/Ops tools, the two exact-hash infra packages) are fully independent of Foundation and of each other — assign one agent per package, 6+ agents in parallel.",
+          "rationale": "Per principle 2 (parallelism wherever possible) and 3 (no blocking on externals). Everything here ships on synthetic fixtures with no credentials. promptshield is the single highest-leverage parallel start (already implemented, no deps) and should set the default-deny + one-command-demo patterns that csam-shield and the others reuse. hashstream/trainguard get their ENTIRE v0.5 done here because it is exact-hash + signed-snapshot + fake-provider only — the PDQ path is explicitly NOT a v0.5 blocker. Legal/Ops v0.5 (evidencevault custody backbone first, then cybertip-cli once redaction exists) is wholly content-free and counsel-free."
+        },
+        {
+          "wave": "Wave 2",
+          "name": "Foundation conformance loop + csam-shield v0.5 + v0.5 close-out",
+          "packages": [
+            "detectkit-test -> hashkit corpus loop (vectors/v0/corpus.json)",
+            "hashkit conformance gate (byte-identical vs ThreatExchange C++ PDQ, CI drift-fail-closed)",
+            "hashkit-match (naive linear-scan query/query_all, threshold=31 contract)",
+            "csam-shield (dry-run demo: mock detector + detectkit-test fixtures, near-match->pending, JSONL AuditSink)",
+            "uniform make demo + safety-check across all packages"
+          ],
+          "parallelism": "hashkit-match and csam-shield v0.5 can proceed in parallel once the corpus loop closes. csam-shield consumes detectkit-test fixtures (available end of Wave 1) so it does NOT need to wait for hashkit-match — it uses the mock detector for v0.5. The corpus loop is the serializing event: it requires hashkit PDQ (Wave 1) AND detectkit-test generators (Wave 1) both done.",
+          "rationale": "This is the dependency bottleneck the whole program funnels through. detectkit-test cannot record expected hashes until hashkit PDQ works; hashkit-match has nothing real to match until the corpus is byte-stable. Closing this loop with a CI drift-gate against the public C++ reference is the conformance proof every downstream track trusts. csam-shield v0.5 is placed here (not Wave 1) because it is the most safety-sensitive package and benefits from the demo/audit patterns hardened on promptshield/c2pa-lite; it stays strictly dry-run with no real provider. End of this wave = all packages at v0.5 with green safety-check, STATUS/roadmap updated."
+        },
+        {
+          "wave": "Wave 3",
+          "name": "v1.0 gate: reproducibility, contract freeze, downstream wiring, publication",
+          "packages": [
+            "hashkit (native-vs-WASM byte-identical proof, PDQ API semver freeze, publish 0.1.0 crates.io+npm)",
+            "hashkit-match (validate at 10k scale, freeze matcher+threshold contract, publish 0.1.0)",
+            "detectkit-test (version corpus as consumable artifact, robustness fixtures, reusable drift-gate, publish PyPI)",
+            "hashstream (freeze public API/SDK with consumer sign-off, persistent store, idempotent ingest, Docker)",
+            "trainguard (freeze API, reproducibility contract, WebDataset reader)",
+            "csam-shield (Arachnid free/self-hosted-PDQ adapter env-gated, resilience controls, framework examples, stable MatchResponse)",
+            "promptshield (Stage 2 ONNX on synthetic red-team corpus, adversarial CI suite, stable guard() API)",
+            "c2pa-lite (c2pa-rs upstream path, c2patool/CAI Verify interop, KMS/PKCS#11 signing)",
+            "cybertip-cli (--live behind counsel-gate marker, versioned report-builder API, signed proof-of-submission)",
+            "evidencevault (signed custody events, chain verify, 2258A(h) retention clock, storage-adapter interface)"
+          ],
+          "parallelism": "Two sub-phases. 3a: Foundation completes the reproducibility proof and FREEZES the PDQ/match/on-disk-encoding APIs under semver — this is a hard barrier. 3b: all downstream tracks harden against the now-frozen contracts in parallel. csam-shield's v1.0 real-detector path can begin as soon as hashkit/hashkit-match reach Alpha. promptshield v1.0 is gated only on its synthetic eval set (no Foundation dep) so it can run anytime in Wave 3. Legal/Ops v1.0 production paths stay behind counsel-gate markers that are inert by default — the code ships, the live capability does not activate.",
+          "rationale": "Principle 1 + cross-track-dep resolution: Foundation MUST freeze the PDQ API, on-disk hash encoding, and matcher result shape before downstream builds production integration surfaces — a late schema change would break every PDQ-dependent tool. The mandatory handoff is that csam-shield and trainguard sign off on the hashstream snapshot/match contract AND the hashkit result shape BEFORE freeze (recorded in handoff docs). Native-vs-WASM reproducibility must be proven here, not discovered — Foundation flagged float/decode nondeterminism risk that needs early validation. All counsel/credential-dependent capabilities (cybertip-cli --live, csam-shield NCMEC reporter, hashstream credentialed adapters) ship as inert/off-by-default gates so v1.0 is publishable with zero externals."
+        },
+        {
+          "wave": "Wave 4",
+          "name": "v2.0 hardening: performance, platform, signed artifacts, counsel-gated live paths",
+          "packages": [
+            "hashkit (real perf/multi-index work, TMK 2nd algorithm, fuzzing, cross-platform conformance matrix macOS/Linux/Windows+WASM, Sigstore/cosign signing)",
+            "hashkit-match (real Multi-Index Hashing beating linear scan at 10k+, audit-logging/provenance fields)",
+            "detectkit-test (portfolio conformance authority, adversarial/robustness corpus, machine-checkable certification workflow)",
+            "hashstream (deployment+key-mgmt guide, key rotation, throughput/observability, multi-tenant isolation, tamper-evident persistent audit)",
+            "trainguard (distributed sharded scanning w/ checkpoint-resume, hardened signed provenance chain, multi-tenant)",
+            "csam-shield (operator playbook, multi-provider ensemble, hardened signed audit, counsel-gated CyberTipline reference integration — LAST)",
+            "promptshield (observability/drift-monitoring, multilingual lexicon packs, deployment guide)",
+            "c2pa-lite (full trust-chain+revocation, TSA, hardware-key signing, detached-manifest recovery store, conformance suite)",
+            "cybertip-cli (rate-limit/retry, multi-tenant ESP isolation, four-eyes approval, jurisdiction profiles)",
+            "evidencevault (WORM backend, KMS/HSM signing, RBAC four-eyes, retention enforcement+legal-hold, attestation export)"
+          ],
+          "parallelism": "Broad parallel hardening, but gated by two shared infrastructure deliverables the Release Captain owns: (1) the shared portfolio audit-log schema/writer that csam-shield AuditSink, promptshield hash-only audit, hashstream/trainguard provenance, and evidencevault custody all converge on; (2) the Sigstore/cosign signed-artifact pipeline + cross-platform CI matrix. Land those two first in Wave 4, then fan out. csam-shield's reference reporting integration is sequenced LAST because it carries the heaviest counsel + Legal/Ops cross-track dependency.",
+          "rationale": "Pure hardening — explicitly after v0.5/v1.0 are solid. Real MIH belongs here (naive is acceptable through v1.0; the whole point of MIH is beating linear scan at >=10k, validated against the naive oracle). The shared-audit-format and signed-artifact pipeline are cross-cutting and must precede the per-package hardening that depends on them. Anything requiring real NCMEC/IWF/counsel engagement (cybertip-cli live transport, hashstream credentialed-feed validation, csam-shield CyberTipline reference flow, evidencevault content-bearing deployment) is documented as out-of-band and remains gated — this session does not block on it."
+        }
+      ],
+      "v0_5_targets": [
+        "hashkit: real PDQ via pdqhash crate — hash_from_luma byte-identical to upstream generate_pdq, hash_dihedral_from_luma returns 8 distinct hashes; cargo test --workspace --all-features green + 256x256 demo (CRITICAL PATH, do first).",
+        "hashkit: vectors/v0/corpus.json stood up as versioned conformance artifact, byte-identical vs facebook/ThreatExchange C++ PDQ on >=20 synthetic inputs, CI fails closed on corpus drift.",
+        "hashkit-match: PdqMatcher::query/query_all as naive linear scan matching ground truth on 1,000-hash synthetic corpus over 100 queries; DEFAULT_HAMMING_THRESHOLD=31 documented+tested; dry-run only.",
+        "detectkit-test: deterministic generate_image for >=5 patterns (gradient h/v/radial, checkerboard, structured-noise), SHA-256-stable PNG output, plus generate_corpus + manifest.",
+        "detectkit-test: corpus loop — run generated images through hashkit to populate expected PDQ hashes in vectors/v0/corpus.json; verify subcommand confirms zero drift in dry-run.",
+        "csam-shield: one-command demo (npm run demo / make demo) running createShield with mock/custom detector against detectkit-test fixtures, returning normalized {verdict, matchType, confidence, providers[], hashes} envelope + JSONL AuditSink (hashes+verdict+timestamp, never image bytes); near-match -> pending, never auto-block/report.",
+        "promptshield: promote Stage 1 conjunction matcher to content-free guard(prompt, negative_prompt) -> Verdict{allow|block|review,...} + score/screen CLI, SHA-256-of-normalized-prompt audit only, CPU-only, no model download, ambiguous -> review; runnable demo over benign+unsafe+ambiguous corpus with negative-prompt evasion exercised.",
+        "c2pa-lite: one-command dev-key (PKCS#8) sign->verify round-trip on sample PNG/JPEG, normalized verify JSON {signed?, trusted-issuer?, watermark-decoded?, recovered-from-store?}, dev signatures clearly labeled untrusted; watermark embed/extract documented-NotImplemented.",
+        "cybertip-cli: fully exercisable dry-run filer — model NCMEC CyberTipline schema, validate against field/XSD rules, build report from local inputs, submit to mock/loopback writing a signed local manifest; --live hard-off and inert without counsel-gate marker; PII/redaction pass + report-preview/diff command.",
+        "evidencevault: content-free append-only custody ledger (hash/metadata only, never CSAM bytes) with tamper-evident hash-chained audit log; local custody-report rendering + integrity-verify command that recomputes the chain and flags any gap/mutation; offline, zero external services.",
+        "hashstream: operator hash-file ingest (MD5/SHA1/SHA256 + PDQ lists) -> versioned local snapshot -> GET /snapshots/local; real snapshot-to-snapshot diff serving /diff; Ed25519-signed snapshot manifests + verify endpoint; NCMEC/IWF/Arachnid sync as interface with in-memory fake default (adapters stay stubs, skipped in CI); append-only audit log for ingest/snapshot/diff.",
+        "trainguard: real LAION-format manifest reader + end-to-end scan_dataset() against InMemoryHashListProvider producing a real signed ComplianceReport with full chain-of-custody; HashStream-backed provider wired to a locally-ingested snapshot (trainguard->hashstream dry-run chain, no creds).",
+        "All packages: README dry-run examples, tiny runnable demo, failure-mode tests (empty/oversized luma, zero-provider refusal, unknown-pattern, timeout containment, audit-failure isolation, empty-detector rejection, bad-signature, garbled-list), output marked NON-AUTHORITATIVE/dry-run, and green bash scripts/safety-check.sh (synthetic-only, no credentials)."
+      ],
+      "v1_0_targets": [
+        "hashkit: native-vs-WASM byte-identical hashes on full v0 corpus in CI; freeze PdqHash/PdqQuality/PdqResult/PdqError under semver with stability/deprecation policy; publish hashkit 0.1.0 to crates.io + npm. (This reproducibility proof is the v1.0 trust bar — validate float/decode determinism early.)",
+        "hashkit: promote versioned synthetic corpus to canonical conformance artifact downstream tests consume, spec/algorithm version pinned so csam-shield/hashstream/trainguard can lock a known-good hash version.",
+        "hashkit-match: validate closest-within-threshold + ordered query_all against naive oracle over 100 queries on 10,000-hash sets; freeze matcher API + threshold contract under semver; document false-positive/human-review escalation as required downstream step; publish hashkit-match 0.1.0.",
+        "detectkit-test: version synthetic corpus as consumable artifact other tracks depend on, add perceptual-robustness fixtures (rotation/scale/crop/recompression) + malformed/empty cases, ship verify drift-check as reusable gate, publish detectkit-test 0.1.0 to PyPI.",
+        "hashstream: freeze public API/SDK (ingest/snapshots/snapshot/diff/verify) under semver WITH csam-shield + trainguard sign-off; persistent snapshot store with immutable IDs + idempotent ingest; self-hostable Docker image; credentialed NCMEC/IWF/Arachnid adapters implemented behind v0.5 interface but config-gated, disabled by default, skipped in CI; hardened append-only access audit log.",
+        "trainguard: freeze API (scan_dataset + providers + report schema) under semver; reproducibility contract (pinned snapshot ID + pinned scanner version -> byte-stable signed ComplianceReport for a given dataset version); WebDataset reader alongside LAION with documented exact-vs-PDQ match semantics.",
+        "csam-shield: wire >=1 real low-friction detector as operator-supplied env-gated path (Arachnid Shield free key and/or self-hosted PDQ via hashkit+hashkit-match) with stub as zero-config default; resilience controls (retry/timeout/circuit-breaker/fail-closed-or-open knobs); queue-backed pending flow (in-memory default, BullMQ/SQS seam); stable semver MatchResponse; documented operator responsibilities (human-in-the-loop, no auto-report/ban) + NCMEC reporter hand-off contract as wiring point.",
+        "promptshield: Stage 2 ONNX classifier trained on synthetic/red-team corpus (zero real CSAM) with published precision/recall/FPR on benign holdout + >=90% recall on public adversarial set; adversarial jailbreak regression suite (homoglyphs, token-splitting, euphemism rotation, multilingual, prompt-injection) gating CI; stable guard() API + config surface with default-deny locked; model+lexicon as versioned HF artifacts.",
+        "c2pa-lite: upstream feature path delegating to c2pa-rs for real C2PA manifests verifiable by official c2patool and wire-compatible with Adobe/CAI Verify; production signing via KMS/PKCS#11 with documented trust anchor; correct trusted-vs-untrusted semantics in stable verify API; documented interop conformance against c2patool/CAI Verify; watermark soft-binding kept behind experimental flag with no robustness claims.",
+        "cybertip-cli: --live flag inert until BOTH a counsel sign-off gate marker AND valid ESP credentials are present; idempotency keys + persisted signed proof-of-submission per accepted report; stable versioned report-builder API + credential-handling contract (env/secret-store only, never plaintext on disk).",
+        "evidencevault: cryptographically signed custody events + full chain verification + retention-clock tracking aligned to 18 U.S.C. 2258A(h) (90 days, extendable to 180) with expiry/hold alerts; exportable signed custody report; stable storage-adapter interface with verified-integrity local/object-store backend; actual-CSAM-content handling stays behind counsel wall, out of v1.0 surface.",
+        "Program v1.0 gate (all packages): README examples, changelog, license metadata, STATUS line; CI covers Rust workspace + Go + Node + Python; docs/roadmap.md matches package STATUS files; per-package SECURITY.md + security checklist; threat-model note on abuse surface; counsel-reviewed scope notes incorporated for legal-sensitive surfaces (hash-list access logging, ComplianceReport-as-artifact); STATUS promoted In Progress -> Alpha/Alpha-or-better in the same commit."
+      ],
+      "v2_0_targets": [
+        "hashkit: real multi-index/Hamming-adjacent perf work + TMK video as second algorithm (slow reference path kept as conformance oracle) + fuzzing over decode/normalize pipeline (pdqhash path stays the byte-identical oracle).",
+        "hashkit: continuous cross-platform conformance matrix in CI (macOS/Linux/Windows for Rust core + WASM) with mandatory corpus-drift gates blocking any hash-mismatch release; sign crates/npm artifacts via Sigstore/cosign.",
+        "hashkit-match: ship real Multi-Index Hashing matching naive ground truth and benchmarking faster than linear scan at >=10,000-hash sets; scale to large operator blocklists with bounded-latency queries; add audit-logging / result-provenance fields for operator accountability and downstream report/escalation handoff.",
+        "detectkit-test: operate as portfolio-wide conformance authority — corpus-drift checks mandatory in CI for every PDQ-dependent tool; adversarial/robustness corpus (perturbation attacks against perceptual hashing); machine-checkable certification workflow (downstream tool declares spec version + binding, runs suite, gets conformance report).",
+        "hashstream: deployment guide (storage/key-mgmt/auth/audit-retention) + documented credentialed-integration validation results without publishing restricted material; signing-key rotation + formal provenance posture across key generations with revocation story; throughput/back-pressure/observability with SLOs; multi-tenant isolation + tamper-evident persistent audit log.",
+        "trainguard: distributed/horizontally-sharded scanning for billion-item corpora with checkpoint/resume + back-pressure against hashstream + run-level observability; hardened certifiable ComplianceReport pipeline (signed provenance across scanner+snapshot+policy versions, key rotation, retention, multi-tenant); deployment/operator guide + documented real-provider validation process.",
+        "csam-shield: operator playbook (latency budgets, review-queue ops, audit retention, incident handling, compatibility matrix) + multi-provider ensemble (Arachnid+PDQ+Cloudflare) with documented coverage gaps; hardened signed/append-only audit on shared portfolio format + rate-limiting/quota + metrics/observability + counsel-gated reference CyberTipline hand-off integration with Legal/Ops (SEQUENCED LAST).",
+        "promptshield: defense-in-depth + observability (decision metrics, block-rate dashboards, false-allow alerting, classifier-drift monitoring) + governed multilingual lexicon packs + operator re-benchmark harness (policy tunable-but-bounded, cannot go below safe-minimum deny threshold); deployment guide (FastAPI sidecar Docker, threshold governance, jurisdiction-aware profiles, red-team turnaround).",
+        "c2pa-lite: full trust-chain + revocation handling + time-stamping authority + first-class hardware-key (KMS/PKCS#11) signing + durable detached-manifest recovery store (axum + S3/Postgres) + conformance suite across major C2PA verifiers; published watermark decode-survival numbers if/when soft-binding graduates; deployment guide + CLI/library/Docker/ComfyUI-diffusers node.",
+        "cybertip-cli: hardened operator platform (rate-limiting, retry/backoff with idempotent resubmission, multi-tenant ESP credential isolation, SIEM-friendly audit export, SLA/health surfacing) + governance (four-eyes/approval workflow for live sends, full submission audit trail with attestations, configurable jurisdiction/profile handling once counsel expands scope).",
+        "evidencevault: hardened custody platform (WORM/immutable backend, KMS/HSM-backed signing + key rotation, RBAC with four-eyes on custody mutations, periodic audit attestations) + operator-grade assurance (automated retention enforcement + legal-hold overrides, exportable chain-of-custody attestation packages, tamper-response alerting integrated with shared portfolio audit log).",
+        "Cross-package operator bundle: shared audit-log schema + shared config conventions + signed release artifacts (Sigstore/cosign via Release Captain) + a single hardened reference deployment showing csam-shield + promptshield + c2pa-lite inline in one platform team's pipeline; end-to-end signed provenance chain (operator list -> hashstream signed snapshot -> trainguard signed ComplianceReport) verifiable as one continuous chain; v2.0 threat-model/security-review checklist completed; external contributors can reproduce conformance on macOS/Linux/Windows (independent WASM-build reproduction is the documented Beta-honesty bar); supported-version + spec-evolution governance policy published."
+      ],
+      "critical_path": "Wave 0 repo-baseline commit -> hashkit real PDQ (hash_from_luma + hash_dihedral_from_luma via pdqhash crate) -> detectkit-test->hashkit corpus loop populating vectors/v0/corpus.json + byte-identical CI drift-gate vs ThreatExchange C++ reference -> hashkit-match naive query/query_all validated against that corpus -> native-vs-WASM byte-identical reproducibility proof -> hashkit/hashkit-match PDQ + matcher + on-disk-encoding API semver freeze (with csam-shield + trainguard sign-off) -> downstream PDQ integration (csam-shield self-hosted-PDQ detector, hashstream/trainguard perceptual-match path) hardened to v1.0 -> v2.0 real MIH benchmarked faster than linear scan at >=10k + cross-platform conformance matrix + signed artifacts. Every PDQ-dependent capability in the portfolio sits on this chain; the corpus-loop close is the single highest-leverage unblocking event.",
+      "parallelizable": [
+        [
+          "promptshield (Stage 1 v0.5)",
+          "c2pa-lite (dev-key v0.5)",
+          "cybertip-cli (dry-run v0.5)",
+          "evidencevault (custody ledger v0.5)",
+          "hashstream (exact-hash + signed-snapshot v0.5)",
+          "trainguard (LAION + in-memory-provider v0.5)",
+          "hashkit (PDQ — critical path, runs concurrently but is the long pole)",
+          "detectkit-test (generators v0.5)"
+        ],
+        [
+          "hashkit-match (naive v0.5)",
+          "csam-shield (dry-run v0.5 on detectkit-test fixtures)"
+        ],
+        [
+          "hashkit v1.0 (reproducibility + freeze + publish)",
+          "promptshield v1.0 (Stage 2 ONNX — gated only on its own synthetic eval set, no Foundation dep)",
+          "c2pa-lite v1.0 (c2pa-rs upstream + interop — external lib dep, no Foundation dep)",
+          "evidencevault v1.0 (signed custody + retention clock)",
+          "cybertip-cli v1.0 (counsel-gate marker code, inert)"
+        ],
+        [
+          "csam-shield v1.0 (self-hosted-PDQ adapter — starts once hashkit/hashkit-match hit Alpha)",
+          "hashstream v1.0 (API freeze + persistence + Docker)",
+          "trainguard v1.0 (reproducibility contract + WebDataset)"
+        ],
+        [
+          "hashkit v2.0 (MIH-oracle, TMK, fuzzing, conformance matrix)",
+          "hashkit-match v2.0 (real MIH)",
+          "detectkit-test v2.0 (certification workflow)",
+          "promptshield v2.0 (observability)",
+          "c2pa-lite v2.0 (trust-chain/recovery store)",
+          "evidencevault v2.0 (WORM/KMS/RBAC)",
+          "cybertip-cli v2.0 (multi-tenant/four-eyes)",
+          "hashstream v2.0 (multi-tenant/throughput)",
+          "trainguard v2.0 (distributed sharding)"
+        ]
+      ],
+      "unresolved_decisions": [
+        "Repo-baseline ownership/split (BLOCKING, Adoption + Credentialed Infra raised; Foundation/Legal-Ops silent): the untracked main-checkout scaffolds must be either committed wholesale or split into the per-track release worktrees before feature work starts. The Release Captain must decide split-by-ownership vs single-commit-then-branch and execute it as Wave 0 — no PM can start cleanly until this is resolved.",
+        "hashstream public API/SDK freeze gating (Credentialed Infra vs Adoption): Credentialed Infra wants to freeze the hashstream ingest/snapshot/diff/verify contract at v1.0; Adoption insists csam-shield (real-time middleware) AND trainguard (batch) must both sign off on the snapshot/match shape BEFORE freeze or one consumer will be unable to use it. Resolution: make consumer sign-off a hard precondition recorded in docs/ops/handoffs/ before the v1.0 freeze commit — do not freeze unilaterally.",
+        "Shared primitives: build-vs-defer (Legal/Ops vs everyone else): Legal/Ops wants a single shared signed-append-only-audit-log primitive AND a shared PII/redaction library built up front in Wave 1 as a cross-track dependency; Foundation/Adoption/Infra each scaffold their own audit/redaction inline and converge on a shared schema only at v2.0. Recommendation: do NOT block v0.5 on a shared library (it would serialize the parallel fan-out and create a cross-track edit dependency, violating principle 4); instead agree on a shared audit-log SCHEMA now and unify implementations in Wave 4. The Release Captain must adjudicate whether the schema-now/impl-later compromise is acceptable to Legal/Ops.",
+        "Counsel sign-off mechanism is undefined (Legal/Ops, blocks every v1.0 production path): there is no agreed, auditable 'counsel-cleared' marker/process yet, and cybertip-cli --live + csam-shield reporter + evidencevault content-handling + hashstream credentialed adapters all reference it. This must be designed with Legal before any v1.0 live capability can activate. It does NOT block shipping the inert/gated code, so it is sequenced as a parallel design task in Wave 3, but the marker format must be portfolio-wide (one mechanism, not four).",
+        "Native-vs-WASM determinism risk (Foundation, internal but program-critical): if the pdqhash crate or its image-decode path is not byte-deterministic across native and wasm32, the v1.0 reproducibility bar may require pinning decoders or an integer/fixed-point path. Foundation wants this validated in v0.5, not discovered at v1.0. Decision needed early: accept the risk and validate in Wave 1/2, or pre-commit to a pinned-decoder/fixed-point fallback.",
+        "Signing-key custody/rotation beyond the repo test key (Credentialed Infra + Legal/Ops): v1.0-plus signing (hashstream snapshots, trainguard reports, evidencevault custody, cybertip-cli proof-of-submission, eventually cosign release artifacts) needs an org KMS/key-management decision that sits above any single track. The repo test key is fine through v0.5; the Release Captain/org must pick a KMS story before v1.0 production signing and before v2.0 cosign artifact signing.",
+        "Legal/Ops tooling outage (process risk): the Legal/Ops PM reported Bash and Read returned empty output for every command this session and could NOT read the scaffold/STATUS files, so its ladder is built from the framework + standard legal characterization and is explicitly self-flagged as needing re-validation against the real scaffold once tooling is restored. The Release Captain must confirm tooling is live and have Legal/Ops reconcile its v0.5 line against actual code before locking scope."
+      ],
+      "recommendation_for_agents": "Fan-out model: assign one agent per package, with hashkit getting the strongest agent because it is the solo critical path and everything PDQ-dependent waits on it. Hard rules for every agent: (1) Stay inside your own package directory and your assigned worktree/branch — NEVER edit another track's files. Cross-track needs are written to docs/ops/handoffs/<track>.md as a request, and the Release Captain integrates. This is principle 4 (deps -> handoffs, not edits). (2) Do NOT block on externals — NCMEC/IWF/Arachnid credentials, outside counsel sign-off, ESP agreements, PhotoDNA/Cloudflare access, and enterprise contracts are ALL out of scope for this session. Anything that needs them ships as an interface stub with a deterministic in-memory fake default, or as an explicitly off-by-default/inert gate (e.g. cybertip-cli --live, hashstream credentialed adapters, csam-shield NCMEC reporter). The package must be fully exercisable and publishable with zero credentials. (3) Synthetic fixtures only — no real CSAM hashes, no real credentials; pull test inputs from detectkit-test, not bespoke fixtures; pass bash scripts/safety-check.sh before every push. (4) Default-deny safety bias everywhere: uncertain/near-match -> review/pending, never auto-block or auto-report; label all dry-run output NON-AUTHORITATIVE. Sequencing discipline: do Wave 0 (repo baseline) before anything; in Wave 1 the four satellite/infra streams (promptshield, c2pa-lite, cybertip-cli, evidencevault) and the two exact-hash infra packages (hashstream, trainguard) run fully parallel and do NOT wait for Foundation — only the corpus loop, hashkit-match, csam-shield's PDQ path, and hashstream/trainguard's perceptual path wait. Within Adoption, build promptshield FIRST to set the default-deny + one-command-demo patterns, then reuse them in c2pa-lite and csam-shield; build csam-shield LAST of the three (most safety-sensitive). Within Legal/Ops, build evidencevault (custody backbone) before cybertip-cli. Hard barrier at v1.0: Foundation must freeze the PDQ/match/on-disk-encoding APIs under semver and downstream consumers (csam-shield, trainguard) must sign off on the contract BEFORE freeze — record sign-off in handoffs. Defer real MIH, signed artifacts, multi-tenant/persistence, and all counsel-gated live paths to v2.0. When you finish a wave, update your package STATUS line and docs/roadmap.md in the same commit so the roadmap never drifts from reality."
+    }
+  }
+}
