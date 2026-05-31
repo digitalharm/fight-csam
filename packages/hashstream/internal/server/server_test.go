@@ -51,7 +51,10 @@ func TestListSources(t *testing.T) {
 
 func TestSnapshotByID_NotFound(t *testing.T) {
 	srv, _ := newTestServer(t)
-	resp, _ := http.Get(srv.URL + "/snapshot/missing")
+	resp, err := http.Get(srv.URL + "/snapshot/missing")
+	if err != nil {
+		t.Fatalf("get: %v", err)
+	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 404 {
 		t.Errorf("status=%d want=404", resp.StatusCode)
@@ -66,7 +69,10 @@ func TestSnapshotByID_Found(t *testing.T) {
 		HashCount: 100,
 		CreatedAt: time.Now(),
 	})
-	resp, _ := http.Get(srv.URL + "/snapshot/snap-1")
+	resp, err := http.Get(srv.URL + "/snapshot/snap-1")
+	if err != nil {
+		t.Fatalf("get: %v", err)
+	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		t.Errorf("status=%d want=200", resp.StatusCode)
@@ -78,7 +84,10 @@ func TestListSnapshots_BySource(t *testing.T) {
 	now := time.Now()
 	_ = st.PutSnapshot(context.Background(), store.Snapshot{ID: "a", Source: store.SourceNCMEC, CreatedAt: now})
 	_ = st.PutSnapshot(context.Background(), store.Snapshot{ID: "b", Source: store.SourceIWF, CreatedAt: now})
-	resp, _ := http.Get(srv.URL + "/snapshots/ncmec")
+	resp, err := http.Get(srv.URL + "/snapshots/ncmec")
+	if err != nil {
+		t.Fatalf("get: %v", err)
+	}
 	defer resp.Body.Close()
 	var body struct {
 		Source    string           `json:"source"`
@@ -100,7 +109,10 @@ func TestLatestSnapshot(t *testing.T) {
 	now := time.Now()
 	_ = st.PutSnapshot(context.Background(), store.Snapshot{ID: "older", Source: store.SourceNCMEC, CreatedAt: now.Add(-time.Hour)})
 	_ = st.PutSnapshot(context.Background(), store.Snapshot{ID: "newer", Source: store.SourceNCMEC, CreatedAt: now})
-	resp, _ := http.Get(srv.URL + "/snapshots/ncmec/latest")
+	resp, err := http.Get(srv.URL + "/snapshots/ncmec/latest")
+	if err != nil {
+		t.Fatalf("get: %v", err)
+	}
 	defer resp.Body.Close()
 	var snap store.Snapshot
 	if err := json.NewDecoder(resp.Body).Decode(&snap); err != nil {
