@@ -20,12 +20,15 @@ from .types import (
     ImageUrl,
     MatchDecision,
     MatchResponse,
+    OnErrorPolicy,
+    RetryPolicy,
     Scannable,
     ShieldConfig,
     VideoBytes,
     VideoUrl,
 )
 from .shield import Shield, create_shield
+from .detectors import create_pdq_list_detector, hamming_distance
 
 __all__ = [
     "DetectorConfig",
@@ -35,10 +38,14 @@ __all__ = [
     "ImageUrl",
     "MatchDecision",
     "MatchResponse",
+    "OnErrorPolicy",
+    "RetryPolicy",
     "Scannable",
     "ShieldConfig",
     "VideoBytes",
     "VideoUrl",
     "Shield",
     "create_shield",
+    "create_pdq_list_detector",
+    "hamming_distance",
 ]
