@@ -30,18 +30,56 @@ jobs:
       - name: cargo test
         run: cargo test --workspace --all-features
 
-  python-detectkit-test:
-    name: Python · detectkit-test
+  go:
+    name: Go modules
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: [hashstream, evidencevault]
     defaults:
       run:
-        working-directory: packages/detectkit-test
+        working-directory: packages/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache: false  # no go.sum yet (scaffold stage, no external deps)
+
+      - name: go build
+        run: go build ./...
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: go test
+        run: go test ./...
+
+  python:
+    name: Python · ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - detectkit-test
+          - promptshield
+          - trainguard
+          - csam-shield/python
+          - cybertip-cli/python
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Upgrade pip
+        run: pip install --upgrade pip
 
       - name: Install
         run: pip install -e ".[dev]"
@@ -50,4 +88,43 @@ jobs:
         run: ruff check src
 
       - name: Test
-        run: pytest -q || echo "no tests yet (scaffold stage)"
+        run: pytest -q
+
+  node:
+    name: Node · ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - csam-shield/node
+          - cybertip-cli/node
+          - hashstream/sdk-ts
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npx tsc
+
+      - name: Test
+        run: |
+          shopt -s globstar nullglob
+          tests=( dist/**/*.test.js )
+          if [ ${#tests[@]} -gt 0 ]; then
+            node --test "${tests[@]}"
+          else
+            echo "no tests found (scaffold stage)"
+          fi

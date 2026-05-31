@@ -1,0 +1,28 @@
+[package]
+name = "c2pa-lite"
+description = "Pragmatic C2PA content credentials for AI image and video generators. Watermark + signed manifest."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+# Pull in upstream c2pa-rs for production-grade signing. Off by default so
+# the scaffold stays lightweight; flip on once the integration lands.
+upstream = []
+
+[dependencies]
+thiserror = "1"
+# Future:
+#   c2pa = { version = "...", optional = true }
+#   serde + serde_json for manifest serialization
+#   ring or rust-crypto for signature primitives (defer to c2pa-rs)

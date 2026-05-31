@@ -1,0 +1,40 @@
+[project]
+name = "csam-shield"
+version = "0.0.1"
+description = "One-line CSAM detection middleware for FastAPI / Starlette / Flask. Wires PhotoDNA, NCMEC, PDQ, and Cloudflare CSAM Scanning behind a unified interface."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "The Digital Harm Report contributors" }]
+keywords = ["csam", "trust-and-safety", "middleware", "photodna", "pdq", "ncmec", "cloudflare"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+]
+
+# Empty for scaffold. Concrete deps land per-adapter as the wire protocols
+# are implemented:
+#   - httpx for the PhotoDNA, Cloudflare, NCMEC API clients
+#   - pydantic for config validation
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+fastapi = ["fastapi>=0.110"]
+starlette = ["starlette>=0.36"]
+flask = ["flask>=3"]
+
+[project.urls]
+Homepage = "https://digitalharm.org/tools"
+Repository = "https://github.com/digitalharm/digitalharm-oss"
+"Safety policy" = "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md"
+
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/csam_shield"]

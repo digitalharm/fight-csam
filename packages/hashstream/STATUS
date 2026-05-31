@@ -1,1 +1,1 @@
-Planned — Wave 3: Credentialed infrastructure
+In Progress — Wave 3: Go service (HTTP API + in-memory store + adapter scaffolds for NCMEC/IWF/Project Arachnid) + TypeScript SDK (5 tests pass). Awaiting credentialed list access to advance to Alpha.

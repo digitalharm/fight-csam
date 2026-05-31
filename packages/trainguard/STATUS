@@ -1,1 +1,1 @@
-Planned — Wave 3: Credentialed infrastructure
+In Progress — Wave 3: scan pipeline + JSONL reader + InMemoryHashListProvider + CLI (10 tests pass). LAION and WebDataset readers are scaffold stubs. Awaiting hashstream-backed provider for production use.

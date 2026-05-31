@@ -1,0 +1,32 @@
+{
+  "name": "@digitalharm/cybertip-cli",
+  "version": "0.0.1",
+  "description": "NCMEC CyberTipline report submission CLI and library. Counsel-reviewed scope; production submission gated.",
+  "license": "Apache-2.0",
+  "homepage": "https://digitalharm.org/tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalharm/digitalharm-oss",
+    "directory": "packages/cybertip-cli/node"
+  },
+  "author": "The Digital Harm Report contributors",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "bin": { "cybertip": "./dist/cli.js" },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test dist/**/*.test.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  },
+  "keywords": ["csam", "ncmec", "cybertipline", "trust-and-safety", "2258a"]
+}

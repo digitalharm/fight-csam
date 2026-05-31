@@ -1,0 +1,37 @@
+[project]
+name = "trainguard"
+version = "0.0.1"
+description = "Pre-flight CSAM screening for AI training datasets. Runs before model fitting starts; produces compliance reports with chain-of-custody."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "The Digital Harm Report contributors" }]
+keywords = ["csam", "trust-and-safety", "ai-safety", "training-data", "laion", "dataset-hygiene"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+laion = ["pyarrow>=15"]  # LAION metadata is parquet
+
+[project.urls]
+Homepage = "https://digitalharm.org/tools"
+Repository = "https://github.com/digitalharm/digitalharm-oss"
+"Safety policy" = "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md"
+
+[project.scripts]
+trainguard = "trainguard.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/trainguard"]

@@ -1,1 +1,1 @@
-Planned — Wave 4: Legal endgame
+In Progress — Wave 4: data model + validation + dry-run wire payload generator for both Node (11 tests pass) and Python (11 tests pass). Counsel scope brief in docs/counsel-scope-brief.md. Production submit path BLOCKED at CLI until counsel review completes.

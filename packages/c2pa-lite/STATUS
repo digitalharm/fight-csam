@@ -1,1 +1,1 @@
-Deferred — defer until upstream c2pa-rs stabilizes
+In Progress — Wave 5 (re-promoted): manifest claim model + deterministic canonical form + scaffold signing (6 tests pass). Real signing delegates to upstream c2pa-rs under the 'upstream' feature flag. Watermark embed/extract scaffolded as NotImplemented pending watermark-scheme stabilization.

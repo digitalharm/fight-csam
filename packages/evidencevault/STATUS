@@ -1,1 +1,1 @@
-Planned — Wave 4: Legal endgame
+In Progress — Wave 4: custody log (tamper-evident chain), retention schedules (US/EU/UK/AU), and in-memory vault implementation. ~22 Go unit tests planned; CI will validate. Counsel scope brief in docs/. HTTP server gated on counsel review.

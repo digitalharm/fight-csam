@@ -1,0 +1,9 @@
+# Exclude test artifacts from the published package.
+**/*.test.js
+**/*.test.d.ts
+**/*.test.js.map
+**/*.test.d.ts.map
+
+# Build sources (we publish dist/, not src/)
+src/
+tsconfig.json

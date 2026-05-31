@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "packages/hashkit",
     "packages/hashkit-match",
+    "packages/c2pa-lite",
 ]
 exclude = [
     "packages/detectkit-test",
@@ -12,7 +13,6 @@ exclude = [
     "packages/trainguard",
     "packages/cybertip-cli",
     "packages/evidencevault",
-    "packages/c2pa-lite",
     "packages/safemod",
 ]
 
