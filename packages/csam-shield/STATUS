@@ -1,1 +1,1 @@
-In Progress — Wave 2: scaffolds for Node (6 tests pass) + Python (7 tests pass) compile and run
+v0.5 — Wave 2: real PDQ-list detector (Hamming match vs operator-supplied hash list, no external creds) + per-detector timeout + fail-open/fail-closed policy + 3 strategies (any-match, majority, consensus). Node: 16 tests pass under CI invocation. Python: PDQ-list detector + retry/timeout/onError. Next: PhotoDNA/Cloudflare/NCMEC live detectors behind the same interface (v1.0).
