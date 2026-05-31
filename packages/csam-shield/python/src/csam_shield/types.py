@@ -8,6 +8,16 @@ from typing import Any, Awaitable, Callable, Literal, Protocol, Union
 
 MatchDecision = Literal["match", "nomatch", "pending", "error"]
 
+# What to do when a detector ultimately fails (errors or times out, after any
+# retries) and the unified decision would otherwise be unresolved:
+#   - "allow" -> fail-open: a failed detector is treated as no-match; the
+#                request proceeds.
+#   - "deny"  -> fail-closed: a failed detector forces a blocking decision
+#                (a missed scan is treated as a potential hit).
+# When ``ShieldConfig.on_error`` is None, the legacy behavior applies: the
+# shield reports "error" and the adapter decides.
+OnErrorPolicy = Literal["allow", "deny"]
+
 DetectorKind = Literal[
     "photodna",
     "ncmec-hash",
@@ -71,12 +81,28 @@ class MatchResponse:
     log_summary: str
 
 
+@dataclass(slots=True, frozen=True)
+class RetryPolicy:
+    """Retry policy for a detector invocation.
+
+    Retries apply to the whole timed call: if a detector raises or times
+    out, it is retried up to ``max_retries`` additional times with a fixed
+    ``backoff_ms`` delay between attempts. A detector that returns cleanly
+    is never retried.
+    """
+
+    max_retries: int = 0
+    backoff_ms: int = 0
+
+
 @dataclass(slots=True)
 class DetectorConfig:
     detector: DetectorKind
     config: dict[str, Any] = field(default_factory=dict)
     optional: bool = True
     timeout_ms: int = 5000
+    # Per-detector retry override. Falls back to ``ShieldConfig.retry_policy``.
+    retry_policy: RetryPolicy | None = None
 
 
 @dataclass(slots=True)
@@ -85,6 +111,13 @@ class ShieldConfig:
     strategy: Literal["any-match", "majority", "consensus"] = "any-match"
     request_id: Callable[[], str] | None = None
     on_decision: Callable[[MatchResponse], Awaitable[None]] | None = None
+    # Shield-wide default retry policy applied to each detector. A detector's
+    # own ``retry_policy`` takes precedence.
+    retry_policy: RetryPolicy | None = None
+    # Failure policy applied when forming the unified decision. See
+    # ``OnErrorPolicy``. When None, the shield reports "error" for failed
+    # scans and leaves the action to the adapter.
+    on_error: OnErrorPolicy | None = None
 
 
 class CustomScanner(Protocol):

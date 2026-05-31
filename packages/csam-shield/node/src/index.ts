@@ -14,12 +14,19 @@ import type {
   DetectorResult,
   MatchDecision,
   MatchResponse,
+  OnErrorPolicy,
   Scannable,
   ShieldConfig,
 } from "./types.js";
 import { runDetector } from "./detectors/index.js";
 
 export type * from "./types.js";
+export {
+  createPdqListDetector,
+  hammingDistance,
+  pdqHashToHex,
+} from "./detectors/index.js";
+export type { PDQConfig, CustomConfig } from "./detectors/index.js";
 
 /**
  * Build a Shield instance from a config.
@@ -67,11 +74,17 @@ class ShieldImpl implements Shield {
     const startedAt = performance.now();
     const requestId = this.config.requestId?.() ?? crypto.randomUUID();
 
+    const defaults = {
+      ...(this.config.timeoutMs !== undefined ? { timeoutMs: this.config.timeoutMs } : {}),
+      ...(this.config.retryPolicy !== undefined
+        ? { retryPolicy: this.config.retryPolicy }
+        : {}),
+    };
     const results = await Promise.all(
-      this.config.detectors.map((d) => runDetector(d, content, requestId)),
+      this.config.detectors.map((d) => runDetector(d, content, requestId, defaults)),
     );
 
-    const decision = decide(results, this.config.strategy ?? "any-match");
+    const decision = decide(results, this.config.strategy ?? "any-match", this.config.onError);
     const durationMs = Math.round(performance.now() - startedAt);
 
     const response: MatchResponse = {
@@ -100,30 +113,52 @@ class ShieldImpl implements Shield {
 function decide(
   results: DetectorResult[],
   strategy: "any-match" | "majority" | "consensus",
+  onError?: OnErrorPolicy,
 ): MatchDecision {
   const errored = results.filter((r) => r.error !== undefined);
   const matched = results.filter((r) => r.matched);
   const cleanRan = results.filter((r) => r.error === undefined);
 
+  // Fail-closed: any failed detector forces a blocking decision, even if
+  // the clean detectors were all nomatch — a missed scan is treated as a
+  // potential hit.
+  if (onError === "deny" && errored.length > 0) {
+    return "match";
+  }
+
+  // When fail-open, drop failed detectors from the tally entirely and
+  // decide purely on the detectors that ran cleanly. With no clean
+  // detectors, fail-open degrades to nomatch (the request proceeds).
+  if (onError === "allow") {
+    if (matched.length === 0) return "nomatch";
+    return decideClean(strategy, matched.length, cleanRan.length, results.length);
+  }
+
+  // Legacy / default behavior: surface `error` and let the adapter act.
   if (cleanRan.length === 0) {
     return "error";
   }
 
+  const clean = decideClean(strategy, matched.length, cleanRan.length, results.length);
+  if (clean === "match") return "match";
+  if (errored.length > 0) return "error";
+  return "nomatch";
+}
+
+/** Pure strategy evaluation over the clean (non-errored) detector tally. */
+function decideClean(
+  strategy: "any-match" | "majority" | "consensus",
+  matchedCount: number,
+  cleanCount: number,
+  totalCount: number,
+): "match" | "nomatch" {
   switch (strategy) {
     case "any-match":
-      if (matched.length > 0) return "match";
-      if (errored.length > 0) return "error";
-      return "nomatch";
+      return matchedCount > 0 ? "match" : "nomatch";
     case "majority":
-      if (matched.length * 2 > cleanRan.length) return "match";
-      if (errored.length > 0) return "error";
-      return "nomatch";
+      return matchedCount * 2 > cleanCount ? "match" : "nomatch";
     case "consensus":
-      if (matched.length === cleanRan.length && cleanRan.length === results.length) {
-        return "match";
-      }
-      if (errored.length > 0) return "error";
-      return "nomatch";
+      return matchedCount === cleanCount && cleanCount === totalCount ? "match" : "nomatch";
   }
 }
 
