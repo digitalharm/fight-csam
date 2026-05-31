@@ -22,17 +22,37 @@ from .types import (
     DatasetEntry,
     HashListSource,
     ScanResult,
+    hamming_distance,
 )
-from .pipeline import scan_dataset
-from .readers import LaionReader, WebdatasetReader, JsonlReader
+from .pipeline import (
+    HashListFileProvider,
+    HashstreamProvider,
+    InMemoryHashListProvider,
+    scan_dataset,
+    signing_payload,
+)
+from .readers import (
+    JsonlReader,
+    LaionJsonReader,
+    LaionReader,
+    WebdatasetReader,
+    parse_hash_lines,
+)
 
 __all__ = [
     "ComplianceReport",
     "DatasetEntry",
+    "HashListFileProvider",
     "HashListSource",
+    "HashstreamProvider",
+    "InMemoryHashListProvider",
     "JsonlReader",
+    "LaionJsonReader",
     "LaionReader",
     "ScanResult",
     "WebdatasetReader",
+    "hamming_distance",
+    "parse_hash_lines",
     "scan_dataset",
+    "signing_payload",
 ]
