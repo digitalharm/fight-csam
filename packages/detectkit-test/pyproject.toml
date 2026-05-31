@@ -32,8 +32,8 @@ dev = [
 
 [project.urls]
 Homepage = "https://digitalharm.org/tools"
-Repository = "https://github.com/opencolin/digitalharm-oss"
-"Safety policy" = "https://github.com/opencolin/digitalharm-oss/blob/main/docs/safety-policy.md"
+Repository = "https://github.com/digitalharm/digitalharm-oss"
+"Safety policy" = "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md"
 
 [project.scripts]
 detectkit-test = "detectkit_test.cli:main"

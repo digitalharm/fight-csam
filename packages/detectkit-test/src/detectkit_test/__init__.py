@@ -13,7 +13,7 @@ implementations follow once `hashkit` produces verified hashes against the
 upstream reference.
 
 Safety policy:
-    https://github.com/opencolin/digitalharm-oss/blob/main/docs/safety-policy.md
+    https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
 """
 
 from __future__ import annotations
