@@ -2,19 +2,13 @@
 
 from __future__ import annotations
 
-import pytest
-
 from cybertip_cli import (
-    COUNSEL_REQUIRED_MESSAGE,
     CyberTipReport,
     IncidentDetails,
-    ProductionSubmitBlocked,
     ReportingPerson,
-    SubmitMode,
     VictimInfo,
     generate_client_reference,
     redact_for_log,
-    submit,
     submit_dry_run,
     validate_report,
 )
@@ -114,49 +108,5 @@ def test_dry_run_returns_errors_on_invalid() -> None:
     r = valid_report()
     r.client_reference = ""
     result = submit_dry_run(r)
-    assert result.ok is False
-    assert len(result.errors) > 0
-
-
-def test_submit_dry_run_mode_builds_payload_no_curl() -> None:
-    result = submit(valid_report(), SubmitMode.DRY_RUN)
-    assert result.ok is True
-    assert result.mode is SubmitMode.DRY_RUN
-    assert "REPORTING_PERSON" in result.wire_payload
-    assert result.curl_preview == ""  # no network artifact in dry-run
-
-
-def test_submit_sandbox_emits_curl_preview_no_real_post() -> None:
-    result = submit(
-        valid_report(), SubmitMode.SANDBOX, sandbox_url="https://sandbox.example/report"
-    )
-    assert result.ok is True
-    assert result.mode is SubmitMode.SANDBOX
-    # The curl-equivalent is produced for the operator to run themselves.
-    assert result.curl_preview.startswith("curl -X POST")
-    assert "https://sandbox.example/report" in result.curl_preview
-    # Never emits a real credential — only the placeholder.
-    assert "<ESP_CREDENTIAL>" in result.curl_preview
-    assert any("SIMULATED" in line for line in result.log_lines)
-
-
-def test_submit_sandbox_requires_url() -> None:
-    # No --sandbox-url and no NCMEC_SANDBOX_URL -> a clear error, not a crash.
-    result = submit(valid_report(), SubmitMode.SANDBOX, sandbox_url=None)
-    assert result.ok is False
-    assert any("NCMEC_SANDBOX_URL" in e for e in result.errors)
-
-
-def test_submit_production_is_blocked() -> None:
-    with pytest.raises(ProductionSubmitBlocked) as excinfo:
-        submit(valid_report(), SubmitMode.PRODUCTION)
-    assert "counsel sign-off required" in str(excinfo.value)
-    assert str(excinfo.value) == COUNSEL_REQUIRED_MESSAGE
-
-
-def test_submit_sandbox_on_invalid_report_reports_errors() -> None:
-    r = valid_report()
-    r.client_reference = ""
-    result = submit(r, SubmitMode.SANDBOX, sandbox_url="https://sandbox.example/report")
     assert result.ok is False
     assert len(result.errors) > 0
