@@ -6,6 +6,8 @@ Fork it as a starting point for a platform that needs CSAM detection, blocking,
 reporting, and prevention built in from day one rather than bolted on after an
 incident.
 
+> **Live demo:** https://digitalharm-messenger.vercel.app
+>
 > **It runs with zero external services.** `npm install && npm run dev` — no
 > database, no API keys, no sidecars. State is in-memory (resets on restart);
 > the seam to swap in Postgres/KV is a single small `Store` interface.
