@@ -12,7 +12,7 @@ once vllm is in dev deps.
 
 from __future__ import annotations
 
-from typing import Any, Awaitable, Callable, Optional
+from typing import Awaitable, Callable, Optional
 
 from ..classifier import PromptClassifier
 from ..types import ClassificationResult

@@ -84,8 +84,14 @@ func (v *InMemoryVault) Get(_ context.Context, id, operatorID, purposeRef string
 	if !ok {
 		return nil, ErrNotFound
 	}
-	if err := pkg.Custody.Append(custody.ActionAccessed, operatorID, purposeRef, v.clock()); err != nil {
-		return nil, err
+	// Post-deletion access is permitted (auditors must be able to review
+	// the historical metadata + custody chain) but does not append a new
+	// custody entry — the chain is intentionally terminal after deletion.
+	// Operator-side audit logs record these post-lifecycle views.
+	if !pkg.Custody.IsDeleted() {
+		if err := pkg.Custody.Append(custody.ActionAccessed, operatorID, purposeRef, v.clock()); err != nil {
+			return nil, err
+		}
 	}
 	// Return a copy so callers can't mutate the canonical custody log.
 	copied := *pkg
