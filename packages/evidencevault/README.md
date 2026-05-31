@@ -4,6 +4,93 @@
 
 **Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
+## v0.5 — HTTP API + disk persistence
+
+`evidencevaultd serve` now exposes the custody/retention lifecycle over HTTP,
+backed by either an in-memory store (CI, dev) or a disk store that persists each
+evidence package as `<store_dir>/<id>.json` and survives restarts.
+
+> **Two hard caveats for this build:**
+>
+> 1. **Encryption is operator-supplied.** EvidenceVault never sees plaintext.
+>    The operator wraps the evidence blob with their own KMS and hands the vault
+>    only the ciphertext. v0.5 ships a **noop-KMS** (`vault.NoopKMS`) that stores
+>    the ciphertext **as given** — it performs no encryption and provides no
+>    confidentiality. Production operators MUST front the vault with a real KMS
+>    (AWS KMS / GCP KMS / Azure Key Vault / Vault Transit) and pass wrapped bytes.
+> 2. **Retention schedules are QUERYABLE but NOT ENFORCED.** `GET /expired`
+>    reports which packages *would* be eligible for destruction as of a given
+>    time, and litigation hold correctly suspends expiry — but there is **no
+>    automatic timer-driven destruction**. Deletion is always an explicit,
+>    audited `DELETE`. Timer enforcement is gated on counsel review
+>    (see [`docs/counsel-scope-brief.md`](docs/counsel-scope-brief.md)).
+
+### Run
+
+```bash
+go build -o evidencevaultd ./cmd/evidencevaultd
+
+# In-memory (non-persistent):
+./evidencevaultd serve --store=memory:: --addr=127.0.0.1:8080
+
+# Disk-backed (persists across restart; one JSON file per package):
+./evidencevaultd serve --store=disk:/var/lib/evidencevault --addr=127.0.0.1:8080
+```
+
+### HTTP API
+
+| Method & path | Purpose |
+|---|---|
+| `POST /packages` | Store a package. Body: `{id, ciphertext (base64), content_ref_hash, operator, jurisdiction?}`. Returns `201` + `{"package_id": "..."}`. |
+| `GET /packages/{id}?operator=X&purpose=Y` | Retrieve a package; appends an `accessed` custody entry (skipped once the package is deleted — the chain is terminal). |
+| `POST /packages/{id}/hold` | Place a litigation hold. Body: `{operator, hold_ref}`. Suspends expiry. |
+| `DELETE /packages/{id}/hold?operator=X&hold_ref=Y` | Release the litigation hold. |
+| `DELETE /packages/{id}?operator=X` | Delete: zeroes the ciphertext, preserves the metadata + custody log. Returns `409` if the package is on hold. |
+| `GET /packages/{id}/custody` | Return the full chain-of-custody log. |
+| `GET /expired?as_of=<RFC3339>` | List package ids whose retention has elapsed (not on hold, not deleted). `as_of` defaults to now. |
+
+The server is wired to an injected `vault.Vault` interface, so the in-memory and
+disk backends are interchangeable behind the same handlers.
+
+### Lifecycle by curl
+
+```bash
+BASE=http://127.0.0.1:8080
+
+# Store (ciphertext is base64-encoded operator-wrapped bytes)
+curl -X POST "$BASE/packages" -H 'Content-Type: application/json' \
+  -d '{"id":"ev-1","ciphertext":"aGVsbG8=","content_ref_hash":"sha256-abc","operator":"ts-op"}'
+
+# Get (logs an access)
+curl "$BASE/packages/ev-1?operator=auditor&purpose=subpoena-2026-014"
+
+# Place a litigation hold
+curl -X POST "$BASE/packages/ev-1/hold" -H 'Content-Type: application/json' \
+  -d '{"operator":"counsel","hold_ref":"lit-2026-001"}'
+
+# Get while held — still works
+curl "$BASE/packages/ev-1?operator=auditor&purpose=review"
+
+# Release the hold
+curl -X DELETE "$BASE/packages/ev-1/hold?operator=counsel&hold_ref=lit-resolved"
+
+# Delete (zeroes ciphertext, keeps custody)
+curl -X DELETE "$BASE/packages/ev-1?operator=retention-bot"
+
+# Get after delete — metadata + custody remain; ciphertext is null
+curl "$BASE/packages/ev-1?operator=auditor&purpose=post-mortem"
+```
+
+### Storage backends
+
+- **`memory::`** — `vault.InMemoryVault`. Non-persistent; for CI and local dev.
+- **`disk:/path`** — `vault.DiskVault`. One JSON document per package at
+  `<path>/<id>.json` (mode `0600`), written atomically (temp file + rename).
+  Each operation reads → mutates → writes, so on-disk state is the source of
+  truth. A per-package mutex serializes read-modify-write on the same id while
+  letting different ids proceed in parallel. Single-process only in v0.5;
+  multi-process access to one directory would additionally need OS file locks.
+
 ## Problem
 
 When a platform detects and reports CSAM to NCMEC (or IWF/local hotlines), US law (18 U.S.C. 2258A, extended by the REPORT Act of 2024) obligates it to preserve the reported material and surrounding evidence for at least 1 year, on request of law enforcement and under strict access controls — but detection vendors stop at "report and take action" and hand the legal-hold problem back to the platform. Trust and Safety teams end up improvising preservation in S3 buckets or general legal-hold tools that are neither CSAM-aware (they must minimize human exposure, gate access, and never re-scan illegal bytes) nor wired to the specific statutory timers and per-jurisdiction retention rules. The result is custody gaps, over- or under-retention, and evidence that a defense attorney can challenge.
