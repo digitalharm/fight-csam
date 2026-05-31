@@ -2,7 +2,7 @@
 
 > Synthetic, CSAM-free test fixtures and a false-positive harness so engineers can prove their detection plumbing works in CI without ever touching illegal material.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

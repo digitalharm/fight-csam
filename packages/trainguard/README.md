@@ -2,7 +2,7 @@
 
 > A pre-flight CSAM screening gate that audits your training corpus against authoritative hash lists and emits a signed, chain-of-custody compliance report before fitting starts.
 
-**Status:** see `STATUS` file. **License:** AGPL-3.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** AGPL-3.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

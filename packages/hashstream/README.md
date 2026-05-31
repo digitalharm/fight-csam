@@ -2,7 +2,7 @@
 
 > Version control and an audit trail for the CSAM hash lists you're legally on the hook for.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

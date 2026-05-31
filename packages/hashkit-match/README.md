@@ -2,7 +2,7 @@
 
 > In-memory multi-index Hamming matcher for PDQ hashes. Pairs with [hashkit](../hashkit).
 
-**Status:** see `STATUS`. **License:** Apache 2.0.
+**Status:** see [`STATUS`](STATUS) — canonical state across the portfolio at [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0.
 
 ## Problem
 

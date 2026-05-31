@@ -2,7 +2,7 @@
 
 > The §2258A CyberTipline report-filing layer every platform's lawyer currently rebuilds from a PDF.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

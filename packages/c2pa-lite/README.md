@@ -2,7 +2,7 @@
 
 > Turnkey Apache-licensed content provenance for the long tail of image/video generators that ship nothing today — watermark, sign, recover, verify, in one library.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

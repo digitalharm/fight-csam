@@ -2,7 +2,7 @@
 
 > Defensible, jurisdiction-aware evidence retention for CSAM reports — chain of custody and preservation timers that hold up in court.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

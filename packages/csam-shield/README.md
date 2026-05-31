@@ -2,7 +2,7 @@
 
 > One-line middleware that wires PhotoDNA, PDQ, Arachnid Shield, and Cloudflare behind a single match / nomatch / pending interface — for Express, Fastify, FastAPI, and Hono.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

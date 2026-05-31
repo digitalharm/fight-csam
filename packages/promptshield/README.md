@@ -2,7 +2,7 @@
 
 > A drop-in CSAM-intent prompt classifier that blocks abusive text-to-image and text-to-video requests before a single GPU cycle is spent.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 

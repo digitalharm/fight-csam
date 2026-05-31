@@ -2,7 +2,7 @@
 
 > One WebAssembly core for PDQ and TMK+PDQF, with NCMEC-verified test vectors so every language produces the same hash.
 
-**Status:** see `STATUS` file. **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
+**Status:** see [`STATUS`](STATUS) — for the canonical state across all tools, see [`docs/roadmap.md`](../../docs/roadmap.md). **License:** Apache 2.0. **Recommendation:** `ship-with-caveats`.
 
 ## Problem
 
