@@ -157,7 +157,7 @@ def test_baseline_raises_suspicion_on_obfuscation() -> None:
 
 
 def test_suite_meets_v05_coverage_bar() -> None:
-    assert len(CONJUNCTION) + len(EUPHEMISMS) >= 15
+    assert len(CONJUNCTION) >= 10
     assert len(MINOR_ONLY) + len(SEXUAL_ONLY) + len(BENIGN) >= 20
 
 

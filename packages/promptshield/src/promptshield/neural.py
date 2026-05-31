@@ -1,20 +1,22 @@
-"""Stage 2: neural classifier loader.
+"""Stage 2: neural classifier loader + honest heuristic baseline.
 
-Scaffold stage. The plan is to ship a ~100M-param distilled DeBERTa
-trained on a synthetic adversarial prompt corpus + platform moderation
-labels. Real CSAM is never in the training data; the model learns
-intent patterns, not depicted content.
+The trained-model path is intentionally still a stub: shipping a fake
+"neural" model would give false confidence, and a real one is gated on a
+curated evaluation set (see docs/roadmap.md). What v0.5 adds is
+``HeuristicBaseline`` — a transparent, deterministic feature scorer that
+implements the exact ``classify(normalized) -> (score, signals)`` protocol
+a trained model will, so a real checkpoint is a drop-in replacement later.
 
-Until a defensible eval set exists and a model is trained, this module
-is a stub that documents the integration shape. Operators can plug in
-their own neural classifier by subclassing NeuralClassifier and
-overriding `classify`.
+The baseline can only ever raise suspicion above the Stage 1 conjunction
+score, never lower it, so wiring it in cannot reduce recall.
 """
 
 from __future__ import annotations
 
+import re
 from typing import Tuple
 
+from .rules import conjunction_score, match_rules
 from .types import MatchedSignal
 
 
@@ -22,8 +24,8 @@ class NeuralClassifier:
     """Stage 2 classifier protocol.
 
     Subclass and override `classify` to plug in your own model. The
-    default Hugging Face loader is a stub that raises
-    NotImplementedError until the official model artifact is published.
+    default Hugging Face loader is a stub that raises NotImplementedError
+    until the official model artifact is published.
     """
 
     @classmethod
@@ -58,3 +60,40 @@ class _StubClassifier(NeuralClassifier):
             f"a defensible eval set exists. See "
             f"https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md."
         )
+
+
+class HeuristicBaseline(NeuralClassifier):
+    """An honest, transparent Stage 2 baseline — NOT a trained model.
+
+    Scores a small set of obfuscation/evasion features that Stage 1 only
+    uses as a tie-breaker, so the ambiguous middle band gets a more
+    informed score. Starts from the deterministic Stage 1 conjunction
+    score and can only add to it, so it never lowers recall. Use via
+    ``PromptClassifier.from_baseline()``; the default classifier stays
+    Stage-1-only so there is never a surprise model dependency.
+    """
+
+    # Phrasing that, in a generation prompt, signals an attempt to evade
+    # moderation. Documented, not learned.
+    _OBFUSCATION = re.compile(
+        r"(?:\buncensored\b|\bno[ -]?filter\b|\bjailbreak\b|\bbypass\b|"
+        r"\bignore (?:the )?(?:rules|policy|guidelines|filter)\b)",
+        re.IGNORECASE,
+    )
+
+    def classify(self, normalized_prompt: str) -> Tuple[float, list[MatchedSignal]]:
+        signals = match_rules(normalized_prompt)
+        score = conjunction_score(signals)
+
+        extra: list[MatchedSignal] = []
+        if self._OBFUSCATION.search(normalized_prompt):
+            extra.append(
+                MatchedSignal(
+                    kind="conjunction-bypass",
+                    weight=0.15,
+                    rule_id="neural-obfuscation",
+                )
+            )
+            score = min(1.0, score + 0.15)
+
+        return score, [*signals, *extra]

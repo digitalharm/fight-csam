@@ -103,6 +103,73 @@ _BOOTSTRAP_RULES: tuple[Rule, ...] = (
         ),
         weight=0.3,
     ),
+    # --- v0.5 dictionary expansion --------------------------------------
+    # Additional minor indicators: descriptive age phrasings + school
+    # grades, pushing the minor-indicator lexicon past 50 distinct tokens.
+    Rule(
+        rule_id="minor-descriptive",
+        kind="minor-indicator",
+        pattern=re.compile(
+            r"\b(?:little (?:girl|boy)|young (?:girl|boy)|school ?girl|school ?boy|"
+            r"middle ?school|grade ?school|first ?grader|second ?grader|"
+            r"third ?grader|pre-?pubescent|pre-?adolescent|underage|under ?age|"
+            r"newborn|juvenile|adolescent|prepubescent)\b",
+            re.IGNORECASE,
+        ),
+        weight=0.7,
+    ),
+    Rule(
+        rule_id="minor-age-number",
+        kind="minor-indicator",
+        pattern=re.compile(
+            r"\b(?:age[d]?\s*(?:[1-9]|1[0-7])|(?:[1-9]|1[0-7])\s*yo)\b",
+            re.IGNORECASE,
+        ),
+        weight=0.7,
+    ),
+    # Additional sexual context: states, poses, anatomy-in-context.
+    Rule(
+        rule_id="sexual-pose-context",
+        kind="sexual-context",
+        pattern=re.compile(
+            r"\b(?:provocative|seductive|suggestive|lingerie|underwear|panties|"
+            r"bikini|spread legs|fondl\w*|aroused|genitals?|genitalia|nsfw|"
+            r"x-?rated|hardcore|softcore)\b",
+            re.IGNORECASE,
+        ),
+        weight=0.5,
+    ),
+    Rule(
+        rule_id="sexual-act-extended",
+        kind="sexual-context",
+        pattern=re.compile(
+            r"\b(?:coitus|copulat\w*|fornicat\w*|sodom\w*|ejaculat\w*|"
+            r"climax|seduc\w*|molest\w*|fellatio|cunnilingus)\b",
+            re.IGNORECASE,
+        ),
+        weight=0.8,
+    ),
+    # Euphemisms encoding BOTH a minor indicator AND a sexual context in one
+    # term (no benign generation use). Paired rules over one token set so a
+    # single term satisfies the conjunction on its own.
+    Rule(
+        rule_id="euphemism-as-minor",
+        kind="minor-indicator",
+        pattern=re.compile(
+            r"\b(?:loli(?:con)?|shota(?:con)?|jail ?bait)\b",
+            re.IGNORECASE,
+        ),
+        weight=0.95,
+    ),
+    Rule(
+        rule_id="euphemism-as-sexual",
+        kind="sexual-context",
+        pattern=re.compile(
+            r"\b(?:loli(?:con)?|shota(?:con)?|jail ?bait)\b",
+            re.IGNORECASE,
+        ),
+        weight=0.95,
+    ),
 )
 
 
