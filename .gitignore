@@ -56,3 +56,6 @@ pkg/
 # Cargo lock — workspace of libraries; lockfile not committed
 Cargo.lock
 /target
+
+# Outreach status — maintainer-private; not for commit
+docs/outreach/STATUS.md
