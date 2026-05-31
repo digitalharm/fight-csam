@@ -1,0 +1,21 @@
+[package]
+name = "hashkit-match"
+description = "Multi-index Hamming matcher for PDQ hashes — ships no hash lists"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+hashkit = { path = "../hashkit", version = "0.0.1" }
+
+[dev-dependencies]
+# proptest for randomized hash-set tests will land here.

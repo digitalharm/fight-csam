@@ -1,0 +1,13 @@
+{
+  "version": "v0",
+  "description": "Empty initial corpus. Vectors land here as the PDQ port produces verified hashes against the facebook/ThreatExchange C++ reference. The NCMEC-cross-checked subset is marked with ncmec_verified: true.",
+  "schema": {
+    "id": "stable identifier, kebab-case",
+    "source": "relative path under sources/ that deterministically generates the input",
+    "kind": "pdq | pdq-dihedral | tmk",
+    "expected_hash_hex": "64-char lowercase hex for PDQ; structured form for TMK",
+    "expected_quality": "0-100, optional, PDQ only",
+    "ncmec_verified": "boolean — true if cross-validated against NCMEC reference outputs"
+  },
+  "entries": []
+}

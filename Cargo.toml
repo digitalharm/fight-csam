@@ -1,0 +1,37 @@
+[workspace]
+resolver = "2"
+members = [
+    "packages/hashkit",
+    "packages/hashkit-match",
+]
+exclude = [
+    "packages/detectkit-test",
+    "packages/csam-shield",
+    "packages/promptshield",
+    "packages/hashstream",
+    "packages/trainguard",
+    "packages/cybertip-cli",
+    "packages/evidencevault",
+    "packages/c2pa-lite",
+    "packages/safemod",
+]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.75"
+license = "Apache-2.0"
+repository = "https://github.com/opencolin/digitalharm-oss"
+homepage = "https://digitalharm.org/tools"
+authors = ["The Digital Harm Report contributors"]
+keywords = ["csam", "pdq", "perceptual-hash", "trust-and-safety"]
+categories = ["multimedia::images", "cryptography"]
+
+[workspace.dependencies]
+# Shared deps go here once we have them. Keep empty for the scaffold.
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

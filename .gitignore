@@ -52,3 +52,7 @@ fixtures/scratch/
 # WASM artifacts (we publish from CI, not commit)
 *.wasm
 pkg/
+
+# Cargo lock — workspace of libraries; lockfile not committed
+Cargo.lock
+/target

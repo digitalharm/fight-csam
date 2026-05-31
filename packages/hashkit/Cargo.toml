@@ -1,0 +1,37 @@
+[package]
+name = "hashkit"
+description = "PDQ and TMK+PDQF perceptual hashing with NCMEC-verified conformance vectors"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+# Enable WebAssembly bindings (wasm-bindgen). Pulls in extra deps; off by default
+# so the native build stays lean.
+wasm = []
+
+[dependencies]
+thiserror = "1"
+
+# Additional deps to add as the PDQ port from facebook/ThreatExchange's
+# C++ reference begins:
+#   - a small image-decode-independent linear-algebra dep (or hand-rolled)
+#   - bit manipulation utilities
+#   - serde + serde_json for the vector suite format
+
+[dev-dependencies]
+# proptest, criterion, and the vector-conformance harness deps go here.
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

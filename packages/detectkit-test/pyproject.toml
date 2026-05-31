@@ -1,0 +1,46 @@
+[project]
+name = "detectkit-test"
+version = "0.0.1"
+description = "Synthetic non-CSAM test fixtures with engineered hash properties — verify your detection pipeline in CI without touching real CSAM."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [
+    { name = "The Digital Harm Report contributors" },
+]
+keywords = ["csam", "trust-and-safety", "test-fixtures", "perceptual-hash"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Testing",
+]
+
+dependencies = [
+    # Empty for the scaffold. Likely needed once generation lands:
+    #   pillow (image synthesis)
+    #   numpy (engineered hash properties)
+    #   click (CLI for fixture regeneration)
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.5",
+]
+
+[project.urls]
+Homepage = "https://digitalharm.org/tools"
+Repository = "https://github.com/opencolin/digitalharm-oss"
+"Safety policy" = "https://github.com/opencolin/digitalharm-oss/blob/main/docs/safety-policy.md"
+
+[project.scripts]
+detectkit-test = "detectkit_test.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/detectkit_test"]
