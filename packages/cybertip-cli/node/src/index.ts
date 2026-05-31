@@ -7,10 +7,16 @@
  * Counsel scope: ../docs/counsel-scope-brief.md
  * Safety: https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
  *
- * Scaffold stage: data model, validation, redaction, and the audit-
- * log shape are implemented. Production submission is gated on
- * counsel review and an active NCMEC ESP credential.
+ * Data model, validation, redaction, dry-run wire payload, and a sandbox
+ * simulation path are implemented. Production submission is absent by design,
+ * gated on counsel review and an active NCMEC ESP credential.
  */
 
 export * from "./model/report.js";
-export { submitDryRun } from "./submit.js";
+export {
+  submitDryRun,
+  submit,
+  ProductionSubmitBlocked,
+  COUNSEL_REQUIRED_MESSAGE,
+} from "./submit.js";
+export type { DryRunResult, SubmitMode, SubmitResult } from "./submit.js";

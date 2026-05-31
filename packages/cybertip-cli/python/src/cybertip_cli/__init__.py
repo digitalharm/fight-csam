@@ -23,7 +23,15 @@ from .model import (
     redact_for_log,
     validate_report,
 )
-from .submit import DryRunResult, submit_dry_run
+from .submit import (
+    COUNSEL_REQUIRED_MESSAGE,
+    DryRunResult,
+    ProductionSubmitBlocked,
+    SubmitMode,
+    SubmitResult,
+    submit,
+    submit_dry_run,
+)
 
 __all__ = [
     "CyberTipReport",
@@ -34,8 +42,13 @@ __all__ = [
     "SuspectInfo",
     "VictimInfo",
     "DryRunResult",
+    "SubmitResult",
+    "SubmitMode",
+    "ProductionSubmitBlocked",
+    "COUNSEL_REQUIRED_MESSAGE",
     "generate_client_reference",
     "redact_for_log",
+    "submit",
     "submit_dry_run",
     "validate_report",
 ]
