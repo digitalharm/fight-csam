@@ -22,12 +22,15 @@ wasm = []
 
 [dependencies]
 thiserror = "1"
+# Real PDQ implementation. We call through pdqhash's re-exported `image`
+# crate (pdqhash::image) rather than depending on `image` directly, so the
+# DynamicImage type always matches the version pdqhash was built against
+# (avoids the image 0.23-vs-0.25 DynamicImage type-mismatch trap).
+pdqhash = "0.1"
 
-# Additional deps to add as the PDQ port from facebook/ThreatExchange's
-# C++ reference begins:
-#   - a small image-decode-independent linear-algebra dep (or hand-rolled)
-#   - bit manipulation utilities
-#   - serde + serde_json for the vector suite format
+# Still to add as the port deepens:
+#   - serde + serde_json for the vector suite / corpus format (v1.0)
+#   - wasm-bindgen behind the `wasm` feature (v1.0)
 
 [dev-dependencies]
 # proptest, criterion, and the vector-conformance harness deps go here.

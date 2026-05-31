@@ -9,19 +9,23 @@
 //!
 //! ## Status
 //!
-//! Planned (Wave 1: Foundation). The public API surface is sketched here as
-//! function signatures with `todo!()` bodies; the actual PDQ port from
-//! [facebook/ThreatExchange's BSD-3 C++ reference][upstream] is the next
-//! material work.
+//! v0.5 (Wave 1: Foundation). [`pdq::hash_from_luma`] and
+//! [`pdq::hash_dihedral_from_luma`] are implemented by delegating to the
+//! maintained [`pdqhash`](https://crates.io/crates/pdqhash) crate (Apache-2.0),
+//! itself a port of [facebook/ThreatExchange's BSD-3 C++ reference][upstream].
+//! Keeping the algorithm in a shared upstream crate puts hashkit's value where
+//! it belongs — the cross-language conformance layer — rather than in a
+//! re-port of PDQ that would drift from the reference.
 //!
 //! [upstream]: https://github.com/facebook/ThreatExchange/tree/main/pdq
 //!
-//! ## Porting strategy
+//! ## Remaining work toward v1.0
 //!
-//! 1. Implement [`pdq::hash_from_luma`] against the C++ reference output,
-//!    then verify byte-identical hashes on the conformance corpus.
-//! 2. Add WebAssembly bindings under the `wasm` feature.
-//! 3. Extend to TMK+PDQF video feature vectors.
+//! 1. Stand up the conformance corpus at `packages/hashkit/vectors/` and gate
+//!    CI on zero drift against the C++ reference outputs.
+//! 2. Add WebAssembly bindings under the `wasm` feature and prove
+//!    native↔WASM byte-identical hashes.
+//! 3. Extend to TMK+PDQF video feature vectors (the `tmk` module).
 //! 4. Cross-check a subset of the corpus against NCMEC reference outputs (the
 //!    relationship work, not the code work).
 //!
@@ -103,6 +107,16 @@ pub mod pdq {
             /// Expected length (width × height).
             expected: usize,
         },
+        /// The underlying PDQ implementation could not produce a hash (e.g. the
+        /// image was too small after the internal downsample). Carries the
+        /// dimensions that were attempted.
+        #[error("PDQ hash computation failed for {width}x{height} image")]
+        HashComputationFailed {
+            /// Image width in pixels.
+            width: u32,
+            /// Image height in pixels.
+            height: u32,
+        },
     }
 
     /// Compute the PDQ hash and quality from a luma (single-channel) buffer.
@@ -121,28 +135,96 @@ pub mod pdq {
     ///
     /// * [`PdqError::InvalidDimensions`] if `width == 0 || height == 0`
     /// * [`PdqError::LumaBufferMismatch`] if `luma.len() != width * height`
-    pub fn hash_from_luma(_luma: &[u8], _width: u32, _height: u32) -> Result<PdqResult, PdqError> {
-        // TODO(hashkit): port from facebook/ThreatExchange/pdq/cpp/.
-        //   The reference implementation:
-        //   - Downsamples the image to 64×64 via separable box filter
-        //   - Applies a 64×64 DCT
-        //   - Keeps the 16×16 low-frequency block (excluding DC)
-        //   - Median-thresholds to produce the 256-bit hash
-        //   - Computes quality from the variance of the kept coefficients
-        //
-        // Track the port against vectors/ in CI; release is gated by zero drift.
-        todo!("PDQ port from facebook/ThreatExchange reference")
+    pub fn hash_from_luma(luma: &[u8], width: u32, height: u32) -> Result<PdqResult, PdqError> {
+        let gray = luma_to_gray(luma, width, height)?;
+        pdq_of_gray(&gray, width, height)
     }
 
     /// Compute the PDQ-Dihedral variant: returns 8 hashes corresponding to
     /// the 8 dihedral group transformations (4 rotations × 2 mirrors).
     /// Used when the matcher needs robustness to rotation and mirroring.
+    ///
+    /// Results are returned in a stable order:
+    /// `[identity, rot90, rot180, rot270, flip, flip+rot90, flip+rot180,
+    /// flip+rot270]`.
     pub fn hash_dihedral_from_luma(
-        _luma: &[u8],
-        _width: u32,
-        _height: u32,
+        luma: &[u8],
+        width: u32,
+        height: u32,
     ) -> Result<[PdqResult; 8], PdqError> {
-        todo!("PDQ-Dihedral port")
+        use pdqhash::image::imageops;
+
+        let base = luma_to_gray(luma, width, height)?;
+        let flip = imageops::flip_horizontal(&base);
+
+        // rotate90/270 swap the dimensions; pass each variant's own size so the
+        // (unused-on-success) error path still reports accurate dimensions.
+        Ok([
+            pdq_of_gray(&base, width, height)?,
+            pdq_of_gray(&imageops::rotate90(&base), height, width)?,
+            pdq_of_gray(&imageops::rotate180(&base), width, height)?,
+            pdq_of_gray(&imageops::rotate270(&base), height, width)?,
+            pdq_of_gray(&flip, width, height)?,
+            pdq_of_gray(&imageops::rotate90(&flip), height, width)?,
+            pdq_of_gray(&imageops::rotate180(&flip), width, height)?,
+            pdq_of_gray(&imageops::rotate270(&flip), height, width)?,
+        ])
+    }
+
+    /// Validate dimensions and wrap raw 8-bit luma into a `GrayImage` from
+    /// pdqhash's re-exported `image` crate (so the type matches what
+    /// `generate_pdq` expects).
+    fn luma_to_gray(
+        luma: &[u8],
+        width: u32,
+        height: u32,
+    ) -> Result<pdqhash::image::GrayImage, PdqError> {
+        if width == 0 || height == 0 {
+            return Err(PdqError::InvalidDimensions { width, height });
+        }
+        let expected = (width as usize)
+            .checked_mul(height as usize)
+            .ok_or(PdqError::InvalidDimensions { width, height })?;
+        if luma.len() != expected {
+            return Err(PdqError::LumaBufferMismatch {
+                got: luma.len(),
+                expected,
+            });
+        }
+        pdqhash::image::GrayImage::from_raw(width, height, luma.to_vec()).ok_or(
+            PdqError::LumaBufferMismatch {
+                got: luma.len(),
+                expected,
+            },
+        )
+    }
+
+    /// Run PDQ over a grayscale image and map the result into [`PdqResult`].
+    fn pdq_of_gray(
+        gray: &pdqhash::image::GrayImage,
+        width: u32,
+        height: u32,
+    ) -> Result<PdqResult, PdqError> {
+        use pdqhash::image::DynamicImage;
+
+        let dynamic = DynamicImage::ImageLuma8(gray.clone());
+        let (bytes, quality) = pdqhash::generate_pdq(&dynamic)
+            .ok_or(PdqError::HashComputationFailed { width, height })?;
+
+        // pdqhash reports quality on a 0.0–1.0 scale; hashkit's API is 0–100.
+        // Guard against either convention so a future crate change can't
+        // silently zero the quality field.
+        let scaled = if quality <= 1.0 {
+            quality * 100.0
+        } else {
+            quality
+        };
+        let quality_u8 = scaled.round().clamp(0.0, 100.0) as u8;
+
+        Ok(PdqResult {
+            hash: PdqHash(bytes),
+            quality: PdqQuality(quality_u8),
+        })
     }
 }
 
@@ -198,5 +280,76 @@ mod tests {
         let b = PdqHash([0xFFu8; 32]);
         assert_eq!(a.hamming(&b), 256);
         assert_eq!(a.hamming(&a), 0);
+    }
+
+    // Deterministic synthetic luma: a horizontal gradient plus a coarse checker
+    // so PDQ has real signal (a flat image yields a degenerate, low-quality
+    // hash). Non-symmetric so dihedral orientations differ.
+    fn synthetic_luma(width: u32, height: u32) -> Vec<u8> {
+        let mut buf = Vec::with_capacity((width * height) as usize);
+        for y in 0..height {
+            for x in 0..width {
+                let g = ((x * 255) / width.max(1)) as u8;
+                let checker = if ((x / 16) + (y / 16)) % 2 == 0 {
+                    0
+                } else {
+                    40
+                };
+                buf.push(g.saturating_add(checker));
+            }
+        }
+        buf
+    }
+
+    #[test]
+    fn hash_from_luma_produces_256_bit_hash() {
+        let luma = synthetic_luma(256, 256);
+        let result = hash_from_luma(&luma, 256, 256).expect("hash");
+        assert_eq!(result.hash.0.len(), 32);
+        assert_eq!(result.hash.to_hex().len(), 64);
+        assert!(result.quality.0 <= 100);
+    }
+
+    #[test]
+    fn hash_from_luma_is_deterministic() {
+        let luma = synthetic_luma(128, 128);
+        let a = hash_from_luma(&luma, 128, 128).expect("a");
+        let b = hash_from_luma(&luma, 128, 128).expect("b");
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn hash_from_luma_rejects_zero_dimensions() {
+        let err = hash_from_luma(&[], 0, 0).unwrap_err();
+        assert!(matches!(err, PdqError::InvalidDimensions { .. }));
+    }
+
+    #[test]
+    fn hash_from_luma_rejects_buffer_mismatch() {
+        let luma = synthetic_luma(64, 64);
+        let err = hash_from_luma(&luma, 64, 65).unwrap_err();
+        assert!(matches!(err, PdqError::LumaBufferMismatch { .. }));
+    }
+
+    #[test]
+    fn dihedral_returns_eight_hashes_with_identity_first() {
+        let luma = synthetic_luma(128, 128);
+        let results = hash_dihedral_from_luma(&luma, 128, 128).expect("dihedral");
+        assert_eq!(results.len(), 8);
+        let plain = hash_from_luma(&luma, 128, 128).expect("plain");
+        assert_eq!(
+            results[0], plain,
+            "identity orientation must match plain hash"
+        );
+    }
+
+    #[test]
+    fn dihedral_orientations_differ() {
+        let luma = synthetic_luma(128, 128);
+        let results = hash_dihedral_from_luma(&luma, 128, 128).expect("dihedral");
+        assert_ne!(
+            results[0], results[2],
+            "identity vs rot180 should differ for a non-symmetric image"
+        );
     }
 }
