@@ -9,6 +9,22 @@ from typing import Iterable, Literal, Protocol
 HashListSource = Literal["ncmec", "iwf", "project-arachnid", "local"]
 
 
+def hamming_distance(a_hex: str, b_hex: str) -> int:
+    """Bitwise Hamming distance between two equal-length hex strings.
+
+    Both inputs must decode to the same number of bytes; a length mismatch
+    is a programming error (comparing hashes of different widths) and raises
+    ValueError rather than silently returning a meaningless distance.
+    """
+    a = bytes.fromhex(a_hex)
+    b = bytes.fromhex(b_hex)
+    if len(a) != len(b):
+        raise ValueError(
+            f"hamming_distance: length mismatch ({len(a)} vs {len(b)} bytes)"
+        )
+    return sum(bin(ax ^ bx).count("1") for ax, bx in zip(a, b))
+
+
 @dataclass(frozen=True, slots=True)
 class DatasetEntry:
     """A single row from a training dataset.
@@ -68,10 +84,19 @@ class ComplianceReport:
     chain_of_custody: list[str]
     """Sequence of operator names / agent IDs that touched the report.
     Latest writer is at the end."""
+    signature: bytes | None = None
+    """Ed25519 signature over :func:`trainguard.pipeline.signing_payload`,
+    or ``None`` when the report was produced without a signing key. An
+    unsigned report is not tamper-evident."""
 
     @property
     def matched_count(self) -> int:
         return self.matches_total
+
+    @property
+    def is_signed(self) -> bool:
+        """True if the report carries a signature."""
+        return self.signature is not None
 
 
 class HashListProvider(Protocol):
