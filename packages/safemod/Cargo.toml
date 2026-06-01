@@ -1,0 +1,23 @@
+[package]
+name = "safemod"
+description = "Moderator-wellness layer: blur-by-default media, hard exposure caps, aggregate-only wellbeing signals — stores no personal or special-category data"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Intentionally none. SafeMod is a pure, dependency-free state machine so it can
+# be embedded in any review queue without pulling a runtime, a database, or a
+# network client — and so it is auditable at a glance.
+
+[dev-dependencies]
+# Randomized exposure-cap property tests will land here.

@@ -453,26 +453,42 @@ c2pa-rs for production-grade signing of `ManifestClaim` values.
 
 ### SafeMod
 
-**Wave:** 5 (Deferred indefinitely). **Status:** Deferred. **Package:** [`packages/safemod`](../packages/safemod).
+**Wave:** 5 (re-promoted from Deferred). **Status:** In Progress (v1.0 core shipped). **Package:** [`packages/safemod`](../packages/safemod).
 
-**Why deferred.** The synthesis was direct: SafeMod's primary load is GDPR
-special-category mental-health data, which is a liability mismatch for a
-solo maintainer's threat model. It is also the only tool in the portfolio
-with no dependency on the hashing spine, meaning it doesn't reinforce the
-rest of the work. Most valuable home is a dedicated moderator-wellbeing
-organization, not this portfolio.
+**Why it was deferred — and why that no longer applies.** The original
+synthesis deferred SafeMod because a naive moderator-wellness tool's primary
+load is GDPR Article 9 special-category mental-health data, a liability
+mismatch for a solo maintainer. The shipped crate **designs that liability
+out** rather than carrying it:
 
-**Re-promotion criteria:**
+- **Zero dependencies; `#![forbid(unsafe_code)]`.** No database, network,
+  filesystem, or clock — the crate physically cannot persist or transmit data.
+- **No identifiers.** No reviewer name, ID, IP, or token ever enters its
+  types; the host owns identity, SafeMod owns only counters and caps.
+- **Aggregate-only, k-anonymous wellbeing.** Signals are anonymous ordinals;
+  a report is emitted only once a minimum cohort (≥5) is pooled. Worst-case
+  data-at-rest is an integer count — not special-category data under any
+  reading.
 
-- A dedicated maintainer with HIPAA / GDPR-special-category data experience
-  joins
-- A health-tech organization adopts SafeMod as their primary maintenance
-  responsibility
+This reframes SafeMod from "needs a health-tech home" to "safe to maintain
+here," because the special-category data the deferral worried about is never
+collected.
 
-**Best alternative path:** open an issue with the moderator-wellbeing
-community (e.g., the All Tech Is Human Trust & Safety community, the Tech
-Coalition's wellbeing working group) to find a more appropriate home for
-this work.
+**Shipped surface (v1.0 core, 17 tests; in the Rust workspace, fmt + clippy
+`-D warnings` + test all green):**
+
+- `render` — blur/grayscale/mute-by-default presentation with time-boxed reveals.
+- `limits` — per-shift item cap, continuous-exposure cap, mandatory breaks
+  (all caller-clock driven, deterministic).
+- `wellbeing` — anonymous ordinal signals → aggregate, cohort-gated team report
+  with a support recommendation (about a *team*, never a person).
+- `Session` — one gate tying the reveal policy and exposure tracker together.
+
+**Next (v1.x):** an integration example wiring SafeMod into a concrete review
+queue (e.g. Bluesky Ozone), and an optional WASM build for browser-based
+review tools. Partnering with a moderator-wellbeing organization remains a
+welcome path for broader adoption, but is no longer a blocker to maintaining
+the core here.
 
 ---
 
@@ -529,3 +545,4 @@ The roadmap evolves over time. Each material status change goes here.
 | 2026-05-30 | Initial roadmap published | All 10 tools documented. HashKit, hashkit-match, DetectKit-Test promoted from Planned → In Progress (scaffold complete with passing CI). |
 | 2026-05-30 | Wave 5 tools formally deferred | C2PA-Lite and SafeMod marked Deferred with re-promotion criteria, per the synthesis. |
 | 2026-05-30 | Wave 2–5 scaffold landings | Six tools moved Planned → In Progress and C2PA-Lite was re-promoted Deferred → In Progress (commit [`55f6d3d`](https://github.com/digitalharm/digitalharm-oss/commit/55f6d3d)) under the maintainer goal *"build out all of the OSS projects necessary for AI startups, cloud providers, and developers to detect, block, report, and prevent CSAM."* Each tool now ships a public API surface with deterministic tests: CSAM-Shield (6 Node + 7 Python tests), PromptShield (12 tests, conjunction principle enforced), HashStream (Go server + store + TS SDK 5 tests), TrainGuard (10 tests; pure-function `scan_dataset()`), CyberTip CLI (11 + 11 tests; counsel scope brief filed), EvidenceVault (custody / retention / vault Go tests; counsel scope brief filed), C2PA-Lite (6 tests; `upstream` feature gates real c2pa-rs signing). CI extended to four matrices: Rust workspace, Go ×2, Python ×5, Node ×3. Production paths for CyberTip CLI + EvidenceVault remain **blocked at the CLI** until outside counsel reviews the scope briefs. SafeMod remains Deferred. |
+| 2026-05-31 | SafeMod re-promoted Deferred → In Progress (v1.0 core) | Built as a privacy-by-construction Rust crate that designs out the GDPR special-category-data liability behind the original deferral: zero deps, `#![forbid(unsafe_code)]`, no identifiers/clock/I-O, and aggregate-only k-anonymous (≥5) wellbeing reporting. Implements all three README promises — blur-by-default `render`, hard-cap `limits`, aggregate `wellbeing` — plus a `Session` gate. Added to the Rust workspace; 17 tests pass; `cargo fmt --check`, `clippy -D warnings`, and `cargo test` all green (43 tests workspace-wide). The whole portfolio now has zero Deferred tools. |

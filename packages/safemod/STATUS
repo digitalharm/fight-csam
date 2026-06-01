@@ -1,1 +1,24 @@
-Deferred indefinitely — spin out (GDPR data sensitivity)
+In Progress (v1.0 core shipped) — re-promoted from Deferred
+
+SafeMod was previously deferred over GDPR Article 9 (special-category
+mental-health data) liability for a solo maintainer. The shipped crate
+designs that liability out:
+
+- zero dependencies; #![forbid(unsafe_code)]
+- stores no identifiers, reads no clock, performs no I/O — it cannot
+  persist or transmit anything
+- wellbeing reporting is aggregate-only with a k-anonymity minimum cohort
+  (>=5); worst-case data-at-rest is an integer count, which is not
+  special-category data
+
+Surface (all three README promises implemented + tested, 17 tests green):
+- render:   blur/grayscale/mute-by-default, time-boxed reveals
+- limits:   per-shift item cap, continuous-exposure cap, mandatory breaks
+- wellbeing: anonymous ordinal signals -> aggregate, cohort-gated report
+- Session:  ties reveal policy + exposure tracker into one gate
+
+CI: in the Rust workspace; cargo fmt --check, clippy -D warnings, and
+cargo test all pass.
+
+Next (v1.x): an integration example wiring SafeMod into a concrete review
+queue (e.g. Bluesky Ozone); optional WASM build for browser review tools.
