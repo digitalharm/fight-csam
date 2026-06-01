@@ -1,0 +1,41 @@
+{
+  "$schemaVersion": 1,
+  "_about": "Maps each multi-agent orchestration track to the repository its worktree-isolated agents must be provisioned in. This is the 'track -> repo root' map.",
+  "_bug_this_prevents": "The Workflow engine's isolation:'worktree' option cuts each agent's worktree from the SESSION's own git repo (the CWD the Workflow process was launched from). There is NO per-call repo override in the agent() API (options are label/phase/schema/model/isolation/agentType only). On 2026-05-30 the orchestration session ran from /Users/colin/Code/addiction (remote digitalharm/addiction-research, a Next.js site) instead of digitalharm-oss, so ALL 10 wave A/B/C impl agents got a worktree of the WRONG repo. The corrected wave scripts no longer rely on the session CWD: a preflight agent reads the constants below, asserts repo identity, and provisions worktrees explicitly via `git -C <repoRoot>`.",
+  "_runtime_note": "Workflow scripts cannot read files at runtime (no fs/require). When you change this config you MUST also update the baked-in constants at the top of the corrected scripts in ./scripts/. This JSON is the source of truth those constants are copied from.",
+
+  "repos": {
+    "digitalharm-oss": {
+      "repoRoot": "/Users/colin/Code/digitalharm-oss",
+      "remoteUrlContains": "digitalharm/digitalharm-oss",
+      "baseBranch": "main",
+      "worktreeDir": ".worktrees",
+      "markerFiles": ["Cargo.toml", "packages"],
+      "_markerFiles_note": "Paths that MUST exist under repoRoot. Cargo.toml + packages/ are present in digitalharm-oss and absent in addiction-research — this is the discriminator the preflight asserts on."
+    }
+  },
+
+  "tracks": {
+    "wave-a-foundation": {
+      "repo": "digitalharm-oss",
+      "branchPrefix": "agent/wave-a-",
+      "packages": ["hashkit", "hashkit-match", "detectkit-test"]
+    },
+    "wave-b-adoption": {
+      "repo": "digitalharm-oss",
+      "branchPrefix": "agent/wave-b-",
+      "packages": ["csam-shield", "promptshield", "c2pa-lite"]
+    },
+    "wave-c-legal-infra": {
+      "repo": "digitalharm-oss",
+      "branchPrefix": "agent/wave-c-",
+      "packages": ["hashstream", "trainguard", "cybertip-cli", "evidencevault"]
+    }
+  },
+
+  "worktreeNaming": {
+    "scheme": "<repoRoot>/<worktreeDir>/<branch with '/' replaced by '-'>",
+    "example": "agent/wave-b-c2pa-lite  ->  /Users/colin/Code/digitalharm-oss/.worktrees/agent-wave-b-c2pa-lite",
+    "_reconcile_note": "This is the canonical scheme going forward. Some pre-existing worktrees use an older bare name (e.g. .worktrees/wave-c-trainguard, .worktrees/wave-b-promptshield). The preflight provisioner detects a branch already attached to ANY worktree path (via `git worktree list --porcelain`) and REUSES it rather than creating a duplicate, so the two schemes coexist without collision."
+  }
+}
