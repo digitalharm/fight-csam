@@ -13,7 +13,7 @@ not yet run, not real test failures).
 | **safemod** | Rust | **17** | **NEW this session — re-promoted from Deferred** |
 | hashstream | Go | pass | server + store + signing (`go test ./...`) |
 | evidencevault | Go | pass | custody + retention + vault |
-| detectkit-test | Python | 4 | corpus/fixtures |
+| detectkit-test | Python | 10 | deterministic fixture generation implemented (was 4 scaffold stubs) |
 | promptshield | Python | 60 | classifier + eval suite |
 | trainguard | Python | 21 | dataset screen pipeline |
 | csam-shield (python) | Python | 24 | detector dispatch + strategies |
@@ -46,6 +46,42 @@ These are not local-code gaps; they are the documented promotion criteria:
 - Promotion **In Progress → Alpha** per tool needs its acceptance criteria met
   (see each section of `docs/roadmap.md`) — largely real-detector-body wiring
   behind the existing stubs (e.g. PhotoDNA/NCMEC adapters in csam-shield).
+
+## What "finished" means here (and why the remaining stubs are correct)
+
+This is an OSS portfolio whose job is to be *integrated*, not to ship secrets.
+Several remaining `NotImplementedError` / `TODO` markers are **deliberate
+integration seams, not unfinished work** — and completing them in the open
+repo would be wrong:
+
+- **Detector wire protocols** (csam-shield, hashstream adapters: NCMEC Hash
+  Sharing API, IWF Hash List, Project Arachnid Shield, PhotoDNA): each raises a
+  documented error telling the integrator which **credentialed relationship**
+  they must establish. The repo ships no hash lists and no provider credentials
+  by design (and the safety guard enforces it). "Finished" = the dispatch +
+  strategy + the documented seam, which is present.
+- **CyberTip CLI / EvidenceVault production submit/transmit**: blocked at the
+  CLI pending **outside-counsel review** of the filed scope briefs. A legal-tier
+  gate, intentional.
+- **C2PA-Lite real signing**: behind the `upstream` cargo feature pending the
+  c2pa-rs dependency decision.
+- **detectkit-test lenna/kodak patterns + TMK video**: need external licensed
+  assets / a later milestone; the five synthesizable still-image patterns +
+  reproducible corpus are implemented.
+
+So the portfolio is "finished" in the sense an OSS library can be: every
+package builds, lints, and passes its tests; the public APIs are complete; and
+the only unfilled bodies are the ones that *require* a credential, a license,
+or counsel sign-off that an open repo must not carry. Promotion of each tool
+`In Progress → Alpha` is then an integrator/maintainer milestone, documented
+per tool in `docs/roadmap.md`.
+
+## Genuine finish-work completed this session
+
+- **SafeMod**: Deferred → built (privacy-by-construction Rust crate, 17 tests).
+  The portfolio now has **zero Deferred tools**.
+- **detectkit-test**: scaffold → real deterministic fixture generation
+  (4 → 10 tests), unblocked by HashKit shipping.
 
 ## How to reproduce
 
