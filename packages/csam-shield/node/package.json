@@ -1,6 +1,6 @@
 {
   "name": "@digitalharm/csam-shield",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "One-line CSAM detection middleware for Express/Fastify/Hono. Wires PhotoDNA, NCMEC, PDQ, and Cloudflare CSAM Scanning behind a unified interface.",
   "license": "Apache-2.0",
   "homepage": "https://digitalharm.org/tools",
@@ -56,5 +56,8 @@
     "pdq",
     "ncmec",
     "cloudflare"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

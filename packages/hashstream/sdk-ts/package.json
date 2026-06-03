@@ -1,6 +1,6 @@
 {
   "name": "@digitalharm/hashstream-sdk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "TypeScript client SDK for the HashStream service.",
   "license": "Apache-2.0",
   "homepage": "https://digitalharm.org/tools",
@@ -19,16 +19,30 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "npm run build && node --test dist/**/*.test.js",
     "typecheck": "tsc --noEmit"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
     "typescript": "^5.4.0",
     "@types/node": "^20.0.0"
   },
-  "keywords": ["csam", "trust-and-safety", "hash-sharing", "ncmec", "iwf"]
+  "keywords": [
+    "csam",
+    "trust-and-safety",
+    "hash-sharing",
+    "ncmec",
+    "iwf"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

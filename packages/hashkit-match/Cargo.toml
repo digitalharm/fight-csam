@@ -10,12 +10,13 @@ homepage.workspace = true
 authors.workspace = true
 keywords.workspace = true
 categories.workspace = true
+readme = "README.md"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-hashkit = { path = "../hashkit", version = "0.0.1" }
+hashkit = { path = "../hashkit", version = "0.1.0" }
 
 [dev-dependencies]
 # proptest for randomized hash-set tests will land here.

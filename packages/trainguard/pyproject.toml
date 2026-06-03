@@ -1,6 +1,6 @@
 [project]
 name = "trainguard"
-version = "0.0.1"
+version = "0.1.0"
 description = "Pre-flight CSAM screening for AI training datasets. Runs before model fitting starts; produces compliance reports with chain-of-custody."
 readme = "README.md"
 license = { text = "Apache-2.0" }

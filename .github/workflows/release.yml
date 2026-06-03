@@ -1,0 +1,146 @@
+name: Release
+
+# Publishes all packages when a version tag is pushed (e.g. v0.1.0).
+#
+# PREREQUISITES (one-time, set by a maintainer — see docs/ops/release-runbook.md):
+#   Repository secrets:
+#     CARGO_REGISTRY_TOKEN  — crates.io API token (scope: publish-new, publish-update)
+#     PYPI_API_TOKEN        — PyPI token (or use Trusted Publishing; see runbook)
+#     NPM_TOKEN             — npm automation token with publish rights to @digitalharm
+#   And the package NAMES must be claimable on each registry — note `hashkit`
+#   (crates.io) and `promptshield` (PyPI) are currently TAKEN; resolve before tagging
+#   (see runbook "Name collisions").
+#
+# This workflow is intentionally manual-trigger-able too (workflow_dispatch) so a
+# maintainer can dry-run the build jobs without tagging.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build + check only; do not publish"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------- Rust
+  rust:
+    name: crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Package (always) + publish (on tag)
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          # All control inputs come in via env (no ${{ }} interpolation inside run:).
+          EVENT_NAME: ${{ github.event_name }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          # Dependency order: hashkit must be on the index before hashkit-match.
+          ORDER="hashkit hashkit-match c2pa-lite safemod"
+          for c in $ORDER; do
+            if [ "${DRY_RUN:-false}" = "true" ] || [ "${EVENT_NAME}" = "workflow_dispatch" ]; then
+              echo "::group::cargo package $c (dry-run)"
+              cargo package -p "$c"
+              echo "::endgroup::"
+            else
+              echo "::group::cargo publish $c"
+              cargo publish -p "$c"
+              echo "::endgroup::"
+              # Give the index a moment so the next crate can resolve the dep.
+              sleep 30
+            fi
+          done
+
+  # ---------------------------------------------------------------- Python
+  python:
+    name: PyPI · ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - detectkit-test
+          - promptshield
+          - trainguard
+          - csam-shield/python
+          - cybertip-cli/python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build + check
+        working-directory: packages/${{ matrix.package }}
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          twine check dist/*
+      - name: Publish (on tag only)
+        if: github.event_name == 'push'
+        working-directory: packages/${{ matrix.package }}
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+  # ---------------------------------------------------------------- Node
+  node:
+    name: npm · ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - csam-shield/node
+          - cybertip-cli/node
+          - hashstream/sdk-ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+      - name: Build + pack
+        working-directory: packages/${{ matrix.package }}
+        run: |
+          npm install --no-audit --no-fund
+          npx tsc
+          npm pack --dry-run
+      - name: Publish (on tag only)
+        if: github.event_name == 'push'
+        working-directory: packages/${{ matrix.package }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+  # ---------------------------------------------------------------- Go
+  # Go modules are published by the existence of a semver tag — pkg.go.dev
+  # indexes them on first request. Nudge the proxy so they appear promptly.
+  go:
+    name: Go proxy warm-up
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Request modules from the Go proxy
+        run: |
+          set -e
+          TAG="${GITHUB_REF_NAME}"
+          for m in hashstream evidencevault; do
+            echo "Requesting github.com/digitalharm/digitalharm-oss/packages/$m@$TAG"
+            GOPROXY=https://proxy.golang.org go list -m \
+              "github.com/digitalharm/digitalharm-oss/packages/$m@$TAG" || \
+              echo "  (proxy will index on first real fetch)"
+          done

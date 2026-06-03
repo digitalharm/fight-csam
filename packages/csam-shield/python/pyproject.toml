@@ -1,6 +1,6 @@
 [project]
 name = "csam-shield"
-version = "0.0.1"
+version = "0.1.0"
 description = "One-line CSAM detection middleware for FastAPI / Starlette / Flask. Wires PhotoDNA, NCMEC, PDQ, and Cloudflare CSAM Scanning behind a unified interface."
 readme = "README.md"
 license = { text = "Apache-2.0" }

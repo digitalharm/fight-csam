@@ -1,6 +1,6 @@
 [project]
 name = "cybertip-cli"
-version = "0.0.1"
+version = "0.1.0"
 description = "NCMEC CyberTipline report submission CLI and library. Counsel-reviewed scope; production submission gated."
 readme = "README.md"
 license = { text = "Apache-2.0" }

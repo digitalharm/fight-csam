@@ -1,6 +1,6 @@
 [project]
 name = "detectkit-test"
-version = "0.0.1"
+version = "0.1.0"
 description = "Synthetic non-CSAM test fixtures with engineered hash properties — verify your detection pipeline in CI without touching real CSAM."
 readme = "README.md"
 license = { text = "Apache-2.0" }
