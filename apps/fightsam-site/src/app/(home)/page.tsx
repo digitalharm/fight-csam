@@ -7,12 +7,11 @@ export default function HomePage() {
         Open-source child-safety toolkit
       </p>
       <h1 className="mb-4 text-4xl font-bold sm:text-5xl">FightSAM</h1>
-      <p className="mb-8 max-w-2xl text-fd-muted-foreground">
+      <p className="mb-8 max-w-2xl text-balance text-fd-muted-foreground">
         Free, open-source software that helps any online platform{' '}
         <strong>detect</strong>, <strong>report</strong>, and{' '}
-        <strong>prevent</strong>{' '}
-        child sexual abuse material (CSAM) &mdash; and meet the legal duties that
-        now require it.
+        <strong>prevent</strong>
+        {' child sexual abuse material (CSAM) — and meet the legal duties that now require it.'}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-3">
         <Link
