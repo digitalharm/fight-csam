@@ -56,7 +56,23 @@ The owner must provision, for whichever path is chosen:
   add `PYPI_API_TOKEN` as a repo secret. Local: `~/.pypirc` or `TWINE_PASSWORD`.
 - **npm:** the `@digitalharm` org must exist; generate an **automation token** with
   publish rights; add as `NPM_TOKEN` repo secret (CI) or `npm login` (local).
-- **Go:** nothing — Go "publishes" by pushing a semver git tag (§D). No token.
+- **Go:** no *token*, BUT the **repository must be public.** The per-module tags
+  `packages/hashstream/v0.1.0` and `packages/evidencevault/v0.1.0` are **already
+  pushed** (done). However, `github.com/digitalharm/digitalharm-oss` is currently
+  **private** (anonymous fetch → 404/401), so `proxy.golang.org` and any
+  `go get` from a third party cannot resolve the modules. **Action: make the
+  repo public** (or set `GOPRIVATE` for internal-only use, which defeats the
+  point of an OSS launch). The moment the repo is public, the already-pushed
+  tags make both modules installable with no further step — verify with:
+  `GOPROXY=https://proxy.golang.org go list -m github.com/digitalharm/digitalharm-oss/packages/hashstream@v0.1.0`.
+
+### A3. Repository visibility (NEW finding — gates Go *and* the whole OSS launch)
+`digitalharm/digitalharm-oss` is **private**. Beyond blocking Go module
+resolution (above), an OSS portfolio whose source can't be read undercuts the
+entire adoption thesis (auditability is a core selling point). Making the repo
+public is an owner decision (confirm no secrets/CSAM/hash-lists are in history
+first — the safety-guard CI already enforces this on new commits, but do a
+history scan before flipping visibility).
 
 ---
 
