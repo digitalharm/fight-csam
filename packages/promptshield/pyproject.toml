@@ -1,5 +1,5 @@
 [project]
-name = "promptshield"
+name = "digitalharm-promptshield"
 version = "0.1.0"
 description = "CSAM-intent detection at the prompt for AI image and video generators. Drop-in middleware for Stable Diffusion, FLUX, ComfyUI, vLLM."
 readme = "README.md"

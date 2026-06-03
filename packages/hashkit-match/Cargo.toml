@@ -16,7 +16,7 @@ readme = "README.md"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-hashkit = { path = "../hashkit", version = "0.1.0" }
+hashkit = { package = "digitalharm-hashkit", path = "../hashkit", version = "0.1.0" }
 
 [dev-dependencies]
 # proptest for randomized hash-set tests will land here.
