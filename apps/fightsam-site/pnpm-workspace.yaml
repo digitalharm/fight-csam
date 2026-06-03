@@ -1,0 +1,8 @@
+# pnpm config for the FightSAM developer site (apps/fightsam-site).
+# pnpm 11 blocks dependency build scripts by default; allow the three native
+# deps required by the toolchain (esbuild -> fumadocs-mdx; sharp -> OG/images;
+# unrs-resolver -> eslint). Generated stub from create-fumadocs-app, resolved.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true

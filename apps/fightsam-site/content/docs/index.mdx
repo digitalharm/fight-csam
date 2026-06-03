@@ -1,0 +1,76 @@
+---
+title: FightSAM
+description: Open-source tools to detect, report, and prevent CSAM — for developers and their coding agents.
+---
+
+**FightSAM** is the developer front door to **eleven open-source, Apache-2.0
+building blocks** for fighting child sexual abuse material (CSAM). Each tool does
+one job well and composes with the others into a compliance-defensible pipeline.
+
+> **We ship code, never hash lists.** You bring your own credentialed list
+> (NCMEC/IWF); these tools never bundle one. Statutory reporting and evidence
+> retention stay gated behind the credentials and counsel sign-off they legally
+> require.
+
+The packages keep their `digitalharm` names; **FightSAM** is the developer brand
+that documents and wires them together. They are maintained as part of
+[The Digital Harm Project](https://digitalharm.org).
+
+## Detect
+
+Find known and near-duplicate CSAM in user-generated content.
+
+<Cards>
+  <Card title="hashkit (Rust / WASM)" description="PDQ perceptual hashing — turn an image into a robust fingerprint, with NCMEC-conformance vectors." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/hashkit" />
+  <Card title="hashkit-match (Rust)" description="Match query hashes against a known-bad list, with false-positive guards for collages and sticker sheets." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/hashkit-match" />
+  <Card title="csam-shield (Node + Python)" description="Pluggable CSAM-detection middleware for your upload pipeline (Express / Fastify / Hono / ASGI)." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/csam-shield" />
+  <Card title="hashstream (Go)" description="Distribute and sync Ed25519-signed hash-list snapshots across your fleet." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/hashstream" />
+</Cards>
+
+## Report &amp; preserve
+
+Meet statutory reporting and evidence-preservation obligations (§2258A).
+
+<Cards>
+  <Card title="cybertip-cli (Node + Python)" description="File NCMEC CyberTipline reports from code or CLI. Production submit stays counsel-gated." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/cybertip-cli" />
+  <Card title="evidencevault (Go)" description="Preserve evidence with chain-of-custody, content-addressing, and retention windows." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/evidencevault" />
+</Cards>
+
+## Prevent (AI generation)
+
+Stop CSAM from being generated or trained on in the first place.
+
+<Cards>
+  <Card title="promptshield (Python)" description="Screen text prompts for CSAM-generation intent before they reach an image/video model." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/promptshield" />
+  <Card title="trainguard (Python)" description="Screen training datasets for known-bad content before you train on them." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/trainguard" />
+</Cards>
+
+## Provenance &amp; care
+
+Sign what you generate; protect the humans who review.
+
+<Cards>
+  <Card title="c2pa-lite (Rust)" description="Attach C2PA content credentials to media you generate (provenance / authenticity)." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/c2pa-lite" />
+  <Card title="safemod (Rust)" description="Privacy-preserving moderator wellbeing: blur-by-default rendering, exposure limits, k-anonymous signals." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/safemod" />
+</Cards>
+
+## Verify
+
+Prove your pipeline works — in CI, without touching real CSAM.
+
+<Cards>
+  <Card title="detectkit-test (Python)" description="Deterministic synthetic fixtures so you can test detection end-to-end with zero real material." href="https://github.com/digitalharm/digitalharm-oss/tree/main/packages/detectkit-test" />
+</Cards>
+
+## Built for coding agents
+
+FightSAM treats an AI coding agent as a first-class visitor:
+
+- **[`/llms.txt`](/llms.txt)** — a curated, machine-readable index of the whole site.
+- **[`/llms-full.txt`](/llms-full.txt)** — the entire docs corpus as one Markdown file.
+- **Per-page raw Markdown** at `/llms.mdx/...` — no HTML scraping, no JS execution.
+- **Static export** — every page is in the initial HTML; `curl` gets the full content.
+
+Coming next (see the [release plan](https://github.com/digitalharm/digitalharm-oss/blob/main/docs/ops/v2-release-plan.md)):
+a `/.well-known/fightsam.json` package manifest, the guided **golden path**, the
+`create-fightsam` scaffolder, and a docs **MCP server**.
