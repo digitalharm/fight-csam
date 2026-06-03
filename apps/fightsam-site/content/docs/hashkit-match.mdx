@@ -1,0 +1,43 @@
+---
+title: hashkit-match
+description: An in-memory multi-index Hamming matcher for finding near-duplicate PDQ hashes against a known hash set.
+---
+
+`hashkit-match` is an in-memory multi-index Hamming matcher for PDQ hashes. It pairs with [hashkit](../hashkit): once you can compute PDQ hashes, this layer matches incoming hashes against a known-bad hash set.
+
+## Install
+
+```bash
+cargo add hashkit-match
+```
+
+## What it does
+
+- Provides a multi-index Hamming (MIH) matcher over the 256-bit PDQ hash space, avoiding naive linear comparison at scale.
+- Matches incoming hashes against caller-supplied hash sets you've received from sources such as NCMEC, IWF, or Project Arachnid.
+- Uses a configurable distance threshold, defaulting to 31/256 (the PhotoDNA-equivalent threshold).
+- Is a pure data structure that ships no hash lists.
+- Offers bindings parallel to hashkit across Rust, WASM, Node, Deno, Bun, and Python.
+
+## Quickstart
+
+```rust
+use hashkit_match::Matcher;
+
+// Build an index from a caller-supplied set of known PDQ hashes.
+let mut matcher = Matcher::new();
+matcher.insert(known_hash);
+
+// Query an incoming hash; the default threshold is 31/256.
+if let Some(hit) = matcher.query(incoming_hash) {
+    println!("matched within distance {}", hit.distance);
+}
+```
+
+## Status
+
+Pre-release: the first crates.io publish is still pending, and the API is planned to ship alongside hashkit. Treat names and signatures as subject to change until the initial release.
+
+## Source
+
+[`packages/hashkit-match`](https://github.com/digitalharm/fight-csam/tree/main/packages/hashkit-match)

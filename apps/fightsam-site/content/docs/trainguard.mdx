@@ -1,0 +1,46 @@
+---
+title: trainguard
+description: Screens AI training datasets against known-bad CSAM hash lists before fitting starts, emitting a signed compliance report.
+---
+
+`trainguard` is a Python pre-flight gate that screens a training corpus against known-bad CSAM hash lists before training begins. Point it at your dataset shards, match every image against the lists you hold, and get a signed, machine-readable compliance report you can hand to counsel.
+
+## Install
+
+```bash
+pip install trainguard
+```
+
+## What it does
+
+- Streams samples from local directories and WebDataset tar shards, decoding images once and computing PDQ perceptual hashes in parallel.
+- Matches hashes against an operator-supplied hash file with a configurable Hamming-distance threshold; in-box PDQ needs no external credentials.
+- Activates operator-credentialed adapters (Project Arachnid Shield first) for live lists, with keys that are never logged or persisted.
+- Emits a deterministic JSON report plus a rendered PDF, signed with the operator's X.509 key (COSE) for a tamper-evident chain of custody.
+- Flags matches for human review with confidence bands — never auto-deletes, never auto-reports, and never writes matched media bytes to disk.
+- Returns a non-zero exit code on match so it can gate a CI training pipeline in block-on-match or warn-only mode.
+
+## Quickstart
+
+```python
+from trainguard import ScreeningEngine
+
+engine = ScreeningEngine(
+    hash_file="arachnid-pdq.txt",  # operator-supplied list
+    hamming_threshold=31,
+)
+
+report = engine.scan("s3://corpus/shards/")
+print(f"scanned {report.scanned}, matched {report.matched}")
+
+# Signed JSON + PDF for your trust-and-safety team.
+report.write_signed("trainguard-report", signing_key="operator.pem")
+```
+
+## Status
+
+Pre-release: the first PyPI publish is still pending, so treat the package name, API, and report format as subject to change until the initial release. trainguard operates only on operator-supplied lists and ships no hash lists of its own — you must hold your own NCMEC, IWF, or Project Arachnid agreements.
+
+## Source
+
+[`packages/trainguard`](https://github.com/digitalharm/fight-csam/tree/main/packages/trainguard)

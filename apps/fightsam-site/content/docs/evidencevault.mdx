@@ -1,0 +1,55 @@
+---
+title: evidencevault
+description: A self-hosted Go service that preserves CSAM-report evidence with chain-of-custody and jurisdiction-aware retention.
+---
+
+`evidencevault` is a Go service that preserves CSAM-report evidence defensibly: it keeps a tamper-evident chain of custody and per-jurisdiction preservation timers that hold up in court. It governs the sealed evidence after a report fires, sitting downstream of the detector so illegal bytes never leave your trust boundary.
+
+## Install
+
+```bash
+go get github.com/digitalharm/fight-csam/packages/evidencevault
+```
+
+## What it does
+
+- Exposes the custody and retention lifecycle over an HTTP API (`evidencevaultd serve`), backed by either an in-memory store or a disk store that persists one JSON package per id and survives restarts.
+- Stores content-addressed evidence packages keyed by id, each carrying a `content_ref_hash` plus operator-supplied ciphertext.
+- Records an append-only chain of custody: every store, access, hold, and delete is logged with actor and reason, and the chain stays terminal once a package is deleted.
+- Tracks per-jurisdiction retention so `GET /expired` reports which packages would be eligible for destruction, while a litigation hold suspends expiry.
+- Stays out of the plaintext path: the operator wraps the blob with their own KMS and hands the vault only ciphertext.
+
+## Quickstart
+
+Run the service against an in-memory store, then walk a package through its lifecycle with curl.
+
+```bash
+go build -o evidencevaultd ./cmd/evidencevaultd
+./evidencevaultd serve --store=memory:: --addr=127.0.0.1:8080
+```
+
+```bash
+BASE=http://127.0.0.1:8080
+
+# Store (ciphertext is base64-encoded operator-wrapped bytes)
+curl -X POST "$BASE/packages" -H 'Content-Type: application/json' \
+  -d '{"id":"ev-1","ciphertext":"aGVsbG8=","content_ref_hash":"sha256-abc","operator":"ts-op"}'
+
+# Get (logs an access entry on the custody chain)
+curl "$BASE/packages/ev-1?operator=auditor&purpose=subpoena-2026-014"
+
+# Place a litigation hold (suspends expiry)
+curl -X POST "$BASE/packages/ev-1/hold" -H 'Content-Type: application/json' \
+  -d '{"operator":"counsel","hold_ref":"lit-2026-001"}'
+
+# Delete: zeroes the ciphertext, keeps metadata + custody log
+curl -X DELETE "$BASE/packages/ev-1?operator=retention-bot"
+```
+
+## Status
+
+Pre-release: the first publish is still pending, so treat names and signatures as subject to change. Retention enforcement, real KMS, and other production paths are counsel-gated for now &mdash; this build ships a noop-KMS that stores ciphertext as given (no confidentiality), and retention is queryable but not timer-enforced (deletion is always an explicit, audited `DELETE`).
+
+## Source
+
+[`packages/evidencevault`](https://github.com/digitalharm/fight-csam/tree/main/packages/evidencevault)

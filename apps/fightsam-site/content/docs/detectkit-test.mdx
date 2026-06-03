@@ -1,0 +1,51 @@
+---
+title: detectkit-test
+description: Synthetic, CSAM-free test fixtures and a false-positive harness for exercising detection pipelines in CI.
+---
+
+detectkit-test ships deterministic synthetic fixtures so engineers can prove their CSAM detection plumbing works end-to-end in CI, with zero real CSAM. It is a Python package: a versioned corpus, fingerprint generators, and a pytest plugin plus CLI that feed fixtures through your own pipeline adapter.
+
+## Install
+
+```bash
+pip install detectkit-test
+```
+
+## What it does
+
+- Ships a versioned corpus of procedurally generated, provably non-CSAM synthetic images and short clips, each with a manifest of expected fingerprints (MD5, SHA-1, PDQ, TMK+PDQF, vPDQ).
+- Regenerates those fingerprints deterministically, so fixtures can be rebuilt and audited.
+- Engineers near-duplicate pairs at exact target Hamming distances (0, 10, 31, 32, 90) to exercise match-threshold boundaries.
+- Runs fixtures through a ~12-line `MatcherAdapter` you implement, asserting hit/miss/score and failing CI on plumbing regressions like truncation or wrong byte order.
+- Emits a false-positive characterization table (recall, precision, FP-rate) as JSON plus JUnit XML, with a prebuilt GitHub Action.
+
+## Quickstart
+
+```python
+from detectkit_test import MatcherAdapter, run_suite
+
+class MyAdapter(MatcherAdapter):
+    def match(self, fixture):
+        # feed the fixture through your detection pipeline
+        # and return whether it matched, plus the score
+        result = my_pipeline.scan(fixture.bytes)
+        return result.is_match, result.score
+
+report = run_suite(MyAdapter())
+print(report.fp_rate, report.recall)
+report.to_junit("detectkit-results.xml")
+```
+
+You can also run the bundled suite from the command line:
+
+```bash
+detectkit run --adapter myproject.adapters:MyAdapter
+```
+
+## Status
+
+PRE-RELEASE: the first PyPI publish is still pending, and APIs may change before v0.1. Every fixture is synthetic and non-CSAM by construction (procedurally generated noise, gradients, and shapes), and the project never ingests real CSAM or real hash lists.
+
+## Source
+
+[`packages/detectkit-test`](https://github.com/digitalharm/fight-csam/tree/main/packages/detectkit-test)

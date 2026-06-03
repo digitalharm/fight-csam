@@ -1,0 +1,56 @@
+---
+title: hashkit
+description: PDQ and TMK+PDQF perceptual hashing with NCMEC-verified conformance vectors so every language produces the same hash.
+---
+
+**hashkit** computes Meta's PDQ (image) and TMK+PDQF (video) perceptual hashes
+from raw pixel data, backed by a frozen, NCMEC-cross-checked conformance vector
+suite. It is for trust-and-safety and platform teams who need to match
+user-generated content against known-CSAM hash lists and prove their hashes are
+byte-identical to the reference.
+
+## Install
+
+```bash
+cargo add digitalharm-hashkit
+```
+
+The crate is published as `digitalharm-hashkit` but imported as `hashkit` (e.g. `use hashkit::...`).
+
+## What it does
+
+- Computes a 256-bit PDQ image hash plus a 0&ndash;100 quality score from a single-channel luma buffer.
+- Offers a PDQ-Dihedral variant that returns 8 hashes for the dihedral transforms (4 rotations &times; 2 mirrors) for robustness to rotation and mirroring.
+- Compares hashes by Hamming distance (0&ndash;256 bits); matches are typically below a threshold of 31.
+- Takes raw RGB/luma planes, never image codecs &mdash; the host decodes, keeping the core deterministic across runtimes.
+- Ships zero hash lists: the algorithm lives here, the known-CSAM lists stay with NCMEC, IWF, and Project Arachnid.
+- Is gated on a versioned conformance corpus so a release fails closed on any one-bit drift from the reference.
+
+## Quickstart
+
+```rust
+use hashkit::pdq;
+
+// `luma` is single-channel, row-major, 1 byte per pixel.
+// Decode and downsample to luma yourself (hashkit takes no image codecs).
+let result = pdq::hash_from_luma(&luma, width, height)?;
+
+println!("hash:    {}", result.hash.to_hex());
+println!("quality: {}", result.quality.0);
+
+// Two hashes are a likely match when their Hamming distance is below ~31.
+let distance = result.hash.hamming(&other.hash);
+let is_match = distance < 31;
+```
+
+## Status
+
+Pre-release: the first crates.io publish is still pending. PDQ image hashing
+(`hash_from_luma` and `hash_dihedral_from_luma`) is implemented by delegating to
+the maintained `pdqhash` crate, while the conformance corpus, WebAssembly
+bindings, and TMK+PDQF video features are still in progress toward v1.0. Pin
+versions and expect APIs to move before the first stable release.
+
+## Source
+
+[`packages/hashkit`](https://github.com/digitalharm/fight-csam/tree/main/packages/hashkit)

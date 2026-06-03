@@ -1,0 +1,23 @@
+{
+  "title": "FightSAM",
+  "root": true,
+  "pages": [
+    "index",
+    "---Detect---",
+    "hashkit",
+    "hashkit-match",
+    "csam-shield",
+    "hashstream",
+    "---Report & preserve---",
+    "cybertip-cli",
+    "evidencevault",
+    "---Prevent (AI generation)---",
+    "promptshield",
+    "trainguard",
+    "---Provenance & care---",
+    "c2pa-lite",
+    "safemod",
+    "---Verify---",
+    "detectkit-test"
+  ]
+}

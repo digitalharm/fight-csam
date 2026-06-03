@@ -1,0 +1,52 @@
+---
+title: c2pa-lite
+description: Attaches signed C2PA content credentials to AI-generated images and video so their provenance travels with the file.
+---
+
+**c2pa-lite** is a Rust library that stamps generated media with recoverable,
+cryptographically signed C2PA content credentials &mdash; a "this is synthetic,
+from this model, at this time" provenance signal. It targets the long tail of
+open and self-hosted image/video generators that ship no provenance today.
+
+## Install
+
+```bash
+cargo add c2pa-lite
+```
+
+## What it does
+
+- Wraps contentauth/c2pa-rs to build, sign, embed, and verify C2PA manifests &mdash; it does not reimplement C2PA.
+- Fills C2PA's empty soft-binding slot with an OSS watermarker (default: Adobe TrustMark via ONNX) through a pluggable `SoftBinder` trait, so the watermark is swappable without touching the signing path.
+- Exposes a 3-call surface: `credential` (mark + sign + embed), `verify` (manifest + validation + watermark decode), and `recover` (refetch a stripped manifest from the store).
+- Supports JPEG and PNG, with experimental MP4/H.264 video via per-segment soft binding plus fragmented-MP4 hard binding.
+- Signs with local PKCS#8 keys for development and KMS/PKCS#11 for production, against a documented test-anchor trust list.
+- Emits a normalized JSON verdict that is wire-compatible with Adobe/CAI Verify (signed? trusted issuer? watermark decoded? recovered from store?).
+
+## Quickstart
+
+```rust
+use c2pa_lite::{credential, verify};
+
+// Mark + sign + embed a credential into a generated image.
+let signed = credential(&image_bytes, "stable-diffusion-xl", &signing_key)?;
+std::fs::write("output.signed.jpg", &signed)?;
+
+// Later, validate the asset and inspect the verdict.
+let report = verify(&signed)?;
+println!("signed:           {}", report.signed);
+println!("trusted issuer:   {}", report.trusted_issuer);
+println!("watermark decoded: {}", report.watermark_decoded);
+```
+
+## Status
+
+Pre-release: the first crates.io publish is still pending, so pin versions and
+expect the API to move before a stable release. Signing and manifest handling
+delegate to c2pa-rs upstream; robust watermarking is the active work, and
+invisible marks are removable &mdash; c2pa-lite ships adversarial decode-survival
+numbers and never claims to be tamper-proof.
+
+## Source
+
+[`packages/c2pa-lite`](https://github.com/digitalharm/fight-csam/tree/main/packages/c2pa-lite)

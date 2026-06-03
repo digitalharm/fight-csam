@@ -1,0 +1,46 @@
+---
+title: safemod
+description: A privacy-preserving moderator-wellbeing layer with blur-by-default rendering, exposure limits, and k-anonymous signals.
+---
+
+safemod is a moderator-wellbeing layer for content-review queues: it renders media blurred by default, enforces per-shift exposure limits, and reports only k-anonymous aggregate signals so no individual's wellbeing data is ever exposed. It is written in Rust, is zero-dependency, and is built `forbid(unsafe)`.
+
+## Install
+
+```bash
+cargo add safemod
+```
+
+## What it does
+
+- Blur-by-default rendering with explicit click-to-reveal and automatic re-shroud after a timeout.
+- Per-moderator, per-shift exposure caps (reveal count and cumulative reveal-seconds) returning allow / soft-warn / hard-lockout decisions.
+- Weighted case rotation so no moderator gets a run of the most severe category beyond a configurable streak.
+- Anonymized wellbeing intake keyed only to an opaque pseudonym — no names, no raw identifiers.
+- K-anonymity floor on every aggregate: cohorts below a configurable threshold (default k=5) are suppressed.
+
+## Quickstart
+
+```rust
+use safemod::{ExposureBudget, Decision};
+
+let budget = ExposureBudget::per_shift()
+    .max_reveals(40)
+    .max_reveal_seconds(600);
+
+let mut session = budget.start("mod-pseudonym-7f3a");
+
+match session.record_reveal(/* seconds = */ 12) {
+    Decision::Allow => render_blurred(item),
+    Decision::SoftWarn => prompt_break(item),
+    Decision::HardLockout => end_shift(),
+}
+```
+
+## Status
+
+PRE-RELEASE: the first crates.io publish is pending, so APIs may change before 0.1. It is zero-dependency and built `forbid(unsafe)`, and privacy-preserving by design — it stores no identifiers and enforces a k-anonymity floor on all aggregate output.
+
+## Source
+
+[`packages/safemod`](https://github.com/digitalharm/fight-csam/tree/main/packages/safemod)

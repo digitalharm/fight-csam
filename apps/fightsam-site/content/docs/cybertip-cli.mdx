@@ -1,0 +1,56 @@
+---
+title: cybertip-cli
+description: A CLI and library for filing NCMEC CyberTipline reports under 18 U.S.C. §2258A, with Node and Python bindings.
+---
+
+`cybertip-cli` files NCMEC CyberTipline reports, the statutory §2258A submission step that platforms must perform themselves once detection and takedown are done. It ships a CLI plus a stable library API with both Node and Python bindings over a shared core.
+
+## Install
+
+```bash
+# Node
+npm install @digitalharm/cybertip-cli
+# Python
+pip install cybertip-cli
+```
+
+## What it does
+
+- Builds a typed NCMEC report model generated from the published XSD, with a builder that fails closed on missing mandatory fields.
+- Runs an idempotent submit, upload, fileinfo, finish state machine with a crash-resumable WAL and exponential-backoff retries.
+- Defaults to a sandbox/dry-run mode that produces the wire payload without network I/O; live filing requires an explicit flag plus valid credentials.
+- Keeps an append-only, hash-chained audit log of every request and response, with a one-command redacted export for §2258A preservation.
+- Strips reporter PII and internal IDs from local audit copies via a declared redaction policy.
+- Never decides what is CSAM; it stays a downstream formatter that consumes a detection result plus evidence.
+
+## Quickstart
+
+```python
+from cybertip_cli import CyberTipReport, submit_dry_run
+
+report = CyberTipReport(
+    client_reference="cybertip-myorg-001",
+    reporting_person={"org_name": "MyOrg", "esp_id": "ESP-001",
+                      "contact_email": "trust@myorg.example"},
+    incident={
+        "incident_type": "csam-distribution",
+        "incident_datetime_iso": "2026-05-30T12:00:00Z",
+        "description": "Detected via CSAM-Shield on upload.",
+        "severity": "A",
+        "evidence_refs": ["urn:evidencevault:abc123"],
+    },
+)
+
+result = submit_dry_run(report)
+if not result.ok:
+    for err in result.errors:
+        print(f"ERROR: {err}")
+```
+
+## Status
+
+Pre-release: the first publish to npm and PyPI is still pending. Production submission is counsel-gated and blocked until outside-counsel sign-off plus an active NCMEC ESP credential are in place, so only sandbox and dry-run modes are usable for now.
+
+## Source
+
+[`packages/cybertip-cli`](https://github.com/digitalharm/fight-csam/tree/main/packages/cybertip-cli)

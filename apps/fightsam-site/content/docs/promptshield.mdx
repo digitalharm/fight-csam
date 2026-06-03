@@ -1,0 +1,51 @@
+---
+title: promptshield
+description: Screens text prompts for CSAM-generation intent before they reach an image or video model.
+---
+
+**promptshield** is a drop-in classifier that screens text prompts for
+CSAM-generation intent before they reach a text-to-image or text-to-video model,
+so abusive requests are blocked before a single GPU cycle is spent. It is a
+Python library for self-hosted generation stacks that ship with no input-side
+defense of their own.
+
+## Install
+
+```bash
+pip install digitalharm-promptshield
+```
+
+The distribution is `digitalharm-promptshield` but imported as `promptshield` (e.g. `import promptshield`).
+
+## What it does
+
+- Exposes a one-line `guard(prompt, negative_prompt=None)` that returns a structured verdict: allow, block, or review, with a calibrated score and the list of matched signals.
+- Runs a fast deterministic first stage &mdash; homoglyph, leetspeak, and whitespace normalization plus a curated lexicon &mdash; on CPU, no GPU required.
+- Keys on the conjunction of a minor-indicator concept and a sexual concept, so neither alone trips the gate, which keeps false positives down.
+- Handles negative-prompt evasion, such as `adult` or `mature` stuffed into negatives to disguise intent.
+- Logs no prompt content by default, with an optional hash-only audit trail for NCMEC-reporting integrations.
+- Is one input-side layer of a defense-in-depth stack, never a substitute for an output classifier plus known-CSAM hash matching.
+
+## Quickstart
+
+```python
+import promptshield
+
+verdict = promptshield.guard(prompt, negative_prompt=negative_prompt)
+
+if verdict.action == "block":
+    raise ValueError("Prompt rejected by promptshield")
+
+# verdict.action is one of: "allow", "block", "review"
+print(verdict.score, verdict.matched_signals)
+```
+
+A `review` verdict is for borderline prompts you want to route to a human or a stricter policy rather than allow or block outright.
+
+## Status
+
+Pre-release: the first PyPI publish is still pending, so `pip install digitalharm-promptshield` is not live yet. The deterministic first stage, the fine-tuned ONNX classifier, the framework adapters, and the adversarial test suite are still in progress toward v0.1 &mdash; pin versions and expect APIs to move before the first stable release.
+
+## Source
+
+[`packages/promptshield`](https://github.com/digitalharm/fight-csam/tree/main/packages/promptshield)

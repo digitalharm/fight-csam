@@ -1,0 +1,52 @@
+---
+title: csam-shield
+description: CSAM-detection middleware that normalizes multiple detectors behind one match/nomatch/pending interface for Node and Python upload pipelines.
+---
+
+`csam-shield` is one-line middleware for upload pipelines that wires detectors like PhotoDNA, PDQ, Arachnid Shield, and Cloudflare behind a single normalized match / nomatch / pending interface. It ships as a TypeScript package for Express, Fastify, and Hono, with a Python sibling for FastAPI, Starlette, and Flask.
+
+## Install
+
+```bash
+# Node
+npm install @digitalharm/csam-shield
+# Python
+pip install csam-shield
+```
+
+## What it does
+
+- Fans out one upload to an ordered list of detectors and normalizes every result into one `MatchResponse` with a `match` / `nomatch` / `pending` / `error` decision plus per-detector results.
+- Combines detectors with a configurable strategy: `any-match` (default), `majority`, or `consensus`.
+- Applies per-detector timeouts and a retry policy, with a fail-open (`allow`) or fail-closed (`deny`) `onError` stance for failed scans.
+- Includes a working PDQ-list detector that Hamming-matches against an operator-supplied hash set, requiring no external credentials.
+- Never persists the scanned bytes; it emits a redacted `logSummary` and an `onDecision` hook for your own audit sink.
+- Ships framework adapters for Express, Fastify, and Hono (Node) and FastAPI, Starlette, and Flask (Python).
+
+## Quickstart
+
+```ts
+import { createShield } from "@digitalharm/csam-shield";
+
+const shield = createShield({
+  detectors: [
+    { detector: "cloudflare-csam-scanning", config: { token: process.env.CF_TOKEN! } },
+    { detector: "photodna", config: { apiKey: process.env.PHOTODNA_KEY! } },
+  ],
+  strategy: "any-match",
+  onDecision: async (resp) => { await myAuditLog.write(resp); },
+});
+
+const result = await shield.scan({ kind: "image-bytes", data, contentType: "image/jpeg" });
+if (result.decision === "match") {
+  // block + escalate to the CyberTipline
+}
+```
+
+## Status
+
+Pre-release: the public API surface and detector dispatch are implemented, but the first npm and PyPI publishes are still pending, so treat names and signatures as subject to change. Only the PDQ-list detector runs end to end today (it needs an operator-supplied hash list); the PhotoDNA, Cloudflare, and NCMEC adapters are scaffold stubs until each upstream's credentialing path is unblocked, and the shield never auto-reports or auto-bans.
+
+## Source
+
+[`packages/csam-shield`](https://github.com/digitalharm/fight-csam/tree/main/packages/csam-shield)

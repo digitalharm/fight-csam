@@ -1,0 +1,46 @@
+---
+title: hashstream
+description: Distributes and syncs signed, versioned hash-list snapshots so platforms can mirror and audit the CSAM hash lists they screen against.
+---
+
+`hashstream` distributes and syncs signed, versioned snapshots of CSAM hash lists. It is a Go service plus a TypeScript client SDK: operators publish snapshots from the lists they already hold, and consumers sync the latest version with a verifiable provenance trail.
+
+## Install
+
+```bash
+# Go server / library
+go get github.com/digitalharm/fight-csam/packages/hashstream
+# TypeScript client SDK
+npm install @digitalharm/hashstream-sdk
+```
+
+## What it does
+
+- Publishes immutable, versioned snapshots of a hash list, each one Ed25519-signed so consumers can verify provenance before trusting it.
+- Ingests operator-supplied hash files (MD5, SHA1, PDQ, PhotoDNA) and normalizes them into canonical, content-addressed rows.
+- Lets consumers sync a full snapshot or just the diff since a known version, with stable pagination.
+- Records every published and served snapshot in an append-only, hash-chained audit log answering "which version was active at time T."
+- Ships no hash lists of its own — it only moves and attests to lists you already have rights to.
+
+## Quickstart
+
+```typescript
+import { HashStreamClient } from "@digitalharm/hashstream-sdk";
+
+const client = new HashStreamClient({
+  endpoint: "https://hashstream.internal",
+  publicKey: process.env.HASHSTREAM_PUBLIC_KEY, // Ed25519 verify key
+});
+
+// Pull the latest snapshot; the signature is verified before it resolves.
+const snapshot = await client.latest();
+console.log(`version ${snapshot.version}: ${snapshot.entries.length} hashes`);
+```
+
+## Status
+
+Pre-release: the first publish of both the Go module and the npm SDK is still pending, so treat versions, names, and signatures as subject to change until the initial release. hashstream operates only on operator-supplied lists and ships no hash lists of its own; you must hold your own NCMEC, IWF, or Project Arachnid agreements.
+
+## Source
+
+[`packages/hashstream`](https://github.com/digitalharm/fight-csam/tree/main/packages/hashstream)
