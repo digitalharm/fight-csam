@@ -17,7 +17,7 @@
 
 export const meta = {
   name: 'wave-c-legal-infra-impl',
-  description: 'Credentialed + Legal wave (hashstream, trainguard, cybertip-cli, evidencevault): preflight repo guard + explicit idempotent worktree provisioning in digitalharm-oss, then four impl agents. Safe to re-run after the killed original.',
+  description: 'Credentialed + Legal wave (hashstream, trainguard, cybertip-cli, evidencevault): preflight repo guard + explicit idempotent worktree provisioning in fight-csam, then four impl agents. Safe to re-run after the killed original.',
   phases: [
     { title: 'Preflight' },
     { title: 'Package implementation' },
@@ -26,8 +26,8 @@ export const meta = {
 }
 
 // ---- Track config (mirror of docs/ops/orchestration/tracks.config.json) ------
-const REPO_ROOT_HINT = '/Users/colin/Code/digitalharm-oss'
-const REMOTE_SLUG = 'digitalharm/digitalharm-oss'
+const REPO_ROOT_HINT = '/Users/colin/Code/fight-csam'
+const REMOTE_SLUG = 'digitalharm/fight-csam'
 const BASE_BRANCH = 'main'
 const WORKTREE_DIR = '.worktrees'
 const BRANCH_PREFIX = 'agent/wave-c-'

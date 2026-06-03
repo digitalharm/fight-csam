@@ -17,7 +17,7 @@
 
 export const meta = {
   name: 'wave-a-foundation-impl',
-  description: 'Foundation wave (hashkit, hashkit-match, detectkit-test): preflight repo guard + explicit worktree provisioning in digitalharm-oss, then three impl agents. Session-CWD-independent.',
+  description: 'Foundation wave (hashkit, hashkit-match, detectkit-test): preflight repo guard + explicit worktree provisioning in fight-csam, then three impl agents. Session-CWD-independent.',
   phases: [
     { title: 'Preflight' },
     { title: 'Package implementation' },
@@ -26,8 +26,8 @@ export const meta = {
 }
 
 // ---- Track config (mirror of docs/ops/orchestration/tracks.config.json) ------
-const REPO_ROOT_HINT = '/Users/colin/Code/digitalharm-oss'
-const REMOTE_SLUG = 'digitalharm/digitalharm-oss'
+const REPO_ROOT_HINT = '/Users/colin/Code/fight-csam'
+const REMOTE_SLUG = 'digitalharm/fight-csam'
 const BASE_BRANCH = 'main'
 const WORKTREE_DIR = '.worktrees'
 const BRANCH_PREFIX = 'agent/wave-a-'

@@ -49,7 +49,7 @@ export default function Page() {
         <div className="brand">
           Safe<span className="tag">Messenger</span>
         </div>
-        <div className="sub">digitalharm-oss reference app · server-visible content (not E2EE)</div>
+        <div className="sub">fight-csam reference app · server-visible content (not E2EE)</div>
         <div className="tabs">
           {(["chat", "art", "moderation", "about"] as Tab[]).map((t) => (
             <button key={t} className={`tab ${tab === t ? "active" : ""}`} onClick={() => setTab(t)}>

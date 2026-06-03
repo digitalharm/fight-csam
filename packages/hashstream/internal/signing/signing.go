@@ -39,7 +39,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/store"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/store"
 )
 
 // Signer holds an Ed25519 private key and the derived key ID.

@@ -1,4 +1,4 @@
-# Adoption Strategy — getting people to use digitalharm-oss
+# Adoption Strategy — getting people to use fight-csam
 
 **The question:** what's the best path to getting people to actually *use* the 11
 OSS tools, and who is the Ideal Customer Profile?

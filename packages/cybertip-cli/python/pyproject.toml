@@ -21,8 +21,8 @@ dev = ["pytest>=8", "ruff>=0.5"]
 
 [project.urls]
 Homepage = "https://digitalharm.org/tools"
-Repository = "https://github.com/digitalharm/digitalharm-oss"
-"Counsel scope" = "https://github.com/digitalharm/digitalharm-oss/blob/main/packages/cybertip-cli/docs/counsel-scope-brief.md"
+Repository = "https://github.com/digitalharm/fight-csam"
+"Counsel scope" = "https://github.com/digitalharm/fight-csam/blob/main/packages/cybertip-cli/docs/counsel-scope-brief.md"
 
 [project.scripts]
 cybertip = "cybertip_cli.cli:main"

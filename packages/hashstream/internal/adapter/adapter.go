@@ -11,7 +11,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/store"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/store"
 )
 
 // Adapter is the contract every upstream-list integration implements.

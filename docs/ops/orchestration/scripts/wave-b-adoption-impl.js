@@ -8,7 +8,7 @@
 // session, so every agent got a worktree of the WRONG repo (addiction-research).
 //
 // WHAT CHANGED (see ../README.md and ../tracks.config.json):
-//   1. A phase-0 PREFLIGHT agent asserts we are pointed at digitalharm-oss
+//   1. A phase-0 PREFLIGHT agent asserts we are pointed at fight-csam
 //      (origin remote slug + Cargo.toml/packages markers) and ABORTS the whole
 //      run if not — instead of silently mis-dispatching.
 //   2. The preflight agent PROVISIONS one git worktree per package explicitly
@@ -24,7 +24,7 @@
 
 export const meta = {
   name: 'wave-b-adoption-impl',
-  description: 'Adoption + satellites (csam-shield, promptshield, c2pa-lite): preflight repo guard + explicit worktree provisioning in digitalharm-oss, then three impl agents. Session-CWD-independent.',
+  description: 'Adoption + satellites (csam-shield, promptshield, c2pa-lite): preflight repo guard + explicit worktree provisioning in fight-csam, then three impl agents. Session-CWD-independent.',
   phases: [
     { title: 'Preflight' },
     { title: 'Package implementation' },
@@ -33,8 +33,8 @@ export const meta = {
 }
 
 // ---- Track config (mirror of docs/ops/orchestration/tracks.config.json) ------
-const REPO_ROOT_HINT = '/Users/colin/Code/digitalharm-oss' // verified, not trusted blindly
-const REMOTE_SLUG = 'digitalharm/digitalharm-oss'          // authoritative identity check
+const REPO_ROOT_HINT = '/Users/colin/Code/fight-csam' // verified, not trusted blindly
+const REMOTE_SLUG = 'digitalharm/fight-csam'          // authoritative identity check
 const BASE_BRANCH = 'main'
 const WORKTREE_DIR = '.worktrees'
 const BRANCH_PREFIX = 'agent/wave-b-'

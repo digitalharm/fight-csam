@@ -53,7 +53,7 @@ The Release Captain integration procedure is in
 
 ## Resume rules if a workflow died mid-flight
 
-`gh api repos/digitalharm/digitalharm-oss/branches --paginate --jq '.[].name' | grep agent/wave-`
+`gh api repos/digitalharm/fight-csam/branches --paginate --jq '.[].name' | grep agent/wave-`
 → any branch listed means the agent finished and pushed.
 
 For agents whose branches aren't pushed: re-run the workflow with

@@ -5,7 +5,7 @@
  * surface stays narrow and the wire shape is the source of truth —
  * mirrors the Go types in packages/hashstream/internal/store/.
  *
- * Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
+ * Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
  */
 
 export type Source = "ncmec" | "iwf" | "project-arachnid" | "local";

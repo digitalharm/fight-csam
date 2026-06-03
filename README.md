@@ -1,4 +1,4 @@
-# digitalharm-oss
+# fight-csam
 
 Open-source building blocks for CSAM detection, blocking, and prevention.
 

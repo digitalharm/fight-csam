@@ -30,7 +30,7 @@ export async function runCloudflareCSAMScanning(
   throw new Error(
     "csam-shield: Cloudflare CSAM Scanning adapter is a scaffold stub. " +
       "Wire-protocol implementation pending account-token test access. See " +
-      "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md.",
+      "https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md.",
   );
 }
 

@@ -102,7 +102,7 @@ async function dispatch(
     case "hive-ai":
       throw new Error(
         `csam-shield: detector '${config.detector}' is not yet implemented in this scaffold. ` +
-          `See https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md for status.`,
+          `See https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md for status.`,
       );
     case "custom":
       return runCustom(config.config, content, requestId);

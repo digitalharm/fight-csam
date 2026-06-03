@@ -6,10 +6,10 @@
   "homepage": "https://digitalharm.org/tools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitalharm/digitalharm-oss",
+    "url": "https://github.com/digitalharm/fight-csam",
     "directory": "packages/csam-shield/node"
   },
-  "bugs": "https://github.com/digitalharm/digitalharm-oss/issues",
+  "bugs": "https://github.com/digitalharm/fight-csam/issues",
   "author": "The Digital Harm Report contributors",
   "type": "module",
   "main": "./dist/index.js",

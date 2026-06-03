@@ -75,4 +75,4 @@ plus a side hashes map. This branch instead carries hashes inline on
 `Snapshot` and diffs from them. Only one store design can land; reconcile
 before merging both. (Also: a stray empty `agent/wave-c-hashstream` branch was
 created in the unrelated `addiction-research` repo during setup and can be
-deleted there — this work lives in `digitalharm-oss`.)
+deleted there — this work lives in `fight-csam`.)

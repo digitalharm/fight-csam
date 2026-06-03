@@ -6,7 +6,7 @@
   "homepage": "https://digitalharm.org/tools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitalharm/digitalharm-oss",
+    "url": "https://github.com/digitalharm/fight-csam",
     "directory": "packages/hashstream/sdk-ts"
   },
   "author": "The Digital Harm Report contributors",

@@ -23,9 +23,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/server"
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/signing"
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/store"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/server"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/signing"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/store"
 )
 
 func main() {

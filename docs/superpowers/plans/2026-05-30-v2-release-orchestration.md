@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the release orchestration, worktree structure, and package-by-package path needed to take digitalharm-oss from current scaffolds through v2.
+**Goal:** Build the release orchestration, worktree structure, and package-by-package path needed to take fight-csam from current scaffolds through v2.
 
 **Architecture:** Keep package implementation work isolated by release worktree while tracking portfolio decisions in committed docs. Foundation packages unblock adoption, credentialed infrastructure, and legal/ops tracks; v2 hardening integrates all release gates.
 

@@ -17,7 +17,7 @@ and there is **no per-call repo override** in `agent()` (options are `label / ph
 schema / model / isolation / agentType`). The orchestration session ran from
 `/Users/colin/Code/addiction`, so all 10 Wave A/B/C impl agents got a worktree of the
 wrong repo (`addiction-research` — no Rust workspace, no `packages/`). Shipped work is
-preserved on `digitalharm-oss` origin.
+preserved on `fight-csam` origin.
 
 Full root-cause writeup (consequences, per-agent outcomes, recovery) —
 [`../handoffs/session-2026-05-30-v05-results.md`](../handoffs/session-2026-05-30-v05-results.md)
@@ -28,14 +28,14 @@ Full root-cause writeup (consequences, per-agent outcomes, recovery) —
 ### Layer 1 — binding launch rule (root cause)
 
 > **Wave-impl workflows MUST be launched from a Claude session whose CWD is
-> `/Users/colin/Code/digitalharm-oss`.**
+> `/Users/colin/Code/fight-csam`.**
 
 `isolation:'worktree'` follows the session's repo, so this rule alone fixes the bug.
 Verify before launching:
 
 ```bash
-git -C "$PWD" rev-parse --show-toplevel        # => /Users/colin/Code/digitalharm-oss
-git -C "$PWD" remote get-url origin            # => …digitalharm/digitalharm-oss…
+git -C "$PWD" rev-parse --show-toplevel        # => /Users/colin/Code/fight-csam
+git -C "$PWD" remote get-url origin            # => …digitalharm/fight-csam…
 ```
 
 ### Layers 2–4 — make it correct regardless of session CWD (defense in depth)
@@ -46,7 +46,7 @@ The corrected scripts do **not** rely on the launch CWD or on `isolation:'worktr
    marker files come from [`tracks.config.json`](tracks.config.json), copied into
    each script as constants (workflow scripts can't read files at runtime).
 3. **Preflight abort gate** — a phase-0 agent asserts `git remote get-url origin`
-   contains `digitalharm/digitalharm-oss` **and** that `Cargo.toml` + `packages/`
+   contains `digitalharm/fight-csam` **and** that `Cargo.toml` + `packages/`
    exist under the discovered repo root. If not, it returns `ok:false` and the
    script **returns early — zero impl agents are spawned.** (This single gate would
    have caught the addiction mis-target at second 0.) Identity is checked by
@@ -61,7 +61,7 @@ The corrected scripts do **not** rely on the launch CWD or on `isolation:'worktr
 
 ## How to run
 
-From a `digitalharm-oss` session (Layer 1):
+From a `fight-csam` session (Layer 1):
 
 ```
 Workflow({ scriptPath: "docs/ops/orchestration/scripts/wave-b-adoption-impl.js" })

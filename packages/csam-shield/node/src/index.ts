@@ -5,8 +5,8 @@
  * is implemented; per-adapter wiring (PhotoDNA, NCMEC, PDQ,
  * Cloudflare CSAM Scanning) lives in detectors/ as todo stubs.
  *
- * Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
- * Safety: https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
+ * Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
+ * Safety: https://github.com/digitalharm/fight-csam/blob/main/docs/safety-policy.md
  */
 
 import type {

@@ -1,4 +1,4 @@
-module github.com/digitalharm/digitalharm-oss/packages/evidencevault
+module github.com/digitalharm/fight-csam/packages/evidencevault
 
 go 1.22
 

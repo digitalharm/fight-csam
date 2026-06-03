@@ -159,7 +159,7 @@ async def _dispatch(
         return await detectors.run_custom(config.config, content, request_id)
     raise NotImplementedError(
         f"csam-shield: detector {config.detector!r} not implemented in this scaffold. "
-        "See https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md."
+        "See https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md."
     )
 
 

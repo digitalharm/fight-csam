@@ -25,7 +25,7 @@ async def run_photodna(
     raise NotImplementedError(
         "csam-shield: PhotoDNA adapter is a scaffold stub. Wire-protocol "
         "implementation depends on an approved PhotoDNA application. See "
-        "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md."
+        "https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md."
     )
 
 

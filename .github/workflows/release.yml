@@ -155,8 +155,8 @@ jobs:
           VERSION="v0.1.0"   # bump per release; both modules share the launch version
           for m in hashstream evidencevault; do
             MODTAG="packages/$m/$VERSION"
-            echo "Requesting github.com/digitalharm/digitalharm-oss/packages/$m@$MODTAG"
+            echo "Requesting github.com/digitalharm/fight-csam/packages/$m@$MODTAG"
             GOPROXY=https://proxy.golang.org go list -m \
-              "github.com/digitalharm/digitalharm-oss/packages/$m@$MODTAG" || \
+              "github.com/digitalharm/fight-csam/packages/$m@$MODTAG" || \
               echo "  (proxy will index on first real fetch)"
           done

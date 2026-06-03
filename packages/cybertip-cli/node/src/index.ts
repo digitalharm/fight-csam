@@ -3,9 +3,9 @@
  *
  * NCMEC CyberTipline report submission as a library and CLI.
  *
- * Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
+ * Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
  * Counsel scope: ../docs/counsel-scope-brief.md
- * Safety: https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
+ * Safety: https://github.com/digitalharm/fight-csam/blob/main/docs/safety-policy.md
  *
  * Data model, validation, redaction, dry-run wire payload, and a sandbox
  * simulation path are implemented. Production submission is absent by design,

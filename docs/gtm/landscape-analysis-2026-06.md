@@ -1,4 +1,4 @@
-# awesome-safety-tools landscape analysis — vs the digitalharm-oss / FightSAM portfolio
+# awesome-safety-tools landscape analysis — vs the fight-csam / FightSAM portfolio
 
 **Source:** roostorg/awesome-safety-tools (14 categories, ~90 projects; fetched 2026-06, saved /tmp/awesome-safety-tools.md).
 **Method:** read-only fan-out workflow (5 analysts deep-diving real repos → chair synthesis). 79 projects profiled, 37 candidate gaps.
@@ -151,4 +151,4 @@ Against the current state (all 11 tools "In Progress," cores still `todo!()`, ga
 
 ---
 
-Relevant files reviewed: `/Users/colin/Code/digitalharm-oss/docs/roadmap.md` (current 11-tool status — all "In Progress," cores `todo!()`, gated on NCMEC ESP + counsel), `/Users/colin/Code/digitalharm-oss/docs/sequencing.md` (5-wave rationale), `/Users/colin/Code/digitalharm-oss/docs/overview.md` (defense-in-depth thesis + "what this is not" scope boundaries).
+Relevant files reviewed: `/Users/colin/Code/fight-csam/docs/roadmap.md` (current 11-tool status — all "In Progress," cores `todo!()`, gated on NCMEC ESP + counsel), `/Users/colin/Code/fight-csam/docs/sequencing.md` (5-wave rationale), `/Users/colin/Code/fight-csam/docs/overview.md` (defense-in-depth thesis + "what this is not" scope boundaries).

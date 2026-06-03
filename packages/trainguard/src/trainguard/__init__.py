@@ -9,8 +9,8 @@ Motivated by the Stanford Internet Observatory's 2023 finding of CSAM
 in LAION-5B. The pre-flight pattern means the contaminated material is
 identified and excluded before training compute is spent.
 
-Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
-Safety: https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
+Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
+Safety: https://github.com/digitalharm/fight-csam/blob/main/docs/safety-policy.md
 """
 
 from __future__ import annotations

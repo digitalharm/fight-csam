@@ -51,7 +51,7 @@ credentials or legal exposure.
 ## Hard lesson: never run two writers against one repo
 
 The entire back-half of this session was spent recovering from a two-writer
-race: a concurrent agent session editing the same `digitalharm-oss` working
+race: a concurrent agent session editing the same `fight-csam` working
 tree reverted my source edits between my Edit and my commit, repeatedly
 committing test-vs-impl inconsistencies and turning CI red. Combined with a
 degraded local shell (load >30, cancelled tool batches, GNU-flag errors), a

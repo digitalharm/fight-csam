@@ -32,14 +32,14 @@ SafeMod remains **Deferred indefinitely** (GDPR special-category data).
 The Wave A hashkit agent's completion notification confirmed it:
 `isolation: 'worktree'` cut each agent's worktree from
 **`/Users/colin/Code/addiction`** (the Next.js site — the session's *primary*
-cwd) instead of **`/Users/colin/Code/digitalharm-oss`** (the Rust workspace,
+cwd) instead of **`/Users/colin/Code/fight-csam`** (the Rust workspace,
 only an *additional* working dir via `docs/`). Consequences:
 
 - hashkit agent found a website (no Cargo workspace) and correctly refused to
   write Rust into it.
 - Smarter agents (hashkit-match, evidencevault, trainguard) detected the
   wrong repo and created their own worktree under
-  `digitalharm-oss/.worktrees/`, committing there — which is why their work
+  `fight-csam/.worktrees/`, committing there — which is why their work
   survived and merged.
 - Heavy parallel load (10+ agents) degraded the local shell display
   (output corruption, GNU-flag errors triggering parallel-call cancellation
@@ -48,10 +48,10 @@ only an *additional* working dir via `docs/`). Consequences:
 
 ### Fix for the next fan-out
 
-1. **Run the session with `digitalharm-oss` as the primary cwd**, OR
+1. **Run the session with `fight-csam` as the primary cwd**, OR
 2. **Orchestrator implements directly on main** (most reliable — how the 4
    shipped tools landed), OR
-3. Pre-create dedicated worktrees IN `digitalharm-oss` and pass each agent its
+3. Pre-create dedicated worktrees IN `fight-csam` and pass each agent its
    EXACT absolute path with a hard "cd there every command; never touch the
    addiction repo" rule.
 Run fewer agents (one per track, not per package). Avoid `cat -A`/GNU-only

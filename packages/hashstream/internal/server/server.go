@@ -26,7 +26,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/store"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/store"
 )
 
 // Signer signs a snapshot in place, filling its Signature and SigningKeyID.

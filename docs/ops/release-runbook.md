@@ -1,4 +1,4 @@
-# Release runbook — publishing digitalharm-oss at 0.1.0
+# Release runbook — publishing fight-csam at 0.1.0
 
 **Status as of this writing:** all reversible prep is DONE. Every package is at
 `0.1.0`, has complete publish metadata, and has been **dry-run packaged
@@ -58,16 +58,16 @@ The owner must provision, for whichever path is chosen:
   publish rights; add as `NPM_TOKEN` repo secret (CI) or `npm login` (local).
 - **Go:** no *token*, BUT the **repository must be public.** The per-module tags
   `packages/hashstream/v0.1.0` and `packages/evidencevault/v0.1.0` are **already
-  pushed** (done). However, `github.com/digitalharm/digitalharm-oss` is currently
+  pushed** (done). However, `github.com/digitalharm/fight-csam` is currently
   **private** (anonymous fetch → 404/401), so `proxy.golang.org` and any
   `go get` from a third party cannot resolve the modules. **Action: make the
   repo public** (or set `GOPRIVATE` for internal-only use, which defeats the
   point of an OSS launch). The moment the repo is public, the already-pushed
   tags make both modules installable with no further step — verify with:
-  `GOPROXY=https://proxy.golang.org go list -m github.com/digitalharm/digitalharm-oss/packages/hashstream@v0.1.0`.
+  `GOPROXY=https://proxy.golang.org go list -m github.com/digitalharm/fight-csam/packages/hashstream@v0.1.0`.
 
 ### A3. Repository visibility (NEW finding — gates Go *and* the whole OSS launch)
-`digitalharm/digitalharm-oss` is **private**. Beyond blocking Go module
+`digitalharm/fight-csam` is **private**. Beyond blocking Go module
 resolution (above), an OSS portfolio whose source can't be read undercuts the
 entire adoption thesis (auditability is a core selling point). Making the repo
 public is an owner decision (confirm no secrets/CSAM/hash-lists are in history
@@ -131,9 +131,9 @@ git tag packages/evidencevault/v0.1.0
 git push origin packages/hashstream/v0.1.0 packages/evidencevault/v0.1.0
 # then nudge the proxy so pkg.go.dev indexes promptly:
 GOPROXY=https://proxy.golang.org go list -m \
-  github.com/digitalharm/digitalharm-oss/packages/hashstream@packages/hashstream/v0.1.0
+  github.com/digitalharm/fight-csam/packages/hashstream@packages/hashstream/v0.1.0
 GOPROXY=https://proxy.golang.org go list -m \
-  github.com/digitalharm/digitalharm-oss/packages/evidencevault@packages/evidencevault/v0.1.0
+  github.com/digitalharm/fight-csam/packages/evidencevault@packages/evidencevault/v0.1.0
 ```
 
 ---
@@ -152,7 +152,7 @@ git tag packages/hashstream/v0.1.0
 git tag packages/evidencevault/v0.1.0
 git push origin packages/hashstream/v0.1.0 packages/evidencevault/v0.1.0
 ```
-Then `go get github.com/digitalharm/digitalharm-oss/packages/hashstream@packages/hashstream/v0.1.0`
+Then `go get github.com/digitalharm/fight-csam/packages/hashstream@packages/hashstream/v0.1.0`
 works. For the launch, push both module tags together so 0.1.0 stays
 synchronized; post-0.1.0 they version independently (per the council decision).
 
@@ -167,7 +167,7 @@ pip index versions detectkit-test    # or: pip install detectkit-test==0.1.0
 # npm
 npm view @digitalharm/csam-shield version
 # Go
-go list -m github.com/digitalharm/digitalharm-oss/packages/hashstream@v0.1.0
+go list -m github.com/digitalharm/fight-csam/packages/hashstream@v0.1.0
 ```
 Then update `docs/roadmap.md` + the website `/tools` page to link the published
 package pages, and announce per `docs/gtm/adoption-strategy.md` (ROOST

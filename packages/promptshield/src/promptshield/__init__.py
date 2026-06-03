@@ -10,8 +10,8 @@ Two-tier defense:
 The two run in series so the cheap layer can short-circuit before the
 expensive layer runs.
 
-Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
-Safety: https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
+Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
+Safety: https://github.com/digitalharm/fight-csam/blob/main/docs/safety-policy.md
 """
 
 from __future__ import annotations

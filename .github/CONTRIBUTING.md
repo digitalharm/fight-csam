@@ -1,4 +1,4 @@
-# Contributing to digitalharm-oss
+# Contributing to fight-csam
 
 Welcome. Before contributing, please read [docs/safety-policy.md](../docs/safety-policy.md).
 The short version is here.

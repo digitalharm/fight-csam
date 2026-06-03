@@ -4,8 +4,8 @@ Python sibling to the TypeScript package at packages/csam-shield/node.
 Same MatchResponse model, same detector adapter interface, native
 FastAPI / Starlette / Flask middleware.
 
-Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
-Safety: https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md
+Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
+Safety: https://github.com/digitalharm/fight-csam/blob/main/docs/safety-policy.md
 """
 
 from __future__ import annotations

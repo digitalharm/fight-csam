@@ -2,7 +2,7 @@
 
 **What this is.** The design for **FightSAM** (fightsam.org): a separate,
 developer- and coding-agent-facing website that is the front door to the 11
-open-source CSAM-safety packages in this repo (`digitalharm-oss`). It is the
+open-source CSAM-safety packages in this repo (`fight-csam`). It is the
 "how do I actually build this" companion to **The Digital Harm Project**
 (`digitalharm.org`, the public-education site). Naming stays as-is — the
 *packages* keep the `digitalharm`/`@digitalharm` convention; **FightSAM is the

@@ -46,7 +46,7 @@ Optional: a specific Lantern advisor or member-org contact if one is known.
 > NCMEC-cross-checked conformance suite as the gating release artifact.
 >
 > Sketch of the portfolio (full design specs and a five-wave sequencing plan
-> at [github.com/digitalharm/digitalharm-oss](https://github.com/digitalharm/digitalharm-oss)
+> at [github.com/digitalharm/fight-csam](https://github.com/digitalharm/fight-csam)
 > — currently private during initial bring-up):
 >
 > - **Foundation (credential-free, ships first):** HashKit (PDQ + TMK+PDQF

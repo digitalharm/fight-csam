@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/custody"
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/retention"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/custody"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/retention"
 )
 
 func newDiskPackage(id string, storedAt time.Time) Package {

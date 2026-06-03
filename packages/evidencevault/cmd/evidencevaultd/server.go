@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/custody"
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/retention"
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/vault"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/custody"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/retention"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/vault"
 )
 
 // server is the HTTP surface over a Vault. It is backend-agnostic: any

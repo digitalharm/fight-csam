@@ -4,7 +4,7 @@ Scaffold stage. Data model, validation, redaction, and dry-run wire
 payload generation are implemented. Production submission gated on
 counsel review and an active NCMEC ESP credential.
 
-Status: see https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md
+Status: see https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md
 """
 
 from __future__ import annotations

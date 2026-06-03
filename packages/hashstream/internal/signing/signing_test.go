@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/store"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/store"
 )
 
 func mustHash(t *testing.T, b byte) store.Hash {

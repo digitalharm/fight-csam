@@ -36,7 +36,7 @@ export async function runNCMECHash(
   throw new Error(
     "csam-shield: NCMEC Hash Sharing adapter is a scaffold stub. " +
       "Requires NCMEC ESP credentialing — see " +
-      "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/sponsorship.md " +
+      "https://github.com/digitalharm/fight-csam/blob/main/docs/sponsorship.md " +
       "for the credential-brokering work this depends on.",
   );
 }

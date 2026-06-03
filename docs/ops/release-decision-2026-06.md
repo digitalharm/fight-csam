@@ -26,8 +26,8 @@ Why not the alternatives: `namespace-all-consistently` (prefix all 11) would ren
 | 10a | `packages/csam-shield/node` | npm | `@digitalharm/csam-shield` | `@digitalharm/csam-shield` | — |
 | 10b | `packages/cybertip-cli/node` | npm | `@digitalharm/cybertip-cli` | `@digitalharm/cybertip-cli` | — |
 | 10c | `packages/hashstream/sdk-ts` | npm | `@digitalharm/hashstream-sdk` | `@digitalharm/hashstream-sdk` | — |
-| 11a | `packages/hashstream` | Go | `github.com/digitalharm/digitalharm-oss/packages/hashstream` | *(unchanged path)* | — |
-| 11b | `packages/evidencevault` | Go | `github.com/digitalharm/digitalharm-oss/packages/evidencevault` | *(unchanged path)* | — |
+| 11a | `packages/hashstream` | Go | `github.com/digitalharm/fight-csam/packages/hashstream` | *(unchanged path)* | — |
+| 11b | `packages/evidencevault` | Go | `github.com/digitalharm/fight-csam/packages/evidencevault` | *(unchanged path)* | — |
 
 *(11 packages; npm and Go each surface multiple modules, hence 14 registry rows.)*
 
@@ -43,7 +43,7 @@ Why not the alternatives: `namespace-all-consistently` (prefix all 11) would ren
 
 ## Decision: versioning
 
-**Synchronized single `0.1.0` for the launch, then independent per-package semver.** Ship every package at `0.1.0` once so the launch story ("the digitalharm-oss portfolio at 0.1.0") is coherent and cross-package docs pin one number; **after 0.1.0, each package versions on its own CHANGELOG** because these tools mature at structurally different rates (the hashkit-rooted dependency tree vs. counsel-gated `cybertip-cli`/`evidencevault`), and lockstep would either hold mature packages back or inflate untouched ones. While pre-1.0, treat `0.x` minor bumps as the place breaking changes are allowed. The one hard coupling: `digitalharm-hashkit` must publish/bump **before** `hashkit-match`, whose dep pin tracks it.
+**Synchronized single `0.1.0` for the launch, then independent per-package semver.** Ship every package at `0.1.0` once so the launch story ("the fight-csam portfolio at 0.1.0") is coherent and cross-package docs pin one number; **after 0.1.0, each package versions on its own CHANGELOG** because these tools mature at structurally different rates (the hashkit-rooted dependency tree vs. counsel-gated `cybertip-cli`/`evidencevault`), and lockstep would either hold mature packages back or inflate untouched ones. While pre-1.0, treat `0.x` minor bumps as the place breaking changes are allowed. The one hard coupling: `digitalharm-hashkit` must publish/bump **before** `hashkit-match`, whose dep pin tracks it.
 
 ---
 
@@ -101,7 +101,7 @@ Leave **unchanged**: `[tool.hatch.build.targets.wheel] packages = ["src/promptsh
    ```bash
    for m in hashstream evidencevault; do
      GOPROXY=https://proxy.golang.org go list -m \
-       "github.com/digitalharm/digitalharm-oss/packages/$m@packages/$m/v0.1.0" || true
+       "github.com/digitalharm/fight-csam/packages/$m@packages/$m/v0.1.0" || true
    done
    ```
    (Or drive it off the pushed tag names directly. The point: the version suffix must be `packages/<m>/vX.Y.Z`, never bare `vX.Y.Z`.)
@@ -139,7 +139,7 @@ on:
 - **Website (separate repo `digitalharm/addiction-research`, `/Users/colin/Code/addiction/app/tools/page.tsx`)** — three wrong strings, all must be fixed before/at launch:
   - line 47: `npm install @digitalharm/hashkit` → **`cargo add digitalharm-hashkit`** (wrong ecosystem *and* name — hashkit is a Rust crate).
   - line 100: `pip install promptshield` → **`pip install digitalharm-promptshield`**.
-  - line 130: `go install github.com/digitalharm/digitalharm-oss/hashstream` → **`go get github.com/digitalharm/digitalharm-oss/packages/hashstream`** (missing `/packages/`; `go get` not `go install` for a library).
+  - line 130: `go install github.com/digitalharm/fight-csam/hashstream` → **`go get github.com/digitalharm/fight-csam/packages/hashstream`** (missing `/packages/`; `go get` not `go install` for a library).
 
 ### Step 7 — Re-prove the dry-run (before any tag)
 
@@ -186,4 +186,4 @@ Synchronized at 0.1.0; **per-package** from 0.2.0 onward. Versions below 1.0.0 a
 2. **Whether to defensively reserve `digitalharm-*` placeholder holds for the nine non-colliding crates.io/PyPI names** (the brand PM's fallback). Decided **not** to, to keep the permanent surface minimal and the install strings clean — but if the owner weights typosquat-prevention for CSAM tooling higher, reserving `0.0.0` holds for `digitalharm-{trainguard,csam-shield,cybertip-cli,c2pa-lite,safemod,hashkit-match,detectkit-test}` is a defensible, reversible-direction add. Owner call.
 3. **Synthetic-corpus distribution sign-off** gates the 0.2.0 trust-moat (publishing conformance vectors). Low-risk (synthetic only) but it's a content/safety judgment the owner should clear early so 0.2.0 isn't blocked by it.
 
-**Files to edit (all absolute):** `/Users/colin/Code/digitalharm-oss/packages/hashkit/Cargo.toml`, `/Users/colin/Code/digitalharm-oss/packages/hashkit-match/Cargo.toml`, `/Users/colin/Code/digitalharm-oss/packages/promptshield/pyproject.toml`, `/Users/colin/Code/digitalharm-oss/.github/workflows/release.yml`, `/Users/colin/Code/digitalharm-oss/docs/ops/release-runbook.md`, `/Users/colin/Code/digitalharm-oss/docs/tools/promptshield.md`, `/Users/colin/Code/digitalharm-oss/packages/promptshield/README.md`, `/Users/colin/Code/digitalharm-oss/docs/gtm/adoption-strategy.md`, and (separate repo) `/Users/colin/Code/addiction/app/tools/page.tsx` (lines 47, 100, 130).
+**Files to edit (all absolute):** `/Users/colin/Code/fight-csam/packages/hashkit/Cargo.toml`, `/Users/colin/Code/fight-csam/packages/hashkit-match/Cargo.toml`, `/Users/colin/Code/fight-csam/packages/promptshield/pyproject.toml`, `/Users/colin/Code/fight-csam/.github/workflows/release.yml`, `/Users/colin/Code/fight-csam/docs/ops/release-runbook.md`, `/Users/colin/Code/fight-csam/docs/tools/promptshield.md`, `/Users/colin/Code/fight-csam/packages/promptshield/README.md`, `/Users/colin/Code/fight-csam/docs/gtm/adoption-strategy.md`, and (separate repo) `/Users/colin/Code/addiction/app/tools/page.tsx` (lines 47, 100, 130).

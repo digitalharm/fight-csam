@@ -1,4 +1,4 @@
-# digitalharm-oss · top-level orchestration
+# fight-csam · top-level orchestration
 #
 # This Makefile delegates to per-package toolchains rather than imposing a
 # single build system across the polyglot portfolio (Rust+WASM, Go, Python,
@@ -10,7 +10,7 @@ PACKAGES := hashkit hashkit-match detectkit-test csam-shield promptshield \
 .PHONY: help safety-check status list test build clean
 
 help:
-	@echo "digitalharm-oss"
+	@echo "fight-csam"
 	@echo ""
 	@echo "Targets:"
 	@echo "  make safety-check  - Run the SCOPE/SAFETY pre-merge guard locally"

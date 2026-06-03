@@ -1,7 +1,7 @@
 # SafeMessenger — a CSAM-safe messenger boilerplate
 
 An open-source reference messenger that wires in **all 10
-[digitalharm-oss](../../README.md) tools** at their natural integration points.
+[fight-csam](../../README.md) tools** at their natural integration points.
 Fork it as a starting point for a platform that needs CSAM detection, blocking,
 reporting, and prevention built in from day one rather than bolted on after an
 incident.

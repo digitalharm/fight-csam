@@ -58,7 +58,7 @@ class _StubClassifier(NeuralClassifier):
             f"promptshield: neural classifier for {self._model_id!r} is a "
             f"scaffold stub. A trained model artifact will be published once "
             f"a defensible eval set exists. See "
-            f"https://github.com/digitalharm/digitalharm-oss/blob/main/docs/roadmap.md."
+            f"https://github.com/digitalharm/fight-csam/blob/main/docs/roadmap.md."
         )
 
 

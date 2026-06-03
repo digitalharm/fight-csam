@@ -34,7 +34,7 @@ When this file was written, four workflows were in flight:
 | `w6cvcfykg` | Wave B+D: Adoption + satellites | `agent/wave-b-csam-shield`, `agent/wave-b-promptshield`, `agent/wave-b-c2pa-lite` |
 | `w657pqtyb` | Wave C: Credentialed + Legal | `agent/wave-c-hashstream`, `agent/wave-c-trainguard`, `agent/wave-c-cybertip-cli`, `agent/wave-c-evidencevault` |
 
-If you're picking this up later: run `gh api repos/digitalharm/digitalharm-oss/branches --paginate --jq '.[].name'` to see what branches actually exist on origin. Any `agent/wave-*` branch is fair game to integrate.
+If you're picking this up later: run `gh api repos/digitalharm/fight-csam/branches --paginate --jq '.[].name'` to see what branches actually exist on origin. Any `agent/wave-*` branch is fair game to integrate.
 
 ## Per-workflow handoff format
 
@@ -68,7 +68,7 @@ Each wave workflow returns:
 
 1. **Write the aggregated handoff** to the canonical path:
    ```bash
-   cd /Users/colin/Code/digitalharm-oss
+   cd /Users/colin/Code/fight-csam
    # Write the handoff_doc_markdown to docs/ops/handoffs/<track>.md
    # Commit + push
    ```
@@ -130,7 +130,7 @@ Examine both diffs. If the changes are conceptually compatible, hand-merge. If t
 After each wave's merge lands on main and CI is green:
 
 ```bash
-cd /Users/colin/Code/digitalharm-oss
+cd /Users/colin/Code/fight-csam
 bash scripts/safety-check.sh                                    # must be clean
 cargo test --workspace --all-features                            # Rust
 cd packages/hashstream && go test ./...                          # Go ×2

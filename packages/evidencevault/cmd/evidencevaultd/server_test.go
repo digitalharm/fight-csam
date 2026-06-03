@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/custody"
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/vault"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/custody"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/vault"
 )
 
 // newTestServer spins up an httptest.Server over the real HTTP mux backed by an

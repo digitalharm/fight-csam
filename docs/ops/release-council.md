@@ -1,6 +1,6 @@
 # Release Council
 
-This document is the standing program board for building the digitalharm-oss portfolio through v2. It lets future agents resume without rediscovering scope, sequencing, safety constraints, or branch layout.
+This document is the standing program board for building the fight-csam portfolio through v2. It lets future agents resume without rediscovering scope, sequencing, safety constraints, or branch layout.
 
 Last updated: 2026-05-30.
 

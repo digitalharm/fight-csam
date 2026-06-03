@@ -25,7 +25,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/vault"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/vault"
 )
 
 func main() {

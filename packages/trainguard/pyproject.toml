@@ -25,8 +25,8 @@ laion = ["pyarrow>=15"]  # LAION metadata is parquet
 
 [project.urls]
 Homepage = "https://digitalharm.org/tools"
-Repository = "https://github.com/digitalharm/digitalharm-oss"
-"Safety policy" = "https://github.com/digitalharm/digitalharm-oss/blob/main/docs/safety-policy.md"
+Repository = "https://github.com/digitalharm/fight-csam"
+"Safety policy" = "https://github.com/digitalharm/fight-csam/blob/main/docs/safety-policy.md"
 
 [project.scripts]
 trainguard = "trainguard.cli:main"

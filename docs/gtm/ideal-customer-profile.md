@@ -1,6 +1,6 @@
-# Ideal Customer Profile & Target Map — digitalharm-oss
+# Ideal Customer Profile & Target Map — fight-csam
 
-**What this is.** A go-to-market analysis identifying who needs the digitalharm-oss
+**What this is.** A go-to-market analysis identifying who needs the fight-csam
 toolkit (11 Apache-2.0 CSAM detection/prevention tools), the Ideal Customer
 Profile, a prioritized + named target list, and the realistic monetization read.
 Built from four parallel market-research sweeps (AI-generation, UGC platforms,

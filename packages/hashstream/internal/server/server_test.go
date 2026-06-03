@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/signing"
-	"github.com/digitalharm/digitalharm-oss/packages/hashstream/internal/store"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/signing"
+	"github.com/digitalharm/fight-csam/packages/hashstream/internal/store"
 )
 
 // newLiveServer keeps the original httptest.Server-based helper for the GET

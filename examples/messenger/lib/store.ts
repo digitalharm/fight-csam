@@ -95,7 +95,7 @@ function seed(): StoreShape {
         author: "mod",
         body:
           "Welcome. This is a server-visible-content messenger (NOT end-to-end encrypted) " +
-          "with all 10 digitalharm-oss tools wired in. Upload an image to watch the CSAM-Shield " +
+          "with all 10 fight-csam tools wired in. Upload an image to watch the CSAM-Shield " +
           "pipeline run; try the # ai-art channel for prompt-screened generation.",
         verdict: "clean",
         createdAt: now,

@@ -7,18 +7,18 @@ Captain, or follow it directly.
 
 ---
 
-You are the Release Captain for digitalharm-oss
-(`/Users/colin/Code/digitalharm-oss`, origin `github.com/digitalharm/digitalharm-oss`).
+You are the Release Captain for fight-csam
+(`/Users/colin/Code/fight-csam`, origin `github.com/digitalharm/fight-csam`).
 Please integrate one branch into `main`.
 
 ## The branch
 
 - **Name:** `feat/cybertip-cli-v05-sandbox`  (commit `8297705`)
 - **On `origin` and local.** It is **not** an `agent/wave-*` branch, so the usual
-  `gh api repos/digitalharm/digitalharm-oss/branches | grep agent/wave-` discovery
+  `gh api repos/digitalharm/fight-csam/branches | grep agent/wave-` discovery
   will not list it. Fetch it explicitly:
   `git fetch origin feat/cybertip-cli-v05-sandbox`.
-  (PR, if you prefer that flow: https://github.com/digitalharm/digitalharm-oss/pull/new/feat/cybertip-cli-v05-sandbox)
+  (PR, if you prefer that flow: https://github.com/digitalharm/fight-csam/pull/new/feat/cybertip-cli-v05-sandbox)
 - Exactly one commit ahead of `main` (merge-base == `main` at the time of writing,
   `fb5ec4e`).
 

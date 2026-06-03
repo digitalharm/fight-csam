@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/custody"
-	"github.com/digitalharm/digitalharm-oss/packages/evidencevault/internal/retention"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/custody"
+	"github.com/digitalharm/fight-csam/packages/evidencevault/internal/retention"
 )
 
 // DiskVault is a file-backed Vault implementation. Each evidence package is
