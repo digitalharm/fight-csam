@@ -3,6 +3,7 @@
   "root": true,
   "pages": [
     "index",
+    "skill",
     "---Detect---",
     "hashkit",
     "hashkit-match",
@@ -19,6 +20,16 @@
     "safemod",
     "---Verify---",
     "detectkit-test",
-    "ecosystem"
+    "---Ecosystem---",
+    "ecosystem/index",
+    "ecosystem/perceptual-hashing",
+    "ecosystem/classifiers",
+    "ecosystem/rules-decisioning",
+    "ecosystem/infrastructure-review",
+    "ecosystem/red-teaming",
+    "ecosystem/privacy-user-safety",
+    "ecosystem/investigation",
+    "ecosystem/decentralized-fediverse",
+    "ecosystem/datasets"
   ]
 }

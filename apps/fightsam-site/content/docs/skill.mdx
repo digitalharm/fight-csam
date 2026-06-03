@@ -1,0 +1,38 @@
+---
+title: Coding-agent skill
+description: A Claude Agent Skill that teaches your coding agent to wire CSAM safety with the FightSAM tools and the right ecosystem tools — correct installs, gates honored.
+---
+
+**`csam-safety`** is a Claude Agent Skill. Drop it into your coding agent and it
+already knows the 11 FightSAM tools, the top ecosystem tools, the golden-path
+pipeline, and the hard legal/credential gates — so you can say *"add CSAM
+scanning to my upload pipeline"* and it wires the right tools with the correct
+install commands, keeping the no-hash-list and NCMEC/counsel gates intact.
+
+## What it knows
+
+- **The 11 FightSAM tools** — purpose, verified install/import commands, when to use each, and current status/gates.
+- **~64 top ecosystem projects** — what to use, what to learn from, and what to wrap vs build.
+- **The golden path** — assess → detect → report → prevent → provenance → care → verify.
+- **Compliance &amp; gates** — §2258A / UK OSA / TAKE IT DOWN / EU DSA mapped to tools, and the rules that must never be bypassed (ship no hash lists; honor the NCMEC-ESP and outside-counsel gates).
+
+## Install
+
+It ships in the FightSAM repo under `.claude/skills/csam-safety`. Copy it into
+your agent's skills directory:
+
+```bash
+# personal — available across all your projects
+cp -r fight-csam/.claude/skills/csam-safety ~/.claude/skills/
+
+# or per-project
+cp -r fight-csam/.claude/skills/csam-safety <your-project>/.claude/skills/
+```
+
+Your agent then consults it automatically whenever you work on uploads, content
+moderation, NCMEC reporting, perceptual hashing, AI-generation safety, or
+Fediverse moderation — even if you don't mention "FightSAM" or "CSAM".
+
+## Source
+
+[`.claude/skills/csam-safety`](https://github.com/digitalharm/fight-csam/tree/main/.claude/skills/csam-safety)

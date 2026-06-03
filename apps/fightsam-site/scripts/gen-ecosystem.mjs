@@ -118,7 +118,8 @@ const index = [
 ].join('\n');
 fs.writeFileSync(path.join(OUT, 'index.mdx'), index + '\n');
 
-// section meta.json
-fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify({ title: 'Ecosystem', defaultOpen: true, pages: pageList }, null, 2) + '\n');
+// NOTE: no folder meta.json — the ecosystem pages are listed flat in the root
+// content/docs/meta.json under a "---Ecosystem---" separator so the section
+// renders like the tool sections (separator + flat pages), not a folder.
 
 console.log('generated', pageList.length, 'ecosystem pages:', pageList.join(', '));
