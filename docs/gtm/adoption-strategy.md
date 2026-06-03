@@ -29,9 +29,10 @@ actually adopt**, in priority order for *near-term traction*:
 
 ### Persona A — The self-hosted / small-platform T&S engineer  *(warmest)*
 The lone engineer (or volunteer admin) at a Fediverse instance, forum, dating app,
-creator platform, or mid-size UGC site who just became legally obligated (UK OSA,
-§2258A) and has **no vendor and no budget**. The org that served them —
-**IFTAS** — ran out of money and shut its Fediverse CSAM scanner in March 2025,
+creator platform, or mid-size UGC site who was swept into the **2024–2026
+regulatory wave** (see §1.1) and has **no vendor and no budget**. The org that
+served them — **IFTAS** — ran out of money and shut its Fediverse CSAM scanner in
+March 2025,
 leaving a documented vacuum (their 2024 needs assessment: 183 services, 4.3M
 accounts, CSAM detection ranked their #1 need). They self-host by ideology, so
 Apache-2.0 + self-hostable is a *requirement*, not a preference. **This is the
@@ -53,15 +54,37 @@ their *own* customers consume. One adopter → many downstream platforms protect
 Slower to land, but each win is a force-multiplier. Needs hashkit-match (cdylib).
 
 > **The unifying ICP in one line:** a developer or T&S engineer at a
-> **small-to-mid platform or AI startup that just became legally obligated to
-> detect/report CSAM but is locked out of the incumbents** (PhotoDNA is
-> vetting-gated, Thorn/Hive are paid), who will adopt a self-hostable, no-gate,
-> no-per-scan-fee, Apache-2.0 toolkit today.
+> **small-to-mid platform or AI startup that was newly obligated to detect/report
+> CSAM by the 2024–2026 regulatory wave (§1.1) but is locked out of the
+> incumbents** (PhotoDNA is vetting-gated, Thorn/Hive are paid), who will adopt a
+> self-hostable, no-gate, no-per-scan-fee, Apache-2.0 toolkit today.
 
 **Who is NOT the ICP** (don't spend effort here): Big Tech with in-house T&S
 (they consume the open *algorithms*, never the product); existing Thorn/Hive/
 Cloudflare customers; no-media products; and bad-faith operators (they're the
 threat our tools detect, not adopters).
+
+### 1.1 Why now — the 2024–2026 regulatory wave
+
+"Newly obligated" is not one event; it's a **cluster of overlapping laws that all
+took effect within ~24 months**, which is what turned CSAM detection/reporting
+from voluntary best-practice into a legal duty for small and mid-size platforms.
+In rough order of how hard each one bites *our* ICP:
+
+| Law | What changed | In force | Why it bites the ICP |
+|---|---|---|---|
+| **UK Online Safety Act** | Illegal-content + child-safety codes; **legally requires hash-matching** to detect CSAM | Duties enforceable from **Mar 2025**; children's risk assessments due **Jul 2025** | Ofcom scopes **100,000+ services — explicitly "down to the smallest community forum"**; penalty up to **£18M or 10% of global revenue**. The single biggest forcing function for small platforms. |
+| **EU Digital Services Act** | Notice-and-action, prompt CSAM removal for *all* platforms | Fully applicable **17 Feb 2024** | Reaches every platform serving EU users; fines up to **6% of global turnover**. |
+| **US REPORT Act** | Expanded mandatory NCMEC reporting (adds enticement + trafficking); evidence preservation **90 days → 1 year**; "becomes aware" standard | Signed **7 May 2024** | Sharpens §2258A and scales penalties ($600K–$1M) to hit **sub-100M-MAU** providers. |
+| **US TAKE IT DOWN Act** | 48-hour notice-and-removal of non-consensual intimate imagery incl. AI deepfakes | Signed **19 May 2025**; **FTC enforcement began ~May 2026** | The "remove known identical copies" duty is literally a hash-matching problem — our product. Drafted to reach small platforms. |
+| **AU Online Safety Act / eSafety** | "Proactively detect and remove" known CSAM; under-16 social-media rule | Age rule live **Dec 2025**; CSAM standards **Mar 2026** | Civil penalties up to **A$49.5M**. |
+| **US 18 U.S.C. §2258A** | Report apparent CSAM to NCMEC on awareness *(standing law, not new)* | Long-standing | The baseline duty the REPORT Act tightened — applies to any US-touching ESP, any size. |
+
+**The one-line version:** *no single trigger — a wall of laws (UK OSA, EU DSA,
+US REPORT + TAKE IT DOWN Acts, AU eSafety) landed 2024–2026, and the UK Online
+Safety Act coming into force in 2025 is the one that most directly made detection
+legally mandatory for the small/mid platforms that are our ICP.* (Full
+status/penalty detail and primary sources live in `ideal-customer-profile.md §3`.)
 
 ---
 

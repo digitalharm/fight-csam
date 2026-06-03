@@ -17,10 +17,13 @@ first, with the monetizable subset called out explicitly.
 
 ## 1. The one-paragraph ICP
 
-> A **small-to-mid platform that hosts or generates user media and has just
-> become legally obligated to detect/report CSAM — but is locked out of the
-> incumbent tools.** It became obligated by a 2024–2026 law (UK Online Safety
-> Act, US TAKE IT DOWN Act, §2258A/REPORT Act, EU DSA), it has an "upload
+> A **small-to-mid platform that hosts or generates user media and was newly
+> obligated to detect/report CSAM by the 2024–2026 regulatory wave — but is
+> locked out of the incumbent tools.** The obligation isn't one event but a
+> cluster of overlapping laws that all took effect within ~24 months (UK Online
+> Safety Act in force 2025 — the biggest forcing function; EU DSA Feb 2024; US
+> REPORT Act May 2024 + the standing §2258A duty; US TAKE IT DOWN Act 2025/FTC
+> enforcement 2026; AU eSafety 2025–26 — full detail in §3). It has an "upload
 > button" or a generative model, and it has **no in-house Trust & Safety team**.
 > It cannot easily get PhotoDNA (vetting-gated, cloud-only), cannot afford or
 > doesn't want Thorn Safer / Hive (paid, sales-gated, contract), and isn't a
