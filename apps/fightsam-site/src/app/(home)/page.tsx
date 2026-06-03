@@ -10,8 +10,9 @@ export default function HomePage() {
       <p className="mb-8 max-w-2xl text-fd-muted-foreground">
         Free, open-source software that helps any online platform{' '}
         <strong>detect</strong>, <strong>report</strong>, and{' '}
-        <strong>prevent</strong> child sexual abuse material (CSAM) &mdash; and
-        meet the legal duties that now require it.
+        <strong>prevent</strong>{' '}
+        child sexual abuse material (CSAM) &mdash; and meet the legal duties that
+        now require it.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-3">
         <Link
