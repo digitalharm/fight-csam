@@ -1,5 +1,5 @@
 [package]
-name = "hashkit"
+name = "digitalharm-hashkit"
 description = "PDQ and TMK+PDQF perceptual hashing with NCMEC-verified conformance vectors"
 version.workspace = true
 edition.workspace = true
@@ -13,6 +13,7 @@ categories.workspace = true
 readme = "README.md"
 
 [lib]
+name = "hashkit"
 crate-type = ["cdylib", "rlib"]
 
 [features]

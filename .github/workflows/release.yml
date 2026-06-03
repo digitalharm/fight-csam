@@ -17,7 +17,8 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - "v*"                 # coordinated Rust/Python/npm release tag (e.g. v0.1.0)
+      - "packages/*/v*"      # Go per-module tags (e.g. packages/hashstream/v0.1.0)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -45,7 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           # Dependency order: hashkit must be on the index before hashkit-match.
-          ORDER="hashkit hashkit-match c2pa-lite safemod"
+          ORDER="digitalharm-hashkit hashkit-match c2pa-lite safemod"
           for c in $ORDER; do
             if [ "${DRY_RUN:-false}" = "true" ] || [ "${EVENT_NAME}" = "workflow_dispatch" ]; then
               echo "::group::cargo package $c (dry-run)"
@@ -137,10 +138,16 @@ jobs:
       - name: Request modules from the Go proxy
         run: |
           set -e
-          TAG="${GITHUB_REF_NAME}"
+          # Go modules in this repo have NO root go.mod — each lives at
+          # packages/<m>/go.mod with module path .../packages/<m>. The Go
+          # toolchain therefore ONLY recognizes per-module version tags of the
+          # form `packages/<m>/vX.Y.Z`; a bare `vX.Y.Z` tag resolves to a
+          # nonexistent root module and silently publishes nothing.
+          VERSION="v0.1.0"   # bump per release; both modules share the launch version
           for m in hashstream evidencevault; do
-            echo "Requesting github.com/digitalharm/digitalharm-oss/packages/$m@$TAG"
+            MODTAG="packages/$m/$VERSION"
+            echo "Requesting github.com/digitalharm/digitalharm-oss/packages/$m@$MODTAG"
             GOPROXY=https://proxy.golang.org go list -m \
-              "github.com/digitalharm/digitalharm-oss/packages/$m@$TAG" || \
+              "github.com/digitalharm/digitalharm-oss/packages/$m@$MODTAG" || \
               echo "  (proxy will index on first real fetch)"
           done

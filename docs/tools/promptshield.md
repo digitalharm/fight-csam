@@ -22,7 +22,7 @@ We integrate with, rather than replace, the hashing ecosystem: PromptShield is t
 
 ## v0.1 scope
 
-- `pip install promptshield` exposing `guard(prompt, negative_prompt=None) -> Verdict` with allow/block/review, calibrated score, and matched-signal list — CPU-only, no GPU required
+- `pip install digitalharm-promptshield` then `import promptshield` — exposing `guard(prompt, negative_prompt=None) -> Verdict` with allow/block/review, calibrated score, and matched-signal list — CPU-only, no GPU required _(PyPI distribution name is `digitalharm-promptshield`; the import package stays `promptshield`)_
 - Stage-1 deterministic engine: homoglyph/leetspeak/whitespace normalization + curated conjunction lexicon (minor-indicator × sexual-context), plus negative-prompt evasion handling (e.g. 'adult','mature' stuffed in negatives)
 - Stage-2 fine-tuned ONNX classifier trained on a synthetic/red-team prompt corpus (no real CSAM ever in training data — labels derived from public model-platform moderation logs and adversarial paraphrases), shipped as a versioned Hugging Face artifact
 - ComfyUI custom node + Automatic1111/Forge extension that block on verdict and surface a non-graphic refusal, plus a FastAPI sidecar Docker image for everything else

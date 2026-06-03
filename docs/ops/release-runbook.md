@@ -16,16 +16,23 @@ owner decisions/actions (§A). Do NOT run the publish commands until §A is clea
 
 ## A. BLOCKERS — must be resolved by the owner before publishing
 
-### A1. Two package names are already taken
-Verified live against each registry (404 = available, 200 = taken):
+### A1. Name collisions — ✅ RESOLVED (council decision 2026-06; owner-approved)
+The two collisions are renamed and implemented on branch `release/rename-0.1.0`
+(post-rename dry-run green; both new names verified free, HTTP 404). Decision
+record: `docs/ops/release-decision-2026-06.md`.
 
-| Package | Registry | Status | Action needed |
+| Package | Registry | Final published name | Status |
 |---|---|---|---|
-| **hashkit** | crates.io | ❌ **TAKEN** (HTTP 200) | Rename (e.g. `digitalharm-hashkit`, `dh-hashkit`, `pdq-hashkit`) — and update the `hashkit-match` dependency pin to match. |
-| **promptshield** | PyPI | ❌ **TAKEN** (HTTP 200) | Rename (e.g. `digitalharm-promptshield`) — PyPI dist name only; the import package can stay `promptshield` if desired. |
-| hashkit-match, c2pa-lite, safemod | crates.io | ✅ available | — |
-| detectkit-test, trainguard, csam-shield, cybertip-cli | PyPI | ✅ available | — |
-| @digitalharm/csam-shield, /cybertip-cli, /hashstream-sdk | npm | ✅ available (scope is the safeguard) | Ensure the `@digitalharm` **npm org/scope exists** and the publishing account owns it. |
+| ~~hashkit~~ → **`digitalharm-hashkit`** | crates.io | `digitalharm-hashkit` (with `[lib] name = "hashkit"`, so `use hashkit::…` is unchanged; dep pin in hashkit-match aliases it) | ✅ done |
+| ~~promptshield~~ → **`digitalharm-promptshield`** | PyPI | `digitalharm-promptshield` (dist name only; import stays `promptshield`) | ✅ done |
+| hashkit-match, c2pa-lite, safemod | crates.io | unchanged | ✅ available |
+| detectkit-test, trainguard, csam-shield, cybertip-cli | PyPI | unchanged | ✅ available |
+| @digitalharm/csam-shield, /cybertip-cli, /hashstream-sdk | npm | unchanged | ✅ available — but owner must **own the `@digitalharm` npm org** (A2) |
+
+**Policy of record (CONTRIBUTING):** every new crates.io / PyPI publish uses the
+`digitalharm-` prefix on the *published/dist* name by default; npm uses the
+`@digitalharm` scope; Go uses the `github.com/digitalharm/...` path. Check
+availability before tagging.
 
 > **Recommendation:** the cleanest fix that avoids *all* future collisions is to
 > scope/prefix the two clashing names with `digitalharm-` (Rust) and
@@ -69,24 +76,30 @@ Two ways to execute. **CI is recommended** (clean room, no creds on a laptop).
 ### Option 1 — via CI (recommended)
 1. Land the rename (§A1) + add the three repo secrets (§A2) on `main`.
 2. Dry-run first: Actions → **Release** → *Run workflow* → `dry_run: true`. Confirm all build jobs green.
-3. Tag and push:
+3. Tag and push — the coordinated `v0.1.0` (drives Rust/Python/npm) PLUS the two
+   per-module Go tags (a bare `v0.1.0` does NOT publish the Go modules — no root
+   go.mod; see §D):
    ```
    git tag v0.1.0
-   git push origin v0.1.0
+   git tag packages/hashstream/v0.1.0
+   git tag packages/evidencevault/v0.1.0
+   git push origin v0.1.0 packages/hashstream/v0.1.0 packages/evidencevault/v0.1.0
    ```
-4. The tagged run publishes Rust (in order) → Python → npm, and warms the Go proxy.
+4. The tagged run publishes Rust (in dependency order, digitalharm-hashkit first)
+   → Python → npm, and warms the Go proxy for both modules.
 
 ### Option 2 — locally (if you must)
 Order matters; **Rust dependency order is the only hard constraint** (hashkit before hashkit-match):
 ```
-# Rust — hashkit FIRST (others depend on it being on the index)
-cargo publish -p hashkit            # or the renamed crate
-sleep 30                            # let the index update
+# Rust — digitalharm-hashkit FIRST (others depend on it being on the index)
+cargo publish -p digitalharm-hashkit   # the renamed crate; -p keys off the package name
+sleep 30                               # let the index update so the dep resolves
 cargo publish -p hashkit-match
 cargo publish -p c2pa-lite
 cargo publish -p safemod
 
-# Python — order-independent (no inter-package deps)
+# Python — order-independent (no inter-package deps). Note promptshield's dir is
+# still `packages/promptshield`; its PUBLISHED dist name is digitalharm-promptshield.
 for p in detectkit-test promptshield trainguard csam-shield/python cybertip-cli/python; do
   ( cd packages/$p && rm -rf dist && python -m build && twine upload dist/* )
 done
@@ -96,28 +109,36 @@ for p in csam-shield/node cybertip-cli/node hashstream/sdk-ts; do
   ( cd packages/$p && npm install && npx tsc && npm publish --access public )
 done
 
-# Go — publish = push the tag (already done if you tagged in Option 1)
-git tag v0.1.0 && git push origin v0.1.0
+# Go — publish = push the PER-MODULE tags (a bare v0.1.0 publishes neither; see §D)
+git tag packages/hashstream/v0.1.0
+git tag packages/evidencevault/v0.1.0
+git push origin packages/hashstream/v0.1.0 packages/evidencevault/v0.1.0
 # then nudge the proxy so pkg.go.dev indexes promptly:
 GOPROXY=https://proxy.golang.org go list -m \
-  github.com/digitalharm/digitalharm-oss/packages/hashstream@v0.1.0
+  github.com/digitalharm/digitalharm-oss/packages/hashstream@packages/hashstream/v0.1.0
 GOPROXY=https://proxy.golang.org go list -m \
-  github.com/digitalharm/digitalharm-oss/packages/evidencevault@v0.1.0
+  github.com/digitalharm/digitalharm-oss/packages/evidencevault@packages/evidencevault/v0.1.0
 ```
 
 ---
 
-## D. Go module note
-The two Go modules already declare correct module paths
-(`github.com/digitalharm/digitalharm-oss/packages/{hashstream,evidencevault}`).
-They become installable the moment a `v0.1.0` **git tag** exists on the default
-branch — there is no separate registry. `go get <module>@v0.1.0` works once the
-tag is pushed; the proxy warm-up above just makes pkg.go.dev show docs sooner.
+## D. Go module note — per-module tags are MANDATORY (corrected)
+The two Go modules declare module paths ending in `/packages/hashstream` and
+`/packages/evidencevault`, and **there is no `go.mod` at the repo root.** For a
+module whose path ends in `/packages/<m>`, the Go toolchain ONLY recognizes the
+version tag **`packages/<m>/vX.Y.Z`**. A bare `v0.1.0` tag resolves to a root
+module that does not exist, so it **silently publishes neither module** to
+`go get` / pkg.go.dev.
 
-> Caveat: a multi-module monorepo with a single shared tag is supported by Go,
-> but if the modules ever need *independent* versions, switch to per-module tags
-> like `packages/hashstream/v0.1.0`. For a synchronized 0.1.0 the single `v0.1.0`
-> tag is fine.
+Therefore, publish with per-module tags:
+```
+git tag packages/hashstream/v0.1.0
+git tag packages/evidencevault/v0.1.0
+git push origin packages/hashstream/v0.1.0 packages/evidencevault/v0.1.0
+```
+Then `go get github.com/digitalharm/digitalharm-oss/packages/hashstream@packages/hashstream/v0.1.0`
+works. For the launch, push both module tags together so 0.1.0 stays
+synchronized; post-0.1.0 they version independently (per the council decision).
 
 ---
 
