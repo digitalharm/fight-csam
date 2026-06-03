@@ -89,7 +89,7 @@ const catTable = CATS.filter(([c]) => all.some((e) => e.category === c))
   .map(([c, f]) => `| [${escName(c)}](/docs/ecosystem/${f}) | ${all.filter((e) => e.category === c).length} |`).join('\n');
 const index = [
   '---',
-  'title: Ecosystem',
+  'title: Overview',
   'description: "A map of the open-source online-safety landscape, with our verdict on how each project fits a CSAM-safety pipeline."',
   '---',
   '',
@@ -119,6 +119,6 @@ const index = [
 fs.writeFileSync(path.join(OUT, 'index.mdx'), index + '\n');
 
 // section meta.json
-fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify({ title: 'Ecosystem', pages: pageList }, null, 2) + '\n');
+fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify({ title: 'Ecosystem', defaultOpen: true, pages: pageList }, null, 2) + '\n');
 
 console.log('generated', pageList.length, 'ecosystem pages:', pageList.join(', '));
