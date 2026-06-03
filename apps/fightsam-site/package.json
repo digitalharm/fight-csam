@@ -2,6 +2,7 @@
   "name": "fightsam-site",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@11.0.9",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
