@@ -7,9 +7,9 @@ name: Release
 #     CARGO_REGISTRY_TOKEN  — crates.io API token (scope: publish-new, publish-update)
 #     PYPI_API_TOKEN        — PyPI token (or use Trusted Publishing; see runbook)
 #     NPM_TOKEN             — npm automation token with publish rights to @digitalharm
-#   And the package NAMES must be claimable on each registry — note `hashkit`
-#   (crates.io) and `promptshield` (PyPI) are currently TAKEN; resolve before tagging
-#   (see runbook "Name collisions").
+#   Name collisions are RESOLVED: the crate publishes as `digitalharm-hashkit`
+#   and the Python dist as `digitalharm-promptshield` (see runbook §A1). The
+#   owner must still OWN the `@digitalharm` npm org before the node job can publish.
 #
 # This workflow is intentionally manual-trigger-able too (workflow_dispatch) so a
 # maintainer can dry-run the build jobs without tagging.
