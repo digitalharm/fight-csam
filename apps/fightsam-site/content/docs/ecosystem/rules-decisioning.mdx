@@ -1,0 +1,83 @@
+---
+title: "Rules, decisioning & clustering"
+description: "Rules engines and decisioning. FightSAM does not build a rules engine — we ship engines that feed yours. ROOST Osprey is the one we recommend and targ"
+---
+
+Rules engines and decisioning. FightSAM does not build a rules engine — we ship engines that feed yours. ROOST Osprey is the one we recommend and target with an adapter.
+
+**9 projects** — 4 use · 2 learn from · 3 reference.
+
+_Project descriptions are adapted from [awesome-safety-tools](https://github.com/roostorg/awesome-safety-tools) (maintained by [ROOST](https://roost.tools)); the verdicts and analysis are ours. Snapshot: June 2026 — a point-in-time view that complements, and does not replace, their living list._
+
+### [Druid](https://github.com/apache/druid)
+
+**Use** · by Apache
+
+A solid analytics datastore to depend on when you need to query and trend the moderation and detection events your pipeline emits at scale. It is infrastructure under a Trust & Safety stack, not a rules engine itself.
+
+> High-performance, real-time analytics database for fast aggregation and slice-and-dice queries over large event streams.
+
+### [Osprey](https://github.com/roostorg/osprey)
+
+**Use** · by ROOST · pairs with [csam-shield](/docs/csam-shield)
+
+This is the rules engine we recommend and explicitly do not try to rebuild: FightSAM ships an Osprey/Coop adapter so our detection signals (hashes, classifier scores, prompt flags) become events Osprey can decision on. Our tools are the engines that feed your Osprey, not a competing decisioning layer.
+
+> High-performance rules engine for real-time Trust & Safety and anti-abuse event processing at scale, running in production at Bluesky, Discord, and Matrix.
+
+### [scikit-learn](https://github.com/scikit-learn/scikit-learn)
+
+**Use** · by scikit-learn
+
+General-purpose clustering and ML infrastructure you can depend on to group near-duplicate reports, cluster abuse signals, or triage event streams before they reach your decisioning engine. Foundational tooling, not CSAM-specific.
+
+> Mature Python machine-learning library that includes clustering algorithms such as K-Means, DBSCAN, and hierarchical clustering.
+
+### [SpamAssassin](https://spamassassin.apache.org)
+
+**Use** · by Apache
+
+Battle-tested filtering infrastructure to depend on for the spam-and-abuse layer that sits alongside CSAM detection; its scored-rules approach is a useful upstream signal source for a decisioning engine. General-purpose anti-abuse infra rather than a T&S rules engine.
+
+> Mature anti-spam platform combining text analysis, Bayesian filtering, and DNS blocklists to score and classify messages.
+
+### [bogofilter](https://bogofilter.sourceforge.io/)
+
+**Learn from** · by bogofilter
+
+A clean, lightweight example of a classifier that improves from reviewer feedback, a pattern worth studying for any human-in-the-loop moderation signal. It is a mail-focused Bayesian filter, so it informs design rather than slotting directly into a CSAM pipeline.
+
+> Fast Bayesian spam filter that classifies messages and continuously learns from human corrections.
+
+### [Marble](https://github.com/checkmarble/marble)
+
+**Learn from** · by Checkmarble · pairs with [evidencevault](/docs/evidencevault)
+
+The strongest open-source case-management and decisioning UI in this space; its immutable audit trail is a model worth studying for evidencevault's chain-of-custody and reviewer-audit views. It is built for fintech fraud rather than CSAM, so we learn from its patterns rather than wrap it.
+
+> Real-time fraud-detection and compliance engine for fintech, with a rules layer, an immutable audit trail, and a built-in case manager.
+
+### [RulesEngine](https://microsoft.github.io/RulesEngine/)
+
+**Reference** · by Microsoft
+
+A well-scoped library for expressing rules in JSON if your stack is .NET, useful as a reference for rule-definition ergonomics. It is a general business-rules library, not a high-throughput T&S event engine like Osprey, which is what a real-time abuse pipeline needs.
+
+> A .NET library for abstracting business rules as JSON-defined expressions that can be evaluated at runtime.
+
+### [SmiteSpam](https://github.com/wikimedia/mediawiki-extensions-SmiteSpam)
+
+**Reference** · by Wikimedia
+
+A narrowly scoped spam-identification tool tied to MediaWiki, useful as a reference for wiki operators but not a general decisioning component. Outside a CSAM pipeline it serves mainly as a worked example of platform-specific spam triage.
+
+> A MediaWiki extension that identifies likely spam pages so administrators can review and clean them up.
+
+### [SQRL](https://github.com/sqrl-lang/sqrl)
+
+**Reference** · by Smyte
+
+Historically influential as a purpose-built rules language for abuse detection and worth reading for its stateful-stream design, but it has been inactive since 2023. Treat it as a reference for ideas rather than a dependency; Osprey is the maintained engine we point teams to.
+
+> Smyte Query and Rules Language, a safe stateful language for writing rules over event streams; the project is inactive as of 2023.
+

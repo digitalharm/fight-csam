@@ -1,0 +1,91 @@
+---
+title: "Investigation & signal-sharing"
+description: "Threat-signal sharing and investigation tooling. Meta ThreatExchange / python-threatexchange set the bar for hashstream; disinformation and platform-o"
+---
+
+Threat-signal sharing and investigation tooling. Meta ThreatExchange / python-threatexchange set the bar for hashstream; disinformation and platform-observability work is deliberately out of our scope.
+
+**10 projects** — 3 learn from · 1 reference · 6 out of scope.
+
+_Project descriptions are adapted from [awesome-safety-tools](https://github.com/roostorg/awesome-safety-tools) (maintained by [ROOST](https://roost.tools)); the verdicts and analysis are ours. Snapshot: June 2026 — a point-in-time view that complements, and does not replace, their living list._
+
+### [Feluda](https://github.com/tattle-made/feluda)
+
+**Learn from** · by Tattle · pairs with [csam-shield](/docs/csam-shield)
+
+Feluda's operator pattern — letting an operator escalate from cheap hash-based matching to heavier ML models depending on budget and need — is exactly the tiered-analysis design we want to inform csam-shield. Strong architecture worth borrowing from.
+
+> A configurable engine for analyzing multi-lingual, multi-modal content (text, images, video), built around a modular operator pattern that lets you swap analysis techniques.
+
+### [python-threatexchange](https://github.com/facebook/ThreatExchange/tree/main/python-threatexchange)
+
+**Learn from** · by Meta · pairs with [hashstream](/docs/hashstream)
+
+Its SignalExchangeAPI — a checkpoint-able, source-agnostic interface for pulling signals from NCMEC, StopNCII, TCAP and beyond — is the bar we hold hashstream to. We intend to ship a SignalExchangeAPI plugin so its existing users can adopt hashstream with minimal friction.
+
+> A Python library and CLI for media hash exchange, built on a pluggable SignalExchangeAPI with fetchers for NCMEC, StopNCII, Tech Against Terrorism (TCAP), and Meta's own ThreatExchange.
+
+### [ThreatExchange](https://github.com/facebook/ThreatExchange)
+
+**Learn from** · by Meta · pairs with [hashstream](/docs/hashstream)
+
+The reference signal-sharing platform for trust & safety, and the model we measure hashstream against. We plan to interoperate so its participants can adopt us rather than choose between the two.
+
+> Meta's platform and toolset for privacy-compliant sharing of threat and safety-harm signals between organizations, spanning REST APIs and open-source hashing/matching projects.
+
+### [ThreatExchange PHP client](https://github.com/certly/threatexchange)
+
+**Reference** · by Certly · pairs with [hashstream](/docs/hashstream)
+
+A handy illustration of what a thin language-specific ThreatExchange client looks like, but it's effectively frozen (last release 2016). Useful as a reference point, not a dependency.
+
+> A PHP client library for authenticating against and querying Meta's ThreatExchange API.
+
+### [CIB Mango Tree](https://github.com/CIB-Mango-Tree/CIB-Mango-Tree-Website)
+
+**Out of scope** · by CIB Mango Tree
+
+Solid tooling for the disinformation and influence-operations research community, but coordinated inauthentic behavior is deliberately outside FightSAM's remit, which centers on CSAM detection, reporting, and prevention. Different problem, different field.
+
+> A collection of tools to help researchers detect and analyze coordinated inauthentic behavior (CIB) — organized, deceptive activity on social platforms.
+
+### [Crossover](https://crossover.social/)
+
+**Out of scope** · by Crossover
+
+Valuable work on algorithmic transparency and recommender-system observability, but that disinformation and election-integrity focus sits outside FightSAM's CSAM-centric scope. We point to it respectfully rather than fold it in.
+
+> Dashboards that monitor social-network recommendation algorithms, surfacing how disinformation and election-related content is amplified.
+
+### [DAU Dashboard](https://github.com/tattle-made/dau-dashboard)
+
+**Out of scope** · by Tattle
+
+A useful collaborative investigation surface, but its deepfake and synthetic-media analysis focus is a different problem from FightSAM's CSAM detection and reporting mission. Worthwhile in its own lane.
+
+> A collaborative space for the Deepfake Analysis Unit — an Elixir/Phoenix web app where teams jointly examine and investigate suspected deepfake media.
+
+### [Interference](https://github.com/DFRLab/interference2024)
+
+**Out of scope** · by DFRLab
+
+Important election-integrity and foreign-influence research, but tracking interference campaigns falls outside FightSAM's CSAM scope. We credit the work without treating it as part of our toolchain.
+
+> A database tracking alleged instances of foreign interference in the 2024 US election.
+
+### [OpenMeasures](https://gitlab.com/openmeasures)
+
+**Out of scope** · by OpenMeasures
+
+A capable platform-observability and trend-investigation toolkit, but its disinformation and harmful-narrative focus is deliberately outside FightSAM's CSAM-centric mission. Valuable work on an adjacent problem.
+
+> A platform for investigating internet trends, harmful narratives, and emerging online movements across fringe and mainstream platforms.
+
+### [TikTok Observatory](https://github.com/aiforensics/tkobservatory)
+
+**Out of scope** · by AI Forensics
+
+Sharp work on recommender-system accountability and platform observability, but algorithmic promotion/demotion on TikTok is outside FightSAM's CSAM detection and reporting scope. We acknowledge it as strong work on a different question.
+
+> Tooling that monitors TikTok's recommendation algorithm, measuring which content the platform promotes or demotes.
+

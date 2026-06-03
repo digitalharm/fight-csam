@@ -1,0 +1,275 @@
+---
+title: "Datasets & benchmarks"
+description: "Training and evaluation datasets. We anchor promptshield’s evaluation to NVIDIA Aegis 2.0 and borrow Tattle / Uli annotation methodology; the rest are"
+---
+
+Training and evaluation datasets. We anchor promptshield’s evaluation to NVIDIA Aegis 2.0 and borrow Tattle / Uli annotation methodology; the rest are listed for reference.
+
+**33 projects** — 33 reference.
+
+_Project descriptions are adapted from [awesome-safety-tools](https://github.com/roostorg/awesome-safety-tools) (maintained by [ROOST](https://roost.tools)); the verdicts and analysis are ours. Snapshot: June 2026 — a point-in-time view that complements, and does not replace, their living list._
+
+### [Aegis Content Safety 2.0](https://huggingface.co/datasets/nvidia/Aegis-AI-Content-Safety-Dataset-2.0)
+
+**Reference** · by NVIDIA · pairs with [promptshield](/docs/promptshield)
+
+Our eval anchor for PromptShield: CC-BY-4.0 licensing plus a "Sexual (minor)" subset make it usable for CSAM-intent benchmarking.
+
+> Content-moderation and toxicity dataset spanning a broad LLM-safety taxonomy, including a dedicated "Sexual (minor)" category. Released under CC-BY-4.0.
+
+### [AI Alignment (RLHF)](https://atlas.nomic.ai/map/anthropic_rlhf)
+
+**Reference** · by Anthropic
+
+Foundational helpful/harmless preference data for alignment research.
+
+> RLHF alignment data, explorable as a Nomic Atlas map.
+
+### [AILuminate](https://github.com/mlcommons/ailuminate)
+
+**Reference** · by MLCommons
+
+Standardized industry safety benchmark across many harm categories.
+
+> Human-created prompts spanning a standardized set of harm categories.
+
+### [ALERT](https://huggingface.co/datasets/Babelscape/ALERT)
+
+**Reference** · by Babelscape
+
+Pairs standard and adversarial variants for safety stress-testing.
+
+> Standard and adversarial red-team prompts organized by a safety taxonomy.
+
+### [Aya Red-teaming](https://huggingface.co/datasets/CohereForAI/aya_redteaming)
+
+**Reference** · by Cohere
+
+Good for multilingual red-team coverage beyond English.
+
+> Multilingual red-team prompts for probing model safety across languages.
+
+### [badwords](https://github.com/hughsie/badwords)
+
+**Reference** · by Richard Hughes
+
+Quick multilingual profanity seed list, not a substitute for a real classifier.
+
+> Bad-word lists compiled across multiple locales.
+
+### [CCP Sensitive Prompts](https://huggingface.co/datasets/promptfoo/CCP-sensitive-prompts)
+
+**Reference** · by Promptfoo
+
+Niche set for probing political censorship behavior in models.
+
+> Prompts on topics sensitive to the Chinese Communist Party.
+
+### [DarkBench](https://huggingface.co/datasets/apart/darkbench)
+
+**Reference** · by Apart
+
+Useful for evaluating manipulative / dark-pattern model tendencies.
+
+> Benchmark for detecting dark design patterns in LLM behavior.
+
+### [DEFCON Red Teaming](https://github.com/humane-intelligence/ai_village_defcon_grt_data)
+
+**Reference** · by Humane Intelligence
+
+Real crowd-sourced red-team attempts from a large public event.
+
+> Data from the DEF CON AI Village generative red-teaming event.
+
+### [Do Not Answer](https://huggingface.co/datasets/LibrAI/do-not-answer)
+
+**Reference** · by LibrAI
+
+Targeted refusal-behavior eval for questions a model should decline.
+
+> Questions designed to test whether a model correctly refuses.
+
+### [Forbidden Questions](https://huggingface.co/datasets/TrustAIRLab/forbidden_question_set)
+
+**Reference** · by TrustAIRLab
+
+Policy-grounded prompts for testing disallowed-content refusals.
+
+> Questions derived from categories in the OpenAI usage policy.
+
+### [HackAPrompt](https://huggingface.co/datasets/hackaprompt/hackaprompt-dataset)
+
+**Reference** · by HackAPrompt
+
+Big corpus of human-crafted prompt-injection attacks.
+
+> Large dataset of prompt-injection and jailbreaking attempts.
+
+### [HarmBench](https://github.com/centerforaisafety/HarmBench)
+
+**Reference** · by CAIS
+
+Standard harness for automated red-teaming comparisons.
+
+> Standardized evaluation dataset for automated red-teaming.
+
+### [HiroKachi Jailbreak](https://sizu.me/love)
+
+**Reference**
+
+Community-sourced jailbreak collection; treat provenance with caution.
+
+> Collection of adversarial prompt-attack examples.
+
+### [Jailbreak Prompt Generator](https://huggingface.co/tsq2000/Jailbreak-generator)
+
+**Reference**
+
+Generator rather than a fixed set, for synthesizing attack prompts at scale.
+
+> A model that generates jailbreak prompts.
+
+### [JailbreakBench](https://huggingface.co/datasets/JailbreakBench/JBB-Behaviors)
+
+**Reference** · by JailbreakBench
+
+Standard behaviors set for benchmarking jailbreak defenses.
+
+> Curated harmful behaviors for evaluating jailbreak robustness.
+
+### [JailbreakHub](https://huggingface.co/datasets/walledai/JailbreakHub)
+
+**Reference** · by WalledAI
+
+Prompt+response pairs, handy for studying what jailbreaks actually elicit.
+
+> Jailbreak prompts paired with model responses.
+
+### [LLM-LAT harmful](https://huggingface.co/datasets/LLM-LAT/harmful-dataset)
+
+**Reference** · by LLM-LAT
+
+General harmful-behavior probe set, often used in latent adversarial training.
+
+> Prompts for assessing harmful model behaviors.
+
+### [MedSafetyBench](https://github.com/AI4LIFE-GROUP/med-safety-bench)
+
+**Reference** · by AI4LIFE-GROUP
+
+Domain-specific eval for medical-safety failure modes.
+
+> Medical-safety prompts for evaluating models in clinical contexts.
+
+### [Multilingual Vulnerability](https://github.com/CarsonDon/Multilingual-Vuln-LLMs)
+
+**Reference**
+
+Probes safety gaps that appear in non-English languages.
+
+> Multilingual prompts that surface LLM vulnerabilities.
+
+### [PKU-SafeRLHF](https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF)
+
+**Reference** · by PKU-Alignment
+
+Good for safety-preference / RLHF training signal on response harmfulness.
+
+> Prompts paired with RLHF safety markers identifying unsafe responses.
+
+### [Red Team Resistance Leaderboard](https://huggingface.co/spaces/HaizeLabs/red-teaming-resistance-benchmark)
+
+**Reference** · by Haize Labs
+
+Comparative ranking of model attack-resistance rather than a raw dataset.
+
+> Leaderboard ranking models by their resistance to attacks.
+
+### [Rentry Jailbreak](https://rentry.org/gpt0721)
+
+**Reference**
+
+Informal community jailbreak dump; unversioned, verify before use.
+
+> A collected set of jailbreak prompts.
+
+### [SidFeel Jailbreak](https://github.com/sidfeels/PromptsDB)
+
+**Reference**
+
+Another community jailbreak prompt collection for attack coverage.
+
+> A collection of jailbreak prompts.
+
+### [SorryBench](https://huggingface.co/datasets/sorry-bench/sorry-bench-202503)
+
+**Reference** · by SorryBench
+
+Tests refusal robustness under paraphrase and linguistic mutation.
+
+> Adversarial prompts augmented with linguistic mutations.
+
+### [SOSBench](https://huggingface.co/datasets/SOSBench/SOSBench)
+
+**Reference** · by SOSBench
+
+Good for evaluating dangerous scientific-capability refusals (e.g. chem/bio).
+
+> Regulation-grounded hazard benchmark spanning six scientific domains.
+
+### [TDC23-RedTeaming](https://huggingface.co/datasets/walledai/TDC23-RedTeaming)
+
+**Reference** · by WalledAI
+
+Competition-derived red-team prompts for benchmark continuity.
+
+> Prompts from the TDC23 red-teaming track.
+
+### [Toxic Chat](https://huggingface.co/datasets/lmsys/toxic-chat)
+
+**Reference** · by LMSYS
+
+Realistic in-the-wild toxicity from live chat, good for conversational moderation eval.
+
+> Toxic conversations drawn from real user interactions with Vicuna.
+
+### [Toxicity](https://huggingface.co/datasets/google/jigsaw_toxicity_pred)
+
+**Reference** · by Jigsaw
+
+License-clean (CC0) baseline for generic toxicity classification.
+
+> Wikipedia comments labeled for toxicity. Released under CC0.
+
+### [Transphobia Awareness](https://doi.org/10.5281/zenodo.15482694)
+
+**Reference**
+
+Targeted set for evaluating anti-trans hate detection.
+
+> Transphobia-related queries with annotations.
+
+### [Uli Dataset](https://github.com/tattle-made/uli_dataset)
+
+**Reference** · by Tattle · pairs with [detectkit-test](/docs/detectkit-test)
+
+Its expert per-annotator methodology informs how we structure our CSAM-intent eval.
+
+> Gendered-abuse dataset built with an expert, per-annotator labeling methodology.
+
+### [VTC](https://github.com/unitaryai/VTC)
+
+**Reference** · by Unitary AI
+
+Reference for multimodal (video + comment) toxicity work.
+
+> Video-text-comments dataset and method for multimodal moderation.
+
+### [XSTest](https://github.com/paul-rottger/exaggerated-safety)
+
+**Reference**
+
+Catches over-refusal: safe prompts a model wrongly declines.
+
+> Prompts testing exaggerated-safety (over-refusal) behaviors.
+

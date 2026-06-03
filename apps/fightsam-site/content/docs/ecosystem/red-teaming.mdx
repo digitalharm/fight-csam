@@ -1,0 +1,75 @@
+---
+title: "Red-teaming & evaluation"
+description: "Adversarial testing harnesses. We recommend pairing promptshield with one of these, and plan to contribute the CSAM-intent probes the generalist harne"
+---
+
+Adversarial testing harnesses. We recommend pairing promptshield with one of these, and plan to contribute the CSAM-intent probes the generalist harnesses deliberately omit.
+
+**8 projects** — 5 use · 3 learn from.
+
+_Project descriptions are adapted from [awesome-safety-tools](https://github.com/roostorg/awesome-safety-tools) (maintained by [ROOST](https://roost.tools)); the verdicts and analysis are ours. Snapshot: June 2026 — a point-in-time view that complements, and does not replace, their living list._
+
+### [Aymara](https://github.com/aymara-ai/aymara-sdk-python)
+
+**Use** · by Aymara · pairs with [promptshield](/docs/promptshield)
+
+Aymara's safety and jailbreak evals are a clean way to score whether prompts reach a model after promptshield screens them; we ship the guard and recommend pairing it with this kind of adversarial eval rather than trusting the filter blind. It has no CSAM-intent coverage out of the box, which is the gap our planned probe pack fills.
+
+> A Python SDK of automated evaluation tools for AI safety, accuracy, and jailbreak vulnerability, scoring model responses against configurable policies.
+
+### [Garak](https://github.com/NVIDIA/garak)
+
+**Use** · by NVIDIA · pairs with [promptshield](/docs/promptshield)
+
+Garak's breadth of off-the-shelf probes makes it our first recommendation for stress-testing promptshield and the csam-shield prompt path across many attack classes at once. It deliberately omits CSAM specifics, so we plan to contribute CSAM-intent probes as a plugin rather than rebuilding the harness.
+
+> NVIDIA's framework for adversarial testing and evaluation of LLMs, shipping a broad library of probes for jailbreaks, prompt injection, toxicity, and data leakage.
+
+### [Prompt Fuzzer](https://github.com/prompt-security/ps-fuzz)
+
+**Use** · by Prompt Security · pairs with [promptshield](/docs/promptshield)
+
+Prompt Fuzzer is a fast way to probe whether crafted injections slip past promptshield before reaching the model, which is exactly the adversarial pairing we recommend alongside shipping the guard. Its generalist injection focus means CSAM-intent cases are still on you to add.
+
+> An interactive tool from Prompt Security for testing the prompt-injection and jailbreak resilience of an LLM system's configuration and system prompt.
+
+### [Promptfoo](https://github.com/promptfoo/promptfoo)
+
+**Use** · by Promptfoo · pairs with [promptshield](/docs/promptshield)
+
+Promptfoo's developer experience and OWASP/NIST-mapped attack strategies make it our recommended pick for repeatable, reportable evals of promptshield and the csam-shield path in CI. We plan to contribute CSAM-intent strategies as a plugin, since the built-in packs intentionally leave that domain out.
+
+> An automated LLM evaluation and red-teaming framework with report generation and ready-to-use attack strategies mapped to OWASP and NIST frameworks.
+
+### [PyRIT](https://github.com/Azure/PyRIT)
+
+**Use** · by Microsoft · pairs with [promptshield](/docs/promptshield)
+
+PyRIT's multi-turn orchestration is the one we reach for when an attack only emerges across a conversation, which is the harder case for any single-prompt guard like promptshield to catch. It ships no CSAM-intent content, so our planned red-team pack plugs into PyRIT rather than replacing it.
+
+> Microsoft's Python Risk Identification Tool for generative AI, built for automated red teaming including multi-turn, conversational attack orchestration.
+
+### [Counterfit](https://github.com/Azure/counterfit/)
+
+**Learn from** · by Microsoft
+
+Counterfit's harness-and-attack abstraction is worth studying as a model for orchestrating adversarial tests, though its focus on classic adversarial-ML perturbations sits further from the prompt-screening path promptshield guards. Useful as a reference for structuring an attack suite more than as a day-to-day guard validator.
+
+> A command-line automation tool from Microsoft for assessing the security and robustness of AI models, wrapping adversarial-ML attacks behind a common interface.
+
+### [LLM Canary](https://github.com/LLM-Canary/LLM-Canary)
+
+**Learn from** · by LLM Canary
+
+LLM Canary's vulnerability benchmark is a useful reference for the categories worth tracking when you validate a guard like promptshield, and its scored test cases show one way to make results comparable over time. Lighter-weight than the generalist harnesses, so we treat it as a learn-from source for our own probe scoring.
+
+> A benchmarking tool that evaluates LLMs for security vulnerabilities and adversarial robustness against a curated set of test cases.
+
+### [Socketteer](https://github.com/socketteer)
+
+**Learn from** · by Socketteer
+
+Socketteer's model-vs-model setups are a useful source of ideas for generating adversarial conversations that probe a guard's blind spots, even if they are more research scaffolding than a turnkey validator for promptshield. We treat it as a learn-from reference for designing multi-turn CSAM-intent scenarios.
+
+> A collection of experimental tools that let AI models interact with each other to surface conversational weaknesses and emergent failure modes.
+

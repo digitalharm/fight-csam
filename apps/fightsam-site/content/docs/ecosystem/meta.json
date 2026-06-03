@@ -1,0 +1,15 @@
+{
+  "title": "Ecosystem",
+  "pages": [
+    "index",
+    "perceptual-hashing",
+    "classifiers",
+    "rules-decisioning",
+    "infrastructure-review",
+    "red-teaming",
+    "privacy-user-safety",
+    "investigation",
+    "decentralized-fediverse",
+    "datasets"
+  ]
+}
