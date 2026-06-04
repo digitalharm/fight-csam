@@ -17,7 +17,7 @@ advice (recommend counsel for specifics).
 | **EU DSA** (2024) | Notice-and-action, trusted flaggers, transparency for hosting/platforms. | csam-shield (action), evidencevault (records) |
 | **AU eSafety** (2025–26) | Industry codes/standards incl. proactive detection expectations. | detection + reporting stack |
 
-The FightSAM stack lets a small platform reach a defensible posture under these
+The FightCSAM stack lets a small platform reach a defensible posture under these
 **without** a multi-week per-provider integration — that's the value. But it
 does **not** make turnkey-compliance claims, and neither should you: say "this
 helps you meet X" not "this makes you compliant with X."

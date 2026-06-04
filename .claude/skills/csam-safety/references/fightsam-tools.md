@@ -1,6 +1,6 @@
-# FightSAM tools — the 11 packages
+# FightCSAM tools — the 11 packages
 
-Apache-2.0, published under the `digitalharm` name (the brand is "FightSAM").
+Apache-2.0, published under the `digitalharm` name (the brand is "FightCSAM").
 **All are pre-release** (first registry publish pending) — if an install doesn't
 resolve yet, offer the from-source path (clone the repo) and say so. Source:
 `github.com/digitalharm/fight-csam`, each under `packages/<tool>`.

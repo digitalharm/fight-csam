@@ -1,11 +1,11 @@
-# FightSAM — developer website design
+# FightCSAM — developer website design
 
-**What this is.** The design for **FightSAM** (fightsam.org): a separate,
+**What this is.** The design for **FightCSAM** (fightsam.org): a separate,
 developer- and coding-agent-facing website that is the front door to the 11
 open-source CSAM-safety packages in this repo (`fight-csam`). It is the
 "how do I actually build this" companion to **The Digital Harm Project**
 (`digitalharm.org`, the public-education site). Naming stays as-is — the
-*packages* keep the `digitalharm`/`@digitalharm` convention; **FightSAM is the
+*packages* keep the `digitalharm`/`@digitalharm` convention; **FightCSAM is the
 site brand, not a package rename.**
 
 **Decisions locked (owner):**
@@ -23,7 +23,7 @@ site brand, not a package rename.**
 
 ## 1. Why a separate site (positioning)
 
-| | digitalharm.org — "The Digital Harm Project" | fightsam.org — "FightSAM" |
+| | digitalharm.org — "The Digital Harm Project" | fightsam.org — "FightCSAM" |
 |---|---|---|
 | Audience | Parents, survivors, clinicians, educators, policymakers | Developers, T&S engineers, AI startups, coding agents |
 | Job | Understand the harm; get help | Ship the protection; reach compliance |
@@ -33,10 +33,10 @@ site brand, not a package rename.**
 
 Keeping them separate means neither compromises the other: the public site never
 reads like an SDK, and the dev site never makes a panicking parent wade through
-`cargo add`. They cross-link (digitalharm.org `/tools` → fightsam.org; FightSAM
+`cargo add`. They cross-link (digitalharm.org `/tools` → fightsam.org; FightCSAM
 footer → digitalharm.org for the "why").
 
-**The north star for FightSAM:** a developer — or a coding agent acting for one —
+**The north star for FightCSAM:** a developer — or a coding agent acting for one —
 arrives, and within minutes has either (a) installed the one tool they came for,
 or (b) been walked down the **golden path** to a working, compliant CSAM pipeline.
 The site is optimized so an **AI coding agent** can consume it as well as a human.
@@ -46,7 +46,7 @@ The site is optimized so an **AI coding agent** can consume it as well as a huma
 ## 2. Information architecture (sitemap)
 
 ```
-/                         Landing — what FightSAM is, the 3 entry paths, the pitch
+/                         Landing — what FightCSAM is, the 3 entry paths, the pitch
 /start                    "Get protected in 15 minutes" — the golden-path entry
 /golden-path/             The guided compliance walkthrough (the crown jewel)
   /assess                   1. What are you? (UGC host / AI generator / Fediverse) + which laws apply
@@ -60,7 +60,7 @@ The site is optimized so an **AI coding agent** can consume it as well as a huma
   /docs/<tool>/             overview · install · quickstart · API · examples · gotchas
 /compliance/              Reference: OSA / TAKE IT DOWN / §2258A / DSA mapped to tools
 /concepts/                Perceptual hashing, the no-hash-list principle, the threat model
-/cli/                     The `create-fightsam` scaffolder + the FightSAM CLI
+/cli/                     The `create-fightcsam` scaffolder + the FightCSAM CLI
 /mcp/                     The docs MCP server: how an agent connects + tool catalog
 /agents                   "For coding agents" — llms.txt, raw-md endpoints, manifest, conventions
 /about                    What this is, link to The Digital Harm Project, governance, license
@@ -76,8 +76,8 @@ Plus a fourth, quieter: **"I just want one tool"** → /docs.
 
 ## 3. The coding-agent-friendly system (the differentiator)
 
-This is what makes FightSAM stand out. Most docs sites are built for humans and
-agents scrape them badly. FightSAM treats **the coding agent as a first-class
+This is what makes FightCSAM stand out. Most docs sites are built for humans and
+agents scrape them badly. FightCSAM treats **the coding agent as a first-class
 visitor** with its own supported interface.
 
 ### 3.1 Discovery & whole-site context
@@ -115,7 +115,7 @@ A Model Context Protocol server an agent connects to as a tool, exposing:
 - `get_compliance(regime)` → which tools satisfy which obligation (OSA/TAKE IT DOWN/§2258A).
 Hosted alongside the site (a Next.js route handler or a small companion service);
 documented on `/mcp` with a one-line connect string for Claude/Cursor/etc.
-This is the "an agent can *query* FightSAM as a live tool" capability, beyond
+This is the "an agent can *query* FightCSAM as a live tool" capability, beyond
 just reading static files.
 
 ### 3.5 Conventions page (`/agents`)
@@ -166,7 +166,7 @@ into one opinionated, compliant pipeline.
 same — *"neither a monolith nor 11 loose libraries, but a thin opinionated
 meta-CLI that scaffolds a golden-path pipeline; build the CSAM detection + report
 + preserve core deep, wrap everything else."* The site's golden path and the
-`create-fightsam` CLI are the two front-ends of exactly that `fightsam init`
+`create-fightcsam` CLI are the two front-ends of exactly that `fightsam init`
 recommendation. The analysis also pins the **build-vs-wrap split** the golden
 path should encode at each step:
 - **BUILD/own deep:** hashkit (+vPDQ), hashkit-match (+FP-guard), csam-shield
@@ -179,24 +179,24 @@ path should encode at each step:
   Guardian / Llama Guard / ShieldGemma (text/image classifiers), Ozone + Meta
   Content Review Filters (reviewer UI), BullMQ/RabbitMQ (queues), Garak/PyRIT/
   Promptfoo (red-team harness).
-The golden-path wizard, the `create-fightsam` profiles (`--profile bluesky` /
+The golden-path wizard, the `create-fightcsam` profiles (`--profile bluesky` /
 `ai-startup` / `small-platform`), and the MCP `get_golden_path` all read this one
 build-vs-wrap spec as their single source of truth.
 
 ---
 
-## 5. The scaffolding CLI + MCP (`create-fightsam`)
+## 5. The scaffolding CLI + MCP (`create-fightcsam`)
 
-- **`npx create-fightsam`** (and a `pipx`/`uvx` equivalent) — an interactive
+- **`npx create-fightcsam`** (and a `pipx`/`uvx` equivalent) — an interactive
   scaffolder that runs the Step-0 assessment in the terminal and **generates a
   starter integration**: the chosen tools installed, wired into a sample
   upload/generation pipeline, with `.env.example` for the credentialed bits, a
   README mapping the setup to its compliance obligations, and a passing
   `detectkit-test` CI workflow. The "create-next-app for CSAM safety."
-- **Non-interactive / agent mode:** `create-fightsam --profile ugc-node
+- **Non-interactive / agent mode:** `create-fightcsam --profile ugc-node
   --json` so a coding agent can scaffold without prompts.
-- Lives in the repo as a new package (`packages/create-fightsam` or
-  `tools/create-fightsam`), reusing the golden-path data as its single source of
+- Lives in the repo as a new package (`packages/create-fightcsam` or
+  `tools/create-fightcsam`), reusing the golden-path data as its single source of
   truth (the website wizard, the CLI, and the MCP all read the same path spec).
 - **MCP server** (§3.4) ships from the same package so "the website's golden
   path," "the CLI," and "the agent tool" are three front-ends over one engine.
@@ -252,7 +252,7 @@ above is the gate; visual polish is a later step.)
 | **1. Agent baseline** | `/llms.txt`, `/llms-full.txt`, per-page raw-md, `/.well-known/fightsam.json` manifest, `/agents` page, content-negotiation | an agent can fetch the manifest + any page as md; no-JS content verified via curl |
 | **2. Docs** | `/docs/<tool>` for all 11 packages (overview/install/quickstart/API/gotchas), pulling real versions | every package documented; manifest auto-covers all 11 (CI-enforced) |
 | **3. Golden path** | `/golden-path` branching wizard + `/start` + downloadable compliance checklist; golden-path spec as structured data | a dev completes a profile → correct ordered plan; spec served to manifest/MCP |
-| **4. CLI** | `create-fightsam` scaffolder (interactive + `--json` agent mode) generating a wired starter + CI | `npx create-fightsam` produces a building, test-passing sample |
+| **4. CLI** | `create-fightcsam` scaffolder (interactive + `--json` agent mode) generating a wired starter + CI | `npx create-fightcsam` produces a building, test-passing sample |
 | **5. MCP** | docs MCP server (`search_docs`/`get_tool`/`get_golden_path`/`get_compliance`) + `/mcp` connect docs | Claude/Cursor can connect and answer a "how do I add CSAM scanning" query from it |
 | **6. Brand polish** | the developer visual identity applied; landing page hero with live snippet; a11y pass | WCAG AA; design reviewed |
 
@@ -269,12 +269,12 @@ v1 = phases 0–5 functional + phase 6 polish. Each phase ships independently
 2. **MCP hosting** — host the MCP server on the same Vercel project (route
    handler) vs a tiny separate service? (Recommend: same project, a Next route,
    to start.)
-3. **CLI package name** — `create-fightsam` is the npm convention; confirm we
-   want the *brand* (FightSAM) on the CLI even though the libraries are
-   `@digitalharm/*`. (Recommend yes — the CLI is the FightSAM-branded front door;
+3. **CLI package name** — `create-fightcsam` is the npm convention; confirm we
+   want the *brand* (FightCSAM) on the CLI even though the libraries are
+   `@digitalharm/*`. (Recommend yes — the CLI is the FightCSAM-branded front door;
    it *installs* the digitalharm packages.)
 4. **Externals in the golden path** — are we comfortable recommending best-in-
-   class non-FightSAM tools at steps we don't cover (e.g. Osprey for rules,
+   class non-FightCSAM tools at steps we don't cover (e.g. Osprey for rules,
    Presidio for PII, Llama Guard for text)? (Recommend yes — it makes the path
    genuinely complete; the landscape analysis informs the picks.)
 5. **Scope confirm** — phases 0–2 (agent-ready docs) are the minimum lovable
@@ -286,5 +286,5 @@ v1 = phases 0–5 functional + phase 6 polish. Each phase ships independently
 *Companion docs: `docs/gtm/adoption-strategy.md` (why developers adopt),
 `docs/gtm/ideal-customer-profile.md` (who), `docs/gtm/landscape-analysis-2026-06.md`
 (what externals to recommend — in progress). This is a design/planning doc; no
-site code written yet. The packages keep the digitalharm naming; FightSAM is the
+site code written yet. The packages keep the digitalharm naming; FightCSAM is the
 site brand only.*

@@ -30,10 +30,10 @@ tool/step that satisfies it (the artifact a small platform shows a regulator).
 
 ## Build vs wrap (the locked split)
 
-Build the CSAM-specific core with FightSAM; wrap best-in-class externals for
+Build the CSAM-specific core with FightCSAM; wrap best-in-class externals for
 everything else. Full external details + verdicts in `ecosystem.md`.
 
-| Layer | BUILD (FightSAM) | WRAP (recommend, don't rebuild) |
+| Layer | BUILD (FightCSAM) | WRAP (recommend, don't rebuild) |
 |---|---|---|
 | Ingest / queue | — | BullMQ or RabbitMQ |
 | Perceptual hashing | hashkit (PDQ/TMK/vPDQ) | Meta PDQ reference for conformance cross-check |
