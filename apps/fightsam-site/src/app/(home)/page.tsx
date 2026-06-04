@@ -6,7 +6,7 @@ export default function HomePage() {
       <p className="mb-3 font-mono text-sm uppercase tracking-widest text-fd-muted-foreground">
         Open-source child-safety toolkit
       </p>
-      <h1 className="mb-4 text-4xl font-bold sm:text-5xl">FightSAM</h1>
+      <h1 className="mb-4 text-4xl font-bold sm:text-5xl">FightCSAM</h1>
       <p className="mb-8 max-w-2xl text-balance text-fd-muted-foreground">
         Free, open-source software that helps any online platform{' '}
         <strong>detect</strong>, <strong>report</strong>, and{' '}

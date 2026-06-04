@@ -1,6 +1,6 @@
-# FightSAM — developer site (`apps/fightsam-site`)
+# FightCSAM — developer site (`apps/fightsam-site`)
 
-The developer- and coding-agent-facing website for the **FightSAM** open-source
+The developer- and coding-agent-facing website for the **FightCSAM** open-source
 CSAM-safety toolkit (the 11 packages in this monorepo). Built with
 [Fumadocs](https://fumadocs.dev) (Next.js App Router + MDX) and configured for
 **static export** (`output: 'export'`), so every page — and every agent
@@ -8,7 +8,7 @@ endpoint — is present in the initial HTML without running JS.
 
 > Design doc: `../../docs/gtm/fightsam-site-design.md`.
 > Release plan: `../../docs/ops/v2-release-plan.md`.
-> Packages keep the `digitalharm` naming; **FightSAM is the site brand only.**
+> Packages keep the `digitalharm` naming; **FightCSAM is the site brand only.**
 
 ## Develop
 
@@ -37,6 +37,6 @@ run their (prebuilt-binary) install scripts.
 
 Phases per `docs/gtm/fightsam-site-design.md` and `docs/ops/v2-release-plan.md`:
 **0** scaffold (done) · **1** agent baseline + manifest · **2** per-tool docs with
-verified install strings · **3** golden path · **4** `create-fightsam` CLI ·
+verified install strings · **3** golden path · **4** `create-fightcsam` CLI ·
 **5** docs MCP server · **6** brand polish. Deploys to its own Vercel project on
 **fightsam.org** (owner-provisioned).

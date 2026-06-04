@@ -13,7 +13,7 @@ _Project descriptions are adapted from [awesome-safety-tools](https://github.com
 
 **Learn from** · by Jigsaw (Google) · pairs with [hashkit-match](/docs/hashkit-match)
 
-A self-contained reviewer-facing front end over a hash matcher — the same hash-then-action loop a CSAM pipeline runs, just aimed at a different harm vertical. FightSAM users building a moderation queue on top of hashkit-match can study its review-UI and actioning patterns directly.
+A self-contained reviewer-facing front end over a hash matcher — the same hash-then-action loop a CSAM pipeline runs, just aimed at a different harm vertical. FightCSAM users building a moderation queue on top of hashkit-match can study its review-UI and actioning patterns directly.
 
 > A free, open-source web UI and hash-matching tool that helps platforms find and review violent-extremism and terrorism content, drawing on shared industry hash sets.
 
@@ -21,7 +21,7 @@ A self-contained reviewer-facing front end over a hash matcher — the same hash
 
 **Learn from** · by Meta · pairs with [csam-shield](/docs/csam-shield)
 
-The reference end-to-end hash -&gt; match -&gt; act service, and the closest external analogue to CSAM-Shield's orchestration role. A FightSAM user choosing between adopting HMA wholesale or wiring CSAM-Shield's unified middleware should read this as the leading alternative on the orchestration axis.
+The reference end-to-end hash -&gt; match -&gt; act service, and the closest external analogue to CSAM-Shield's orchestration role. A FightCSAM user choosing between adopting HMA wholesale or wiring CSAM-Shield's unified middleware should read this as the leading alternative on the orchestration axis.
 
 > A turnkey service that combines a hashing algorithm, a matching function, and the ability to hook into actions, so platforms can stand up content matching end to end.
 
@@ -29,7 +29,7 @@ The reference end-to-end hash -&gt; match -&gt; act service, and the closest ext
 
 **Learn from** · by Matrix.org · pairs with [csam-shield](/docs/csam-shield)
 
-A real-world example of fitting a generic HMA matcher to one platform's data model and moderation flow. A FightSAM user integrating CSAM-Shield into a federated or chat platform can mine it for protocol-binding patterns.
+A real-world example of fitting a generic HMA matcher to one platform's data model and moderation flow. A FightCSAM user integrating CSAM-Shield into a federated or chat platform can mine it for protocol-binding patterns.
 
 > Matrix-specific extensions to Meta's HMA, adapting the hasher-matcher-actioner for the Matrix messaging ecosystem.
 
@@ -37,7 +37,7 @@ A real-world example of fitting a generic HMA matcher to one platform's data mod
 
 **Learn from** · by Adobe · pairs with [hashkit-match](/docs/hashkit-match)
 
-A precision aid that addresses a known perceptual-hash failure mode — collages and grid layouts that collide spuriously. A FightSAM user tuning hashkit-match thresholds could pair it as a pre-filter to cut false positives before review.
+A precision aid that addresses a known perceptual-hash failure mode — collages and grid layouts that collide spuriously. A FightCSAM user tuning hashkit-match thresholds could pair it as a pre-filter to cut false positives before review.
 
 > Grid and lattice detection intended to guard against false positives in hash matching by identifying repeating structured patterns in images.
 
@@ -45,7 +45,7 @@ A precision aid that addresses a known perceptual-hash failure mode — collages
 
 **Learn from** · by Wikimedia · pairs with [csam-shield](/docs/csam-shield)
 
-A production CSAM hash-matching integration built into a specific CMS, with the credentialed-list and review plumbing that implies. A FightSAM user adding CSAM-Shield to a content platform can study how it sequences upload, match, and escalation.
+A production CSAM hash-matching integration built into a specific CMS, with the credentialed-list and review plumbing that implies. A FightCSAM user adding CSAM-Shield to a content platform can study how it sequences upload, match, and escalation.
 
 > A MediaWiki extension that performs CSAM hash matching on uploaded media for Wikimedia projects.
 
@@ -53,7 +53,7 @@ A production CSAM hash-matching integration built into a specific CMS, with the 
 
 **Learn from** · by Meta · pairs with [hashkit](/docs/hashkit)
 
-The upstream image-hashing standard that the NCMEC Hash Sharing API accepts and that HashKit implements and conforms to — it is our source of truth, not a competitor. A FightSAM user should treat PDQ as the canonical algorithm and HashKit as the byte-identical, multi-runtime way to run it.
+The upstream image-hashing standard that the NCMEC Hash Sharing API accepts and that HashKit implements and conforms to — it is our source of truth, not a competitor. A FightCSAM user should treat PDQ as the canonical algorithm and HashKit as the byte-identical, multi-runtime way to run it.
 
 > An open-source perceptual hash algorithm for images, producing a compact fingerprint whose Hamming distance approximates visual similarity.
 
@@ -61,7 +61,7 @@ The upstream image-hashing standard that the NCMEC Hash Sharing API accepts and 
 
 **Learn from** · by Thorn · pairs with [hashkit](/docs/hashkit)
 
-A mature multi-algorithm hashing toolkit covering much of the same ground as HashKit's core, with strong benchmarking and deployment utilities. A FightSAM user working in Python may reach for Perception's breadth, while HashKit's draw is cross-runtime byte-identical output and NCMEC-verified vectors.
+A mature multi-algorithm hashing toolkit covering much of the same ground as HashKit's core, with strong benchmarking and deployment utilities. A FightCSAM user working in Python may reach for Perception's breadth, while HashKit's draw is cross-runtime byte-identical output and NCMEC-verified vectors.
 
 > A Python library offering a common wrapper around popular perceptual hashes (such as ImageHash), with tooling to benchmark and deploy them.
 
@@ -69,7 +69,7 @@ A mature multi-algorithm hashing toolkit covering much of the same ground as Has
 
 **Learn from** · by Prostasia Foundation · pairs with [csam-shield](/docs/csam-shield)
 
-A concrete CSAM hash-matching plug-in for one chat platform, showing what it takes to retrofit detection into existing self-hosted software. A FightSAM user running Rocket.Chat-style infrastructure can compare it against wiring CSAM-Shield's middleware directly.
+A concrete CSAM hash-matching plug-in for one chat platform, showing what it takes to retrofit detection into existing self-hosted software. A FightCSAM user running Rocket.Chat-style infrastructure can compare it against wiring CSAM-Shield's middleware directly.
 
 > An integration that adds CSAM hash matching to Rocket.Chat deployments.
 
@@ -77,7 +77,7 @@ A concrete CSAM hash-matching plug-in for one chat platform, showing what it tak
 
 **Learn from** · by Meta · pairs with [hashkit](/docs/hashkit)
 
-The upstream video-hashing standard accepted by the NCMEC Hash Sharing API, and one of the algorithms HashKit implements and conforms to — our reference, never something we claim to beat. A FightSAM user needs TMK+PDQF for known-video matching; HashKit's role is producing identical hashes across every runtime.
+The upstream video-hashing standard accepted by the NCMEC Hash Sharing API, and one of the algorithms HashKit implements and conforms to — our reference, never something we claim to beat. A FightCSAM user needs TMK+PDQF for known-video matching; HashKit's role is producing identical hashes across every runtime.
 
 > An open-source algorithm for visual-similarity matching of videos (TMK+PDQF), producing a fixed-length video fingerprint.
 
@@ -85,7 +85,7 @@ The upstream video-hashing standard accepted by the NCMEC Hash Sharing API, and 
 
 **Learn from** · by Meta · pairs with [hashkit](/docs/hashkit)
 
-An upstream PDQ-based approach to video matching that complements TMK, and part of the Meta conformance lineage HashKit follows rather than competes with. A FightSAM user choosing a video-hashing strategy should evaluate vPDQ vs TMK+PDQF on their own merits, with HashKit supplying portable, verified implementations.
+An upstream PDQ-based approach to video matching that complements TMK, and part of the Meta conformance lineage HashKit follows rather than competes with. A FightCSAM user choosing a video-hashing strategy should evaluate vPDQ vs TMK+PDQF on their own merits, with HashKit supplying portable, verified implementations.
 
 > An open-source method for visual-similarity matching of videos that applies the PDQ image algorithm frame by frame.
 
@@ -93,7 +93,7 @@ An upstream PDQ-based approach to video matching that complements TMK, and part 
 
 **Reference** · by juanmrad · pairs with [csam-shield](/docs/csam-shield)
 
-A worked example of bolting a new signal type (CLIP embeddings) onto an HMA-style pipeline. Useful to a FightSAM user weighing how to extend CSAM-Shield beyond perceptual hashing toward classifier or embedding signals.
+A worked example of bolting a new signal type (CLIP embeddings) onto an HMA-style pipeline. Useful to a FightCSAM user weighing how to extend CSAM-Shield beyond perceptual hashing toward classifier or embedding signals.
 
 > A demo extending HMA with CLIP embeddings, offered as a reference for how to add new signal/format extensions to the Hasher-Matcher-Actioner.
 

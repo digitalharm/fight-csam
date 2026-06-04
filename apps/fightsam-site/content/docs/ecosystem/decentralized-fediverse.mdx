@@ -1,9 +1,9 @@
 ---
 title: "Decentralized & Fediverse"
-description: "AT-Protocol and Fediverse moderation — FightSAM’s #1 target. Our planned Bluesky adapter fills the perceptual-hash gap in hepa and emits to Ozone."
+description: "AT-Protocol and Fediverse moderation — FightCSAM’s #1 target. Our planned Bluesky adapter fills the perceptual-hash gap in hepa and emits to Ozone."
 ---
 
-AT-Protocol and Fediverse moderation — FightSAM’s #1 target. Our planned Bluesky adapter fills the perceptual-hash gap in hepa and emits to Ozone.
+AT-Protocol and Fediverse moderation — FightCSAM’s #1 target. Our planned Bluesky adapter fills the perceptual-hash gap in hepa and emits to Ozone.
 
 **5 projects** — 2 use · 1 learn from · 1 reference · 1 out of scope.
 
@@ -13,7 +13,7 @@ _Project descriptions are adapted from [awesome-safety-tools](https://github.com
 
 **Use** · by Bluesky
 
-Automod hands rules the raw media bytes but ships no perceptual-hash hook, so image-similarity matching is exactly the gap left open. FightSAM's planned AT-Proto adapter slots in here as a hepa blob rule wrapping hashkit + hashkit-match, then emits to Ozone.
+Automod hands rules the raw media bytes but ships no perceptual-hash hook, so image-similarity matching is exactly the gap left open. FightCSAM's planned AT-Proto adapter slots in here as a hepa blob rule wrapping hashkit + hashkit-match, then emits to Ozone.
 
 > A 'rules engine' framework that augments human moderators on the AT Protocol network by proactively identifying patterns of behavior and content. It processes firehose events (new posts, handle changes) via the hepa service daemon, maintains metadata caches and counters, and can fire outcomes like account reports and content labels.
 
@@ -45,7 +45,7 @@ FediCheck operates at the domain/instance layer rather than per-media, so it sit
 
 **Out of scope** · by Marc Damie
 
-This targets text-spam classification, a different problem from the perceptual-hash media matching FightSAM focuses on. It's an interesting PoC for Fediverse moderation tooling, but out of scope for our AT-Proto adapter.
+This targets text-spam classification, a different problem from the perceptual-hash media matching FightCSAM focuses on. It's an interesting PoC for Fediverse moderation tooling, but out of scope for our AT-Proto adapter.
 
 > A proof-of-concept spam filter for Fediverse platforms (e.g. Mastodon) using a Naive Bayes classifier over status features like content words, spoiler text, media attachments, tags, and sensitivity flags. It exposes REST endpoints for prediction, outlier review, and model import/export, and minimizes admin workload by surfacing outliers and random samples for labeling.
 

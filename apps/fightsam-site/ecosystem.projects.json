@@ -8,7 +8,7 @@
   "blurb": "A free, open-source web UI and hash-matching tool that helps platforms find and review violent-extremism and terrorism content, drawing on shared industry hash sets.",
   "verdict": "learn-from",
   "relatedTool": "hashkit-match",
-  "take": "A self-contained reviewer-facing front end over a hash matcher — the same hash-then-action loop a CSAM pipeline runs, just aimed at a different harm vertical. FightSAM users building a moderation queue on top of hashkit-match can study its review-UI and actioning patterns directly."
+  "take": "A self-contained reviewer-facing front end over a hash matcher — the same hash-then-action loop a CSAM pipeline runs, just aimed at a different harm vertical. FightCSAM users building a moderation queue on top of hashkit-match can study its review-UI and actioning patterns directly."
  },
  {
   "slug": "hma-meta",
@@ -19,7 +19,7 @@
   "blurb": "A turnkey service that combines a hashing algorithm, a matching function, and the ability to hook into actions, so platforms can stand up content matching end to end.",
   "verdict": "learn-from",
   "relatedTool": "csam-shield",
-  "take": "The reference end-to-end hash -> match -> act service, and the closest external analogue to CSAM-Shield's orchestration role. A FightSAM user choosing between adopting HMA wholesale or wiring CSAM-Shield's unified middleware should read this as the leading alternative on the orchestration axis."
+  "take": "The reference end-to-end hash -> match -> act service, and the closest external analogue to CSAM-Shield's orchestration role. A FightCSAM user choosing between adopting HMA wholesale or wiring CSAM-Shield's unified middleware should read this as the leading alternative on the orchestration axis."
  },
  {
   "slug": "hma-clip-demo",
@@ -30,7 +30,7 @@
   "blurb": "A demo extending HMA with CLIP embeddings, offered as a reference for how to add new signal/format extensions to the Hasher-Matcher-Actioner.",
   "verdict": "reference",
   "relatedTool": "csam-shield",
-  "take": "A worked example of bolting a new signal type (CLIP embeddings) onto an HMA-style pipeline. Useful to a FightSAM user weighing how to extend CSAM-Shield beyond perceptual hashing toward classifier or embedding signals."
+  "take": "A worked example of bolting a new signal type (CLIP embeddings) onto an HMA-style pipeline. Useful to a FightCSAM user weighing how to extend CSAM-Shield beyond perceptual hashing toward classifier or embedding signals."
  },
  {
   "slug": "hma-matrix",
@@ -41,7 +41,7 @@
   "blurb": "Matrix-specific extensions to Meta's HMA, adapting the hasher-matcher-actioner for the Matrix messaging ecosystem.",
   "verdict": "learn-from",
   "relatedTool": "csam-shield",
-  "take": "A real-world example of fitting a generic HMA matcher to one platform's data model and moderation flow. A FightSAM user integrating CSAM-Shield into a federated or chat platform can mine it for protocol-binding patterns."
+  "take": "A real-world example of fitting a generic HMA matcher to one platform's data model and moderation flow. A FightCSAM user integrating CSAM-Shield into a federated or chat platform can mine it for protocol-binding patterns."
  },
  {
   "slug": "lattice-extract-adobe",
@@ -52,7 +52,7 @@
   "blurb": "Grid and lattice detection intended to guard against false positives in hash matching by identifying repeating structured patterns in images.",
   "verdict": "learn-from",
   "relatedTool": "hashkit-match",
-  "take": "A precision aid that addresses a known perceptual-hash failure mode — collages and grid layouts that collide spuriously. A FightSAM user tuning hashkit-match thresholds could pair it as a pre-filter to cut false positives before review."
+  "take": "A precision aid that addresses a known perceptual-hash failure mode — collages and grid layouts that collide spuriously. A FightCSAM user tuning hashkit-match thresholds could pair it as a pre-filter to cut false positives before review."
  },
  {
   "slug": "mediamoderation-wikimedia",
@@ -63,7 +63,7 @@
   "blurb": "A MediaWiki extension that performs CSAM hash matching on uploaded media for Wikimedia projects.",
   "verdict": "learn-from",
   "relatedTool": "csam-shield",
-  "take": "A production CSAM hash-matching integration built into a specific CMS, with the credentialed-list and review plumbing that implies. A FightSAM user adding CSAM-Shield to a content platform can study how it sequences upload, match, and escalation."
+  "take": "A production CSAM hash-matching integration built into a specific CMS, with the credentialed-list and review plumbing that implies. A FightCSAM user adding CSAM-Shield to a content platform can study how it sequences upload, match, and escalation."
  },
  {
   "slug": "pdq-meta",
@@ -74,7 +74,7 @@
   "blurb": "An open-source perceptual hash algorithm for images, producing a compact fingerprint whose Hamming distance approximates visual similarity.",
   "verdict": "learn-from",
   "relatedTool": "hashkit",
-  "take": "The upstream image-hashing standard that the NCMEC Hash Sharing API accepts and that HashKit implements and conforms to — it is our source of truth, not a competitor. A FightSAM user should treat PDQ as the canonical algorithm and HashKit as the byte-identical, multi-runtime way to run it."
+  "take": "The upstream image-hashing standard that the NCMEC Hash Sharing API accepts and that HashKit implements and conforms to — it is our source of truth, not a competitor. A FightCSAM user should treat PDQ as the canonical algorithm and HashKit as the byte-identical, multi-runtime way to run it."
  },
  {
   "slug": "perception-thorn",
@@ -85,7 +85,7 @@
   "blurb": "A Python library offering a common wrapper around popular perceptual hashes (such as ImageHash), with tooling to benchmark and deploy them.",
   "verdict": "learn-from",
   "relatedTool": "hashkit",
-  "take": "A mature multi-algorithm hashing toolkit covering much of the same ground as HashKit's core, with strong benchmarking and deployment utilities. A FightSAM user working in Python may reach for Perception's breadth, while HashKit's draw is cross-runtime byte-identical output and NCMEC-verified vectors."
+  "take": "A mature multi-algorithm hashing toolkit covering much of the same ground as HashKit's core, with strong benchmarking and deployment utilities. A FightCSAM user working in Python may reach for Perception's breadth, while HashKit's draw is cross-runtime byte-identical output and NCMEC-verified vectors."
  },
  {
   "slug": "rocketchat-csam-prostasia",
@@ -96,7 +96,7 @@
   "blurb": "An integration that adds CSAM hash matching to Rocket.Chat deployments.",
   "verdict": "learn-from",
   "relatedTool": "csam-shield",
-  "take": "A concrete CSAM hash-matching plug-in for one chat platform, showing what it takes to retrofit detection into existing self-hosted software. A FightSAM user running Rocket.Chat-style infrastructure can compare it against wiring CSAM-Shield's middleware directly."
+  "take": "A concrete CSAM hash-matching plug-in for one chat platform, showing what it takes to retrofit detection into existing self-hosted software. A FightCSAM user running Rocket.Chat-style infrastructure can compare it against wiring CSAM-Shield's middleware directly."
  },
  {
   "slug": "tmk-meta",
@@ -107,7 +107,7 @@
   "blurb": "An open-source algorithm for visual-similarity matching of videos (TMK+PDQF), producing a fixed-length video fingerprint.",
   "verdict": "learn-from",
   "relatedTool": "hashkit",
-  "take": "The upstream video-hashing standard accepted by the NCMEC Hash Sharing API, and one of the algorithms HashKit implements and conforms to — our reference, never something we claim to beat. A FightSAM user needs TMK+PDQF for known-video matching; HashKit's role is producing identical hashes across every runtime."
+  "take": "The upstream video-hashing standard accepted by the NCMEC Hash Sharing API, and one of the algorithms HashKit implements and conforms to — our reference, never something we claim to beat. A FightCSAM user needs TMK+PDQF for known-video matching; HashKit's role is producing identical hashes across every runtime."
  },
  {
   "slug": "vpdq-meta",
@@ -118,7 +118,7 @@
   "blurb": "An open-source method for visual-similarity matching of videos that applies the PDQ image algorithm frame by frame.",
   "verdict": "learn-from",
   "relatedTool": "hashkit",
-  "take": "An upstream PDQ-based approach to video matching that complements TMK, and part of the Meta conformance lineage HashKit follows rather than competes with. A FightSAM user choosing a video-hashing strategy should evaluate vPDQ vs TMK+PDQF on their own merits, with HashKit supplying portable, verified implementations."
+  "take": "An upstream PDQ-based approach to video matching that complements TMK, and part of the Meta conformance lineage HashKit follows rather than competes with. A FightCSAM user choosing a video-hashing strategy should evaluate vPDQ vs TMK+PDQF on their own merits, with HashKit supplying portable, verified implementations."
  },
  {
   "slug": "content-safety-api-google",
@@ -129,7 +129,7 @@
   "blurb": "Google's ML classifiers for detecting CSAM, nudity, and explicit content in images and video, offered to qualifying partners free of charge but gated behind registration; accessible to members via the ROOST coop.",
   "verdict": "use",
   "relatedTool": "csam-shield",
-  "take": "This is the one classifier on the list aimed squarely at the gap hashing cannot cover: novel, previously-unseen CSAM. A FightSAM user fronts known-material hash matching with this for first-seen content, which is exactly the role csam-shield is built to orchestrate as a detector backend. Gated and closed-weight, but free with registration and reachable through ROOST."
+  "take": "This is the one classifier on the list aimed squarely at the gap hashing cannot cover: novel, previously-unseen CSAM. A FightCSAM user fronts known-material hash matching with this for first-seen content, which is exactly the role csam-shield is built to orchestrate as a detector backend. Gated and closed-weight, but free with registration and reachable through ROOST."
  },
  {
   "slug": "cope-zentropi",
@@ -151,7 +151,7 @@
   "blurb": "A set of pretrained models for detecting generalized toxic language in text, trained on the Jigsaw toxic-comment datasets.",
   "verdict": "learn-from",
   "relatedTool": "",
-  "take": "A clean, widely-copied reference for packaging a text classifier as a pip-installable model, which informs how we ship detector backends. It is general toxicity, not CSAM: useful as an architectural lesson rather than something a FightSAM pipeline reaches for to catch abuse material."
+  "take": "A clean, widely-copied reference for packaging a text classifier as a pip-installable model, which informs how we ship detector backends. It is general toxicity, not CSAM: useful as an architectural lesson rather than something a FightCSAM pipeline reaches for to catch abuse material."
  },
  {
   "slug": "gpt-oss-safeguard-openai",
@@ -173,7 +173,7 @@
   "blurb": "A CNN-based Keras/TensorFlow model that classifies images into explicit categories (porn, hentai, sexy, neutral, drawing).",
   "verdict": "learn-from",
   "relatedTool": "",
-  "take": "A useful pattern for a self-hostable image classifier, but it detects adult NSFW content, which is a different problem from CSAM. We note it as general-purpose: it informs the detector-backend shape without being something a FightSAM user wires in to find abuse material."
+  "take": "A useful pattern for a self-hostable image classifier, but it detects adult NSFW content, which is a different problem from CSAM. We note it as general-purpose: it informs the detector-backend shape without being something a FightCSAM user wires in to find abuse material."
  },
  {
   "slug": "nsfw-filter",
@@ -184,7 +184,7 @@
   "blurb": "A browser extension that blurs or blocks NSFW images in the browser for the person using it.",
   "verdict": "out-of-scope",
   "relatedTool": "",
-  "take": "This is an end-user safety extension, not developer infrastructure: it protects the viewer at the browser, with no API or pipeline integration point. It sits outside the platform-side CSAM-detection problem FightSAM addresses."
+  "take": "This is an end-user safety extension, not developer infrastructure: it protects the viewer at the browser, with no API or pipeline integration point. It sits outside the platform-side CSAM-detection problem FightCSAM addresses."
  },
  {
   "slug": "osmod-jigsaw",
@@ -206,7 +206,7 @@
   "blurb": "A hosted ML API that scores text for attributes like toxicity, insult, and threat to help platforms moderate conversations.",
   "verdict": "learn-from",
   "relatedTool": "",
-  "take": "The canonical example of an attribute-scoring moderation API, instructive for how we expose detector confidence scores. It is general toxicity and a closed hosted service, so we note it as general-purpose rather than a CSAM detector a FightSAM user calls."
+  "take": "The canonical example of an attribute-scoring moderation API, instructive for how we expose detector confidence scores. It is general toxicity and a closed hosted service, so we note it as general-purpose rather than a CSAM detector a FightCSAM user calls."
  },
  {
   "slug": "private-detector-bumble",
@@ -217,7 +217,7 @@
   "blurb": "A pretrained, open-sourced model from Bumble for detecting lewd (unsolicited nude) images.",
   "verdict": "learn-from",
   "relatedTool": "",
-  "take": "A strong, production-proven example of open-sourcing a lewd-image detector, useful for how we structure and document an image backend. It targets adult lewd content rather than CSAM, so we flag it as adjacent and general-purpose, not a FightSAM detection component."
+  "take": "A strong, production-proven example of open-sourcing a lewd-image detector, useful for how we structure and document an image backend. It targets adult lewd content rather than CSAM, so we flag it as adjacent and general-purpose, not a FightCSAM detection component."
  },
  {
   "slug": "voice-safety-classifier-roblox",
@@ -228,7 +228,7 @@
   "blurb": "An open-source ML model from Roblox that classifies harmful content in real-time voice chat.",
   "verdict": "learn-from",
   "relatedTool": "",
-  "take": "Voice is a modality FightSAM does not cover, and grooming-adjacent harm in real-time audio is a real vector worth learning from. We treat it as an architectural lesson for real-time, modality-specific detection rather than a CSAM tool a user wires in today."
+  "take": "Voice is a modality FightCSAM does not cover, and grooming-adjacent harm in real-time audio is a real vector worth learning from. We treat it as an architectural lesson for real-time, modality-specific detection rather than a CSAM tool a user wires in today."
  },
  {
   "slug": "sentinel-roblox",
@@ -239,7 +239,7 @@
   "blurb": "An open-source system from Roblox that uses contrastive learning to flag rare, hard-to-spot text classes such as grooming and other harmful behavioral patterns in real time.",
   "verdict": "learn-from",
   "relatedTool": "",
-  "take": "This is the gap we most want to emulate: behavioral, conversation-level grooming detection sits upstream of the image/text hashing FightSAM covers and catches abuse before any media exists. A model of how to surface rare harmful patterns from sparse signal, and a clear direction for where CSAM-safety tooling should grow."
+  "take": "This is the gap we most want to emulate: behavioral, conversation-level grooming detection sits upstream of the image/text hashing FightCSAM covers and catches abuse before any media exists. A model of how to surface rare harmful patterns from sparse signal, and a clear direction for where CSAM-safety tooling should grow."
  },
  {
   "slug": "toxic-prompt-roberta-intel",
@@ -261,7 +261,7 @@
   "blurb": "A Python framework that validates LLM inputs and outputs against predefined risks, with a Hub of community validators that can be composed into a guard.",
   "verdict": "use",
   "relatedTool": "promptshield",
-  "take": "A FightSAM user already standardized on Guardrails can add CSAM-intent screening as one validator in their existing guard, and promptshield is naturally exposed as a Hub validator. It is a harness rather than a detector itself, but it is the right place to plug our checks in."
+  "take": "A FightCSAM user already standardized on Guardrails can add CSAM-intent screening as one validator in their existing guard, and promptshield is naturally exposed as a Hub validator. It is a harness rather than a detector itself, but it is the right place to plug our checks in."
  },
  {
   "slug": "kanana-safeguard-kakao",
@@ -272,7 +272,7 @@
   "blurb": "An open-weight 8B harmful-content detection model from Kakao for moderating LLM inputs and outputs, with notable multilingual (including Korean) coverage.",
   "verdict": "use",
   "relatedTool": "csam-shield",
-  "take": "Architecturally the same class of wrappable guardrail as Llama Guard or ShieldGemma, and its multilingual strength is valuable where English-centric guards underperform. A FightSAM user can reach for it as a csam-shield text backend or promptshield companion; note it covers general harm, so a CSAM policy still does the narrowing."
+  "take": "Architecturally the same class of wrappable guardrail as Llama Guard or ShieldGemma, and its multilingual strength is valuable where English-centric guards underperform. A FightCSAM user can reach for it as a csam-shield text backend or promptshield companion; note it covers general harm, so a CSAM policy still does the narrowing."
  },
  {
   "slug": "granite-guardian-ibm",
@@ -371,7 +371,7 @@
   "blurb": "High-performance rules engine for real-time Trust & Safety and anti-abuse event processing at scale, running in production at Bluesky, Discord, and Matrix.",
   "verdict": "use",
   "relatedTool": "csam-shield",
-  "take": "This is the rules engine we recommend and explicitly do not try to rebuild: FightSAM ships an Osprey/Coop adapter so our detection signals (hashes, classifier scores, prompt flags) become events Osprey can decision on. Our tools are the engines that feed your Osprey, not a competing decisioning layer."
+  "take": "This is the rules engine we recommend and explicitly do not try to rebuild: FightCSAM ships an Osprey/Coop adapter so our detection signals (hashes, classifier scores, prompt flags) become events Osprey can decision on. Our tools are the engines that feed your Osprey, not a competing decisioning layer."
  },
  {
   "slug": "marble",
@@ -470,7 +470,7 @@
   "blurb": "An open-source toolkit to receive, process, and respond to abuse reports, correlating incoming complaints into tickets and notifying the responsible parties.",
   "verdict": "learn-from",
   "relatedTool": "cybertip-cli",
-  "take": "A mature inbound-abuse-complaint workflow — parse, deduplicate, ticket, and notify — adjacent to the outbound statutory reporting CyberTip CLI handles. A FightSAM user building a complaint-intake or case-tracking surface around cybertip-cli can study its ticketing and correspondence model rather than the report-filing path itself."
+  "take": "A mature inbound-abuse-complaint workflow — parse, deduplicate, ticket, and notify — adjacent to the outbound statutory reporting CyberTip CLI handles. A FightCSAM user building a complaint-intake or case-tracking surface around cybertip-cli can study its ticketing and correspondence model rather than the report-filing path itself."
  },
  {
   "slug": "access-discord",
@@ -492,7 +492,7 @@
   "blurb": "An all-in-one moderation bot for Matrix that enforces content policies through shareable ban lists, redactions, anti-spam, server ACLs, and room shutdowns across rooms and homeservers.",
   "verdict": "learn-from",
   "relatedTool": "csam-shield",
-  "take": "A production policy-enforcement and actioning engine for one federated protocol, turning shared rule lists into bans, redactions, and ACL changes. A FightSAM user wiring CSAM-Shield's detect-then-act loop into a Matrix or chat platform can mine its policy-list distribution and automated-actioning patterns."
+  "take": "A production policy-enforcement and actioning engine for one federated protocol, turning shared rule lists into bans, redactions, and ACL changes. A FightCSAM user wiring CSAM-Shield's detect-then-act loop into a Matrix or chat platform can mine its policy-list distribution and automated-actioning patterns."
  },
  {
   "slug": "open-truss-github",
@@ -503,7 +503,7 @@
   "blurb": "A React framework for building internal tools through YAML configuration rather than code, letting developers expose display components and data sources that non-developers assemble into tools without redeploying.",
   "verdict": "out-of-scope",
   "relatedTool": "",
-  "take": "A general-purpose no-code internal-tooling framework with no content-safety specialization. It is a way to build admin UIs in the abstract, not a moderation, detection, or evidence primitive, so it sits outside the FightSAM stack."
+  "take": "A general-purpose no-code internal-tooling framework with no content-safety specialization. It is a way to build admin UIs in the abstract, not a moderation, detection, or evidence primitive, so it sits outside the FightCSAM stack."
  },
  {
   "slug": "bullmq",
@@ -514,7 +514,7 @@
   "blurb": "A Redis-based message queue and batch-processing system for Node and Python, providing durable jobs, retries, rate limiting, and concurrency for background work.",
   "verdict": "use",
   "relatedTool": "csam-shield",
-  "take": "A battle-tested job queue of exactly the kind we wrap rather than build — durable retries and rate limiting are precisely what a hash-then-act pipeline needs under load. A FightSAM user scaling CSAM-Shield's processing should reach for BullMQ (or similar) as the execution substrate beneath the orchestration logic."
+  "take": "A battle-tested job queue of exactly the kind we wrap rather than build — durable retries and rate limiting are precisely what a hash-then-act pipeline needs under load. A FightCSAM user scaling CSAM-Shield's processing should reach for BullMQ (or similar) as the execution substrate beneath the orchestration logic."
  },
  {
   "slug": "content-review-filters-meta",
@@ -525,7 +525,7 @@
   "blurb": "A TypeScript/React component library that lets moderation tools apply protective filters — blur, grayscale, reduced-detail stylization, auto-mute, and opt-in interstitials — to graphic images and video so reviewers can manage exposure.",
   "verdict": "use",
   "relatedTool": "safemod",
-  "take": "The validated reviewer-wellness render patterns, shipped as adoptable React components — the exact client-side mutation layer SafeMod needs. A FightSAM user deploying SafeMod gets these as its render surface, with SafeMod adding the exposure caps, rotation, and k-anonymized wellbeing tracking the components alone do not provide."
+  "take": "The validated reviewer-wellness render patterns, shipped as adoptable React components — the exact client-side mutation layer SafeMod needs. A FightCSAM user deploying SafeMod gets these as its render surface, with SafeMod adding the exposure caps, rotation, and k-anonymized wellbeing tracking the components alone do not provide."
  },
  {
   "slug": "ncmec-reporting-ello",
@@ -536,7 +536,7 @@
   "blurb": "A Ruby client for filing reports to NCMEC's CyberTipline, implementing the ESP submission workflow — the only prior open-source CyberTipline client.",
   "verdict": "learn-from",
   "relatedTool": "cybertip-cli",
-  "take": "The sole open-source predecessor to a maintained CyberTipline filer, but abandonware and unlicensed, so it cannot be adopted — only read. A FightSAM user should treat it as the protocol-and-retention reference behind cybertip-cli and EvidenceVault, while cybertip-cli is the supported, audited successor that closes the gap it left."
+  "take": "The sole open-source predecessor to a maintained CyberTipline filer, but abandonware and unlicensed, so it cannot be adopted — only read. A FightCSAM user should treat it as the protocol-and-retention reference behind cybertip-cli and EvidenceVault, while cybertip-cli is the supported, audited successor that closes the gap it left."
  },
  {
   "slug": "owlculus",
@@ -547,7 +547,7 @@
   "blurb": "An open-source OSINT toolkit and case-management platform (Python/FastAPI backend, Vue frontend) with multi-user cases, role-based permissions, entity and evidence organization, and cross-case correlation.",
   "verdict": "learn-from",
   "relatedTool": "evidencevault",
-  "take": "A working investigator-facing case-management UI — cases, entities, evidence, and collaboration — the surface EvidenceVault deliberately lacks above its custody engine. A FightSAM user who needs a review or case-workflow layer over EvidenceVault's sealed packages can study its case and evidence-organization model directly."
+  "take": "A working investigator-facing case-management UI — cases, entities, evidence, and collaboration — the surface EvidenceVault deliberately lacks above its custody engine. A FightCSAM user who needs a review or case-workflow layer over EvidenceVault's sealed packages can study its case and evidence-organization model directly."
  },
  {
   "slug": "rabbitmq",
@@ -558,7 +558,7 @@
   "blurb": "A widely deployed open-source message broker for queue-based communication between application components, supporting AMQP and other protocols with flexible routing and delivery guarantees.",
   "verdict": "use",
   "relatedTool": "csam-shield",
-  "take": "Core messaging infrastructure of the kind we wrap, never reimplement — the broker that decouples detection, matching, and actioning stages. A FightSAM user running CSAM-Shield across services can use RabbitMQ as the transport between pipeline stages rather than building bespoke queueing."
+  "take": "Core messaging infrastructure of the kind we wrap, never reimplement — the broker that decouples detection, matching, and actioning stages. A FightCSAM user running CSAM-Shield across services can use RabbitMQ as the transport between pipeline stages rather than building bespoke queueing."
  },
  {
   "slug": "aymara",
@@ -723,7 +723,7 @@
   "blurb": "A collection of tools to help researchers detect and analyze coordinated inauthentic behavior (CIB) — organized, deceptive activity on social platforms.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "Solid tooling for the disinformation and influence-operations research community, but coordinated inauthentic behavior is deliberately outside FightSAM's remit, which centers on CSAM detection, reporting, and prevention. Different problem, different field."
+  "take": "Solid tooling for the disinformation and influence-operations research community, but coordinated inauthentic behavior is deliberately outside FightCSAM's remit, which centers on CSAM detection, reporting, and prevention. Different problem, different field."
  },
  {
   "slug": "crossover",
@@ -734,7 +734,7 @@
   "blurb": "Dashboards that monitor social-network recommendation algorithms, surfacing how disinformation and election-related content is amplified.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "Valuable work on algorithmic transparency and recommender-system observability, but that disinformation and election-integrity focus sits outside FightSAM's CSAM-centric scope. We point to it respectfully rather than fold it in."
+  "take": "Valuable work on algorithmic transparency and recommender-system observability, but that disinformation and election-integrity focus sits outside FightCSAM's CSAM-centric scope. We point to it respectfully rather than fold it in."
  },
  {
   "slug": "dau-dashboard",
@@ -745,7 +745,7 @@
   "blurb": "A collaborative space for the Deepfake Analysis Unit — an Elixir/Phoenix web app where teams jointly examine and investigate suspected deepfake media.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "A useful collaborative investigation surface, but its deepfake and synthetic-media analysis focus is a different problem from FightSAM's CSAM detection and reporting mission. Worthwhile in its own lane."
+  "take": "A useful collaborative investigation surface, but its deepfake and synthetic-media analysis focus is a different problem from FightCSAM's CSAM detection and reporting mission. Worthwhile in its own lane."
  },
  {
   "slug": "feluda",
@@ -767,7 +767,7 @@
   "blurb": "A database tracking alleged instances of foreign interference in the 2024 US election.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "Important election-integrity and foreign-influence research, but tracking interference campaigns falls outside FightSAM's CSAM scope. We credit the work without treating it as part of our toolchain."
+  "take": "Important election-integrity and foreign-influence research, but tracking interference campaigns falls outside FightCSAM's CSAM scope. We credit the work without treating it as part of our toolchain."
  },
  {
   "slug": "openmeasures",
@@ -778,7 +778,7 @@
   "blurb": "A platform for investigating internet trends, harmful narratives, and emerging online movements across fringe and mainstream platforms.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "A capable platform-observability and trend-investigation toolkit, but its disinformation and harmful-narrative focus is deliberately outside FightSAM's CSAM-centric mission. Valuable work on an adjacent problem."
+  "take": "A capable platform-observability and trend-investigation toolkit, but its disinformation and harmful-narrative focus is deliberately outside FightCSAM's CSAM-centric mission. Valuable work on an adjacent problem."
  },
  {
   "slug": "threatexchange",
@@ -822,7 +822,7 @@
   "blurb": "Tooling that monitors TikTok's recommendation algorithm, measuring which content the platform promotes or demotes.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "Sharp work on recommender-system accountability and platform observability, but algorithmic promotion/demotion on TikTok is outside FightSAM's CSAM detection and reporting scope. We acknowledge it as strong work on a different question."
+  "take": "Sharp work on recommender-system accountability and platform observability, but algorithmic promotion/demotion on TikTok is outside FightCSAM's CSAM detection and reporting scope. We acknowledge it as strong work on a different question."
  },
  {
   "slug": "bluesky-automod",
@@ -833,7 +833,7 @@
   "blurb": "A 'rules engine' framework that augments human moderators on the AT Protocol network by proactively identifying patterns of behavior and content. It processes firehose events (new posts, handle changes) via the hepa service daemon, maintains metadata caches and counters, and can fire outcomes like account reports and content labels.",
   "verdict": "use",
   "relatedTool": "ozone",
-  "take": "Automod hands rules the raw media bytes but ships no perceptual-hash hook, so image-similarity matching is exactly the gap left open. FightSAM's planned AT-Proto adapter slots in here as a hepa blob rule wrapping hashkit + hashkit-match, then emits to Ozone."
+  "take": "Automod hands rules the raw media bytes but ships no perceptual-hash hook, so image-similarity matching is exactly the gap left open. FightCSAM's planned AT-Proto adapter slots in here as a hepa blob rule wrapping hashkit + hashkit-match, then emits to Ozone."
  },
  {
   "slug": "bluesky-ozone",
@@ -877,7 +877,7 @@
   "blurb": "A proof-of-concept spam filter for Fediverse platforms (e.g. Mastodon) using a Naive Bayes classifier over status features like content words, spoiler text, media attachments, tags, and sensitivity flags. It exposes REST endpoints for prediction, outlier review, and model import/export, and minimizes admin workload by surfacing outliers and random samples for labeling.",
   "verdict": "out-of-scope",
   "relatedTool": null,
-  "take": "This targets text-spam classification, a different problem from the perceptual-hash media matching FightSAM focuses on. It's an interesting PoC for Fediverse moderation tooling, but out of scope for our AT-Proto adapter."
+  "take": "This targets text-spam classification, a different problem from the perceptual-hash media matching FightCSAM focuses on. It's an interesting PoC for Fediverse moderation tooling, but out of scope for our AT-Proto adapter."
  },
  {
   "slug": "aegis-content-safety-2",

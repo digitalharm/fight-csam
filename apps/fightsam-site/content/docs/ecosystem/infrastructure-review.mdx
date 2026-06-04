@@ -13,7 +13,7 @@ _Project descriptions are adapted from [awesome-safety-tools](https://github.com
 
 **Use** · by Taskforce.sh · pairs with [csam-shield](/docs/csam-shield)
 
-A battle-tested job queue of exactly the kind we wrap rather than build — durable retries and rate limiting are precisely what a hash-then-act pipeline needs under load. A FightSAM user scaling CSAM-Shield's processing should reach for BullMQ (or similar) as the execution substrate beneath the orchestration logic.
+A battle-tested job queue of exactly the kind we wrap rather than build — durable retries and rate limiting are precisely what a hash-then-act pipeline needs under load. A FightCSAM user scaling CSAM-Shield's processing should reach for BullMQ (or similar) as the execution substrate beneath the orchestration logic.
 
 > A Redis-based message queue and batch-processing system for Node and Python, providing durable jobs, retries, rate limiting, and concurrency for background work.
 
@@ -21,7 +21,7 @@ A battle-tested job queue of exactly the kind we wrap rather than build — dura
 
 **Use** · by Meta · pairs with [safemod](/docs/safemod)
 
-The validated reviewer-wellness render patterns, shipped as adoptable React components — the exact client-side mutation layer SafeMod needs. A FightSAM user deploying SafeMod gets these as its render surface, with SafeMod adding the exposure caps, rotation, and k-anonymized wellbeing tracking the components alone do not provide.
+The validated reviewer-wellness render patterns, shipped as adoptable React components — the exact client-side mutation layer SafeMod needs. A FightCSAM user deploying SafeMod gets these as its render surface, with SafeMod adding the exposure caps, rotation, and k-anonymized wellbeing tracking the components alone do not provide.
 
 > A TypeScript/React component library that lets moderation tools apply protective filters — blur, grayscale, reduced-detail stylization, auto-mute, and opt-in interstitials — to graphic images and video so reviewers can manage exposure.
 
@@ -29,7 +29,7 @@ The validated reviewer-wellness render patterns, shipped as adoptable React comp
 
 **Use** · by RabbitMQ / VMware · pairs with [csam-shield](/docs/csam-shield)
 
-Core messaging infrastructure of the kind we wrap, never reimplement — the broker that decouples detection, matching, and actioning stages. A FightSAM user running CSAM-Shield across services can use RabbitMQ as the transport between pipeline stages rather than building bespoke queueing.
+Core messaging infrastructure of the kind we wrap, never reimplement — the broker that decouples detection, matching, and actioning stages. A FightCSAM user running CSAM-Shield across services can use RabbitMQ as the transport between pipeline stages rather than building bespoke queueing.
 
 > A widely deployed open-source message broker for queue-based communication between application components, supporting AMQP and other protocols with flexible routing and delivery guarantees.
 
@@ -37,7 +37,7 @@ Core messaging infrastructure of the kind we wrap, never reimplement — the bro
 
 **Learn from** · by AbuseIO · pairs with [cybertip-cli](/docs/cybertip-cli)
 
-A mature inbound-abuse-complaint workflow — parse, deduplicate, ticket, and notify — adjacent to the outbound statutory reporting CyberTip CLI handles. A FightSAM user building a complaint-intake or case-tracking surface around cybertip-cli can study its ticketing and correspondence model rather than the report-filing path itself.
+A mature inbound-abuse-complaint workflow — parse, deduplicate, ticket, and notify — adjacent to the outbound statutory reporting CyberTip CLI handles. A FightCSAM user building a complaint-intake or case-tracking surface around cybertip-cli can study its ticketing and correspondence model rather than the report-filing path itself.
 
 > An open-source toolkit to receive, process, and respond to abuse reports, correlating incoming complaints into tickets and notifying the responsible parties.
 
@@ -45,7 +45,7 @@ A mature inbound-abuse-complaint workflow — parse, deduplicate, ticket, and no
 
 **Learn from** · by Matrix.org · pairs with [csam-shield](/docs/csam-shield)
 
-A production policy-enforcement and actioning engine for one federated protocol, turning shared rule lists into bans, redactions, and ACL changes. A FightSAM user wiring CSAM-Shield's detect-then-act loop into a Matrix or chat platform can mine its policy-list distribution and automated-actioning patterns.
+A production policy-enforcement and actioning engine for one federated protocol, turning shared rule lists into bans, redactions, and ACL changes. A FightCSAM user wiring CSAM-Shield's detect-then-act loop into a Matrix or chat platform can mine its policy-list distribution and automated-actioning patterns.
 
 > An all-in-one moderation bot for Matrix that enforces content policies through shareable ban lists, redactions, anti-spam, server ACLs, and room shutdowns across rooms and homeservers.
 
@@ -53,7 +53,7 @@ A production policy-enforcement and actioning engine for one federated protocol,
 
 **Learn from** · by ello · pairs with [cybertip-cli](/docs/cybertip-cli)
 
-The sole open-source predecessor to a maintained CyberTipline filer, but abandonware and unlicensed, so it cannot be adopted — only read. A FightSAM user should treat it as the protocol-and-retention reference behind cybertip-cli and EvidenceVault, while cybertip-cli is the supported, audited successor that closes the gap it left.
+The sole open-source predecessor to a maintained CyberTipline filer, but abandonware and unlicensed, so it cannot be adopted — only read. A FightCSAM user should treat it as the protocol-and-retention reference behind cybertip-cli and EvidenceVault, while cybertip-cli is the supported, audited successor that closes the gap it left.
 
 > A Ruby client for filing reports to NCMEC's CyberTipline, implementing the ESP submission workflow — the only prior open-source CyberTipline client.
 
@@ -61,7 +61,7 @@ The sole open-source predecessor to a maintained CyberTipline filer, but abandon
 
 **Learn from** · by be0vlk · pairs with [evidencevault](/docs/evidencevault)
 
-A working investigator-facing case-management UI — cases, entities, evidence, and collaboration — the surface EvidenceVault deliberately lacks above its custody engine. A FightSAM user who needs a review or case-workflow layer over EvidenceVault's sealed packages can study its case and evidence-organization model directly.
+A working investigator-facing case-management UI — cases, entities, evidence, and collaboration — the surface EvidenceVault deliberately lacks above its custody engine. A FightCSAM user who needs a review or case-workflow layer over EvidenceVault's sealed packages can study its case and evidence-organization model directly.
 
 > An open-source OSINT toolkit and case-management platform (Python/FastAPI backend, Vue frontend) with multi-user cases, role-based permissions, entity and evidence organization, and cross-case correlation.
 
@@ -77,7 +77,7 @@ A general internal access-request and entitlement-governance portal, not a conte
 
 **Out of scope** · by GitHub
 
-A general-purpose no-code internal-tooling framework with no content-safety specialization. It is a way to build admin UIs in the abstract, not a moderation, detection, or evidence primitive, so it sits outside the FightSAM stack.
+A general-purpose no-code internal-tooling framework with no content-safety specialization. It is a way to build admin UIs in the abstract, not a moderation, detection, or evidence primitive, so it sits outside the FightCSAM stack.
 
 > A React framework for building internal tools through YAML configuration rather than code, letting developers expose display components and data sources that non-developers assemble into tools without redeploying.
 

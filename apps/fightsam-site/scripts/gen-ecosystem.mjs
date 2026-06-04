@@ -13,22 +13,22 @@ const TOOLS = new Set([
 ]);
 
 const V = {
-  'use': { label: 'Use', order: 0, blurb: 'recommend integrating alongside FightSAM' },
+  'use': { label: 'Use', order: 0, blurb: 'recommend integrating alongside FightCSAM' },
   'learn-from': { label: 'Learn from', order: 1, blurb: 'a leader or alternative on an axis we also build' },
   'reference': { label: 'Reference', order: 2, blurb: 'a dataset, benchmark, or knowledge resource' },
-  'out-of-scope': { label: 'Out of scope', order: 3, blurb: 'an adjacent problem FightSAM deliberately does not address' },
+  'out-of-scope': { label: 'Out of scope', order: 3, blurb: 'an adjacent problem FightCSAM deliberately does not address' },
 };
 
 // category label -> [filename, intro]
 const CATS = [
   ['Perceptual hashing & matching', 'perceptual-hashing', 'Image and video perceptual hashing and matching — the axis hashkit, hashkit-match, and csam-shield build on. Meta’s PDQ / TMK / vPDQ are upstream of our hashing and our conformance source; we never claim to beat them.'],
-  ['Classifiers & AI-safety models', 'classifiers', 'ML classifiers and LLM guardrails. FightSAM ships no general model — csam-shield is built to wrap the best of these as swappable detector backends, and promptshield focuses narrowly on CSAM-generation intent.'],
-  ['Rules, decisioning & clustering', 'rules-decisioning', 'Rules engines and decisioning. FightSAM does not build a rules engine — we ship engines that feed yours. ROOST Osprey is the one we recommend and target with an adapter.'],
+  ['Classifiers & AI-safety models', 'classifiers', 'ML classifiers and LLM guardrails. FightCSAM ships no general model — csam-shield is built to wrap the best of these as swappable detector backends, and promptshield focuses narrowly on CSAM-generation intent.'],
+  ['Rules, decisioning & clustering', 'rules-decisioning', 'Rules engines and decisioning. FightCSAM does not build a rules engine — we ship engines that feed yours. ROOST Osprey is the one we recommend and target with an adapter.'],
   ['Infrastructure, queues & review', 'infrastructure-review', 'Queues, abuse-management plumbing, and moderator review surfaces to depend on rather than rebuild.'],
   ['Red-teaming & evaluation', 'red-teaming', 'Adversarial testing harnesses. We recommend pairing promptshield with one of these, and plan to contribute the CSAM-intent probes the generalist harnesses deliberately omit.'],
   ['Privacy & user-safety', 'privacy-user-safety', 'PII detection and end-user / community-governance tooling. We wrap Presidio for PII in trainguard; most user-safety tools sit adjacent to a CSAM-detection pipeline.'],
   ['Investigation & signal-sharing', 'investigation', 'Threat-signal sharing and investigation tooling. Meta ThreatExchange / python-threatexchange set the bar for hashstream; disinformation and platform-observability work is deliberately out of our scope.'],
-  ['Decentralized & Fediverse', 'decentralized-fediverse', 'AT-Protocol and Fediverse moderation — FightSAM’s #1 target. Our planned Bluesky adapter fills the perceptual-hash gap in hepa and emits to Ozone.'],
+  ['Decentralized & Fediverse', 'decentralized-fediverse', 'AT-Protocol and Fediverse moderation — FightCSAM’s #1 target. Our planned Bluesky adapter fills the perceptual-hash gap in hepa and emits to Ozone.'],
   ['Datasets & benchmarks', 'datasets', 'Training and evaluation datasets. We anchor promptshield’s evaluation to NVIDIA Aegis 2.0 and borrow Tattle / Uli annotation methodology; the rest are listed for reference.'],
 ];
 
@@ -93,7 +93,7 @@ const index = [
   'description: "A map of the open-source online-safety landscape, with our verdict on how each project fits a CSAM-safety pipeline."',
   '---',
   '',
-  'A developer’s map of the open-source online-safety landscape — not just *what exists*, but **how each project fits (or doesn’t) a CSAM-safety pipeline** built around the FightSAM tools.',
+  'A developer’s map of the open-source online-safety landscape — not just *what exists*, but **how each project fits (or doesn’t) a CSAM-safety pipeline** built around the FightCSAM tools.',
   '',
   `It covers **${total} projects** across ${CATS.length} categories. For each, we give a verdict and a short take. Our own tools live in [Tools](/docs); this section is everything *around* them.`,
   '',
@@ -111,7 +111,7 @@ const index = [
   '',
   'This directory is built on **[awesome-safety-tools](https://github.com/roostorg/awesome-safety-tools)**, the community-maintained list curated by [ROOST](https://roost.tools). They maintain the canonical, living catalogue; we add an opinionated layer on top — categorization, a build-vs-wrap verdict, and how each piece slots into a defensible CSAM-detection, reporting, and prevention pipeline.',
   '',
-  'Like their list, **inclusion here is not an endorsement** — it is an attempt to map the landscape so a developer can choose well. Verdicts reflect FightSAM’s specific lens (un-gated, self-hostable CSAM safety) and are a **June 2026 snapshot**; projects move fast, so treat this as a starting point and check the source.',
+  'Like their list, **inclusion here is not an endorsement** — it is an attempt to map the landscape so a developer can choose well. Verdicts reflect FightCSAM’s specific lens (un-gated, self-hostable CSAM safety) and are a **June 2026 snapshot**; projects move fast, so treat this as a starting point and check the source.',
   '',
   ATTR,
   '',
