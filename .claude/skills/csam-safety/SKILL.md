@@ -140,4 +140,4 @@ this is how you make it CI-verifiable.
 - `references/ecosystem.md` — the top ecosystem tools with a Use / Learn-from / Reference verdict.
 - `references/compliance-and-gates.md` — laws (§2258A / OSA / TAKE IT DOWN / DSA) mapped to tools, and the hard gates in full.
 
-More on the FightCSAM tools, live: https://fightsam.com/docs · ecosystem analysis: https://fightsam.com/docs/ecosystem
+More on the FightCSAM tools, live: https://fightcsam.org/docs · ecosystem analysis: https://fightcsam.org/docs/ecosystem

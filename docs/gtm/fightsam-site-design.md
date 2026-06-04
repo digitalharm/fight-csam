@@ -1,6 +1,6 @@
 # FightCSAM — developer website design
 
-**What this is.** The design for **FightCSAM** (fightsam.org): a separate,
+**What this is.** The design for **FightCSAM** (fightcsam.org): a separate,
 developer- and coding-agent-facing website that is the front door to the 11
 open-source CSAM-safety packages in this repo (`fight-csam`). It is the
 "how do I actually build this" companion to **The Digital Harm Project**
@@ -14,7 +14,7 @@ site brand, not a package rename.**
 - **Stack:** **Fumadocs** (Next.js App Router + MDX), Vercel-deployed.
 - **Brand:** its **own developer identity** (code-forward, dark-first), cross-
   linked with digitalharm.org but visually distinct.
-- **Domain:** **fightsam.org**.
+- **Domain:** **fightcsam.org**.
 - **Agent-friendly baseline** (in scope regardless): `llms.txt`, per-page raw
   Markdown, a machine-readable package manifest, copy-as-Markdown / open-in-LLM
   actions, and SSG so all content is present without executing JS.
@@ -23,7 +23,7 @@ site brand, not a package rename.**
 
 ## 1. Why a separate site (positioning)
 
-| | digitalharm.org — "The Digital Harm Project" | fightsam.org — "FightCSAM" |
+| | digitalharm.org — "The Digital Harm Project" | fightcsam.org — "FightCSAM" |
 |---|---|---|
 | Audience | Parents, survivors, clinicians, educators, policymakers | Developers, T&S engineers, AI startups, coding agents |
 | Job | Understand the harm; get help | Ship the protection; reach compliance |
@@ -33,7 +33,7 @@ site brand, not a package rename.**
 
 Keeping them separate means neither compromises the other: the public site never
 reads like an SDK, and the dev site never makes a panicking parent wade through
-`cargo add`. They cross-link (digitalharm.org `/tools` → fightsam.org; FightCSAM
+`cargo add`. They cross-link (digitalharm.org `/tools` → fightcsam.org; FightCSAM
 footer → digitalharm.org for the "why").
 
 **The north star for FightCSAM:** a developer — or a coding agent acting for one —
@@ -236,7 +236,7 @@ above is the gate; visual polish is a later step.)
 - **Content source of truth:** MDX in `apps/fightsam-site/content/`, with the
   per-tool overview pages able to pull each package's real `version` + README so
   install strings can't go stale (ties into the publish runbook).
-- **Deploy:** its own Vercel project on **fightsam.org** (separate from the
+- **Deploy:** its own Vercel project on **fightcsam.org** (separate from the
   addiction/digitalharm.org project).
 - **CI:** a build-green gate + a check that every package in `packages/` has a
   `/docs/<tool>` page and a manifest entry (mirrors the website's
@@ -248,7 +248,7 @@ above is the gate; visual polish is a later step.)
 
 | Phase | Deliverable | Gate |
 |---|---|---|
-| **0. Scaffold** | `apps/fightsam-site` Fumadocs app builds + deploys a placeholder to fightsam.org; pnpm workspace wired | site loads; CI green |
+| **0. Scaffold** | `apps/fightsam-site` Fumadocs app builds + deploys a placeholder to fightcsam.org; pnpm workspace wired | site loads; CI green |
 | **1. Agent baseline** | `/llms.txt`, `/llms-full.txt`, per-page raw-md, `/.well-known/fightsam.json` manifest, `/agents` page, content-negotiation | an agent can fetch the manifest + any page as md; no-JS content verified via curl |
 | **2. Docs** | `/docs/<tool>` for all 11 packages (overview/install/quickstart/API/gotchas), pulling real versions | every package documented; manifest auto-covers all 11 (CI-enforced) |
 | **3. Golden path** | `/golden-path` branching wizard + `/start` + downloadable compliance checklist; golden-path spec as structured data | a dev completes a profile → correct ordered plan; spec served to manifest/MCP |
@@ -263,7 +263,7 @@ v1 = phases 0–5 functional + phase 6 polish. Each phase ships independently
 
 ## 9. Open questions for the owner
 
-1. **fightsam.org DNS/Vercel** — owner provisions the domain + a new Vercel
+1. **fightcsam.org DNS/Vercel** — owner provisions the domain + a new Vercel
    project (same gate class as the package-registry credentials; I can't buy a
    domain). Confirm the registrar/Vercel account to use.
 2. **MCP hosting** — host the MCP server on the same Vercel project (route

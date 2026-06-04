@@ -4,7 +4,7 @@
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "fightsam-site.vercel.app" }],
-      "destination": "https://fightsam.com/$1",
+      "destination": "https://fightcsam.org/$1",
       "permanent": true
     }
   ]

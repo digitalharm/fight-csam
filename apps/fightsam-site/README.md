@@ -39,4 +39,4 @@ Phases per `docs/gtm/fightsam-site-design.md` and `docs/ops/v2-release-plan.md`:
 **0** scaffold (done) · **1** agent baseline + manifest · **2** per-tool docs with
 verified install strings · **3** golden path · **4** `create-fightcsam` CLI ·
 **5** docs MCP server · **6** brand polish. Deploys to its own Vercel project on
-**fightsam.org** (owner-provisioned).
+**fightcsam.org** (owner-provisioned).

@@ -1,6 +1,6 @@
 # Ecosystem — top tools to use, wrap, or learn from
 
-A curated, high-signal subset of the safety-tools landscape: the projects a developer building CSAM safety actually needs. Verdicts are ours (FightCSAM’s lens). The full 113-project directory (incl. out-of-scope + the long tail) lives at https://fightsam.com/docs/ecosystem. Descriptions adapted from awesome-safety-tools (ROOST). Snapshot: June 2026.
+A curated, high-signal subset of the safety-tools landscape: the projects a developer building CSAM safety actually needs. Verdicts are ours (FightCSAM’s lens). The full 113-project directory (incl. out-of-scope + the long tail) lives at https://fightcsam.org/docs/ecosystem. Descriptions adapted from awesome-safety-tools (ROOST). Snapshot: June 2026.
 
 **Verdicts:** **Use** = recommend integrating · **Learn from** = a leader/alternative on an axis FightCSAM also covers (often the better fit; never claim to beat the upstreams) · **Reference** = dataset/benchmark we anchor to.
 

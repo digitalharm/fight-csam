@@ -1,5 +1,5 @@
 export const appName = 'FightCSAM';
-export const siteUrl = 'https://fightsam.com';
+export const siteUrl = 'https://fightcsam.org';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';
