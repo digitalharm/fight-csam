@@ -1,0 +1,36 @@
+# Disable blank issues so every report is routed through a template (and the
+# safety/abuse-sensitive path is impossible to miss).
+blank_issues_enabled: false
+
+contact_links:
+  - name: Report a security, abuse, or CSAM-handling issue (PRIVATE — do NOT open a public issue)
+    url: mailto:security@digitalharm.org
+    about: >-
+      Vulnerabilities, safety-guard bypasses, hash drift / detection-bypass vectors,
+      authn/authz or crypto flaws, or any case where real CSAM or a real hash list may
+      have been committed. NEVER file these publicly. Email security@digitalharm.org.
+      See .github/SECURITY.md.
+
+  - name: Encountered real CSAM in the world? Report to NCMEC, not here.
+    url: https://report.cybertip.org/
+    about: >-
+      If you have come across actual child sexual abuse material anywhere (not a bug in
+      this repo), report it to the NCMEC CyberTipline. This project does not receive,
+      store, or handle real CSAM. Do not attach, quote, or screenshot such material.
+
+  - name: Conformance discrepancy (hashkit PDQ mismatch)
+    url: https://github.com/digitalharm/fight-csam/issues/new?template=bug_report.md&labels=type%3Abug%2Carea%3Aconformance
+    about: >-
+      Found a case where hashkit does not match the Meta PDQ reference, or where two
+      language bindings disagree? Use the bug template and keep it to SYNTHETIC vectors
+      only — never attach real imagery or hashes.
+
+  - name: Design proposal, new-tool pitch, or general question
+    url: https://github.com/digitalharm/fight-csam/discussions
+    about: >-
+      Architecture/scope questions, ideas, and sponsor inquiries belong in Discussions.
+      The portfolio is intentionally bounded at 11 tools; new-tool pitches start here.
+
+  - name: Code of Conduct concern
+    url: mailto:conduct@digitalharm.org
+    about: Report conduct issues privately to conduct@digitalharm.org. See .github/CODE_OF_CONDUCT.md.
