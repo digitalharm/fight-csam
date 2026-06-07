@@ -6,6 +6,8 @@
       "has": [{ "type": "host", "value": "fightsam-site.vercel.app" }],
       "destination": "https://fightcsam.org/$1",
       "permanent": true
-    }
+    },
+    { "source": "/llms", "destination": "/llms.txt", "permanent": true },
+    { "source": "/llms-full", "destination": "/llms-full.txt", "permanent": true }
   ]
 }
