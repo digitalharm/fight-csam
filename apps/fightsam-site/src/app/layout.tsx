@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: `%s · ${appName}`,
   },
   description:
-    'Open-source tools to detect, report, and prevent CSAM — for developers and their coding agents.',
+    'Free, open-source tools to detect, report, and prevent child sexual abuse material (CSAM) — for any online platform and the developers and AI agents who build them.',
   applicationName: appName,
   alternates: { canonical: '/' },
   openGraph: {
