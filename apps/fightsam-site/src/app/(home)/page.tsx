@@ -20,12 +20,14 @@ export default function HomePage() {
         >
           Browse the tools
         </Link>
-        <Link
+        {/* Plain <a>: /llms.txt is a route handler, so a next/link prefetch
+            would 404 on the RSC tree fetch. */}
+        <a
           href="/llms.txt"
           className="rounded-md border px-5 py-2.5 font-medium"
         >
           For coding agents: /llms.txt
-        </Link>
+        </a>
       </div>
       <p className="mt-12 text-sm text-fd-muted-foreground">
         A developer project of{' '}

@@ -160,7 +160,7 @@ ONE awesome-safety-tools PR, the agent-native surface, the csam-safety Skill.
   list / Apache-2.0," crediting the upstreams already listed.
 - **Agent-native baseline goes live** so a coding agent told "add CSAM scanning"
   can read us: `/llms.txt`, `/llms-full.txt`, per-page raw `.md`,
-  `/.well-known/fightsam.json` manifest, and an `/agents` page that explicitly
+  `/.well-known/fightcsam.json` manifest, and an `/agents` page that explicitly
   states "no bundled hash list" and "compliance-defensible, never compliant."
 - **The csam-safety Claude Agent Skill** + a Cursor/Claude rules snippet — the
   single most differentiated acquisition asset (it already encodes the 11 tools,

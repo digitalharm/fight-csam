@@ -87,7 +87,7 @@ visitor** with its own supported interface.
 - **`/llms-full.txt`** — the entire docs corpus concatenated as plain Markdown,
   so an agent can load the whole site into context in one fetch. (Fumadocs can
   generate both at build time.)
-- **`/.well-known/fightsam.json`** — a machine-readable **package manifest**:
+- **`/.well-known/fightcsam.json`** — a machine-readable **package manifest**:
   every tool with `{name, ecosystem, install command, repo, latest version, one-
   line purpose, docs URL, raw-md URL, capabilities[]}`. The canonical
   "what exists and how do I install it" an agent queries before writing code.
@@ -249,7 +249,7 @@ above is the gate; visual polish is a later step.)
 | Phase | Deliverable | Gate |
 |---|---|---|
 | **0. Scaffold** | `apps/fightsam-site` Fumadocs app builds + deploys a placeholder to fightcsam.org; pnpm workspace wired | site loads; CI green |
-| **1. Agent baseline** | `/llms.txt`, `/llms-full.txt`, per-page raw-md, `/.well-known/fightsam.json` manifest, `/agents` page, content-negotiation | an agent can fetch the manifest + any page as md; no-JS content verified via curl |
+| **1. Agent baseline** | `/llms.txt`, `/llms-full.txt`, per-page raw-md, `/.well-known/fightcsam.json` manifest, `/agents` page, content-negotiation | an agent can fetch the manifest + any page as md; no-JS content verified via curl |
 | **2. Docs** | `/docs/<tool>` for all 11 packages (overview/install/quickstart/API/gotchas), pulling real versions | every package documented; manifest auto-covers all 11 (CI-enforced) |
 | **3. Golden path** | `/golden-path` branching wizard + `/start` + downloadable compliance checklist; golden-path spec as structured data | a dev completes a profile → correct ordered plan; spec served to manifest/MCP |
 | **4. CLI** | `create-fightcsam` scaffolder (interactive + `--json` agent mode) generating a wired starter + CI | `npx create-fightcsam` produces a building, test-passing sample |

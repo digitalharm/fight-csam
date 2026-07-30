@@ -36,6 +36,17 @@ const esc = (s) => String(s ?? '').replace(/</g, '&lt;').replace(/>/g, '&gt;').r
 const escName = (s) => esc(s).replace(/[[\]]/g, '');
 const yamlStr = (s) => '"' + String(s ?? '').replace(/"/g, "'").replace(/\s+/g, ' ').trim() + '"';
 
+// Meta descriptions must never cut mid-word: end at the last full sentence
+// that fits, else at a word boundary with an ellipsis.
+function metaDescription(text, max = 160) {
+  const t = String(text ?? '').replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const head = t.slice(0, max + 1);
+  const lastSentence = Math.max(head.lastIndexOf('. '), head.lastIndexOf('! '), head.lastIndexOf('? '));
+  if (lastSentence >= 60) return head.slice(0, lastSentence + 1);
+  return head.slice(0, head.lastIndexOf(' ')).replace(/[,;:—-]$/, '').trimEnd() + '…';
+}
+
 const all = JSON.parse(fs.readFileSync(DATA, 'utf8'));
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -67,7 +78,7 @@ for (const [cat, file, intro] of CATS) {
   const body = [
     '---',
     `title: ${yamlStr(cat)}`,
-    `description: ${yamlStr(intro.slice(0, 150))}`,
+    `description: ${yamlStr(metaDescription(intro))}`,
     '---',
     '',
     esc(intro),
