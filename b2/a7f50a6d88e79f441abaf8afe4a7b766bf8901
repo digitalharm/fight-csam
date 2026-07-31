@@ -1,0 +1,19 @@
+docs/gtm/awesome-safety-tools-add-pr.md
+  s_de93ce73130bc5::t_65826ee74e452b 1-72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "b2a7f50a6d88e79f441abaf8afe4a7b766bf8901",
+  "prompts": {},
+  "sessions": {
+    "s_de93ce73130bc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "35598985-2d02-47cc-b386-6c6f7b39550d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "opencolin <colin@lowenberg.org>"
+    }
+  }
+}
