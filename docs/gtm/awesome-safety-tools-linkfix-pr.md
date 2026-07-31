@@ -1,6 +1,6 @@
 # PREPPED PR — link fixes for roostorg/awesome-safety-tools
 
-> **Status: ready to submit — not yet opened.** This is a value-first contribution to ROOST's `awesome-safety-tools` (our directory is derived from it). Opening it is our first contact with ROOST, so it's staged for review first. It is a **pure gift** — it does **not** add FightCSAM to the list (that's a separate PR, gated on v0.1 publish per the GTM plan).
+> **Status: SUBMITTED** — [roostorg/awesome-safety-tools#65](https://github.com/roostorg/awesome-safety-tools/pull/65) (opened 2026-06-29). Value-first first contact with ROOST (our directory is derived from theirs). It is a **pure gift** — it does **not** add FightCSAM to the list (that's a separate PR, gated on v0.1 publish per the GTM plan).
 >
 > Found via a link check of all 117 project URLs in their README (2026-06): **7 moved + 4 dead**.
 
