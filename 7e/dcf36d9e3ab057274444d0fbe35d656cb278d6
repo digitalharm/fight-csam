@@ -1,0 +1,19 @@
+docs/gtm/awesome-safety-tools-linkfix-pr.md
+  s_de93ce73130bc5::t_1d1f4f4fb06da3 1-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "7edcf36d9e3ab057274444d0fbe35d656cb278d6",
+  "prompts": {},
+  "sessions": {
+    "s_de93ce73130bc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "35598985-2d02-47cc-b386-6c6f7b39550d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "opencolin <colin@lowenberg.org>"
+    }
+  }
+}
