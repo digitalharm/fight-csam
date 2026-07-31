@@ -93,7 +93,7 @@ The unifying ICP: *a small-to-mid platform or AI startup newly obligated by the 
 
 ### Pillar D — ECOSYSTEM outreach (the awesome-safety-tools spine + merged-PR-as-outreach)
 
-**Approach.** Win the single highest-ROI, lowest-reputational-risk discovery channel — **ONE value-first PR into `roostorg/awesome-safety-tools`** — and treat the 111 profiled projects (`fightcsam.org/docs/ecosystem`: **24 use / 35 learn-from / 39 reference / 13 out-of-scope**) as an **integration surface to credit and build on, not a list to spam.** The deeper play: **merged upstream contributions are the primary, spam-proof ecosystem channel** — a gift PR is opt-in, durable distribution, a contributor-recruiting funnel, and earns Meta/ROOST standing. The public directory is a **conformance + attribution graph and relationship engine**: accurate, generous crediting (Meta 10×, ROOST/Osprey, Bluesky/Ozone, Thorn, Presidio, IBM Granite) is the entry ticket to co-marketing and the defensible alternative to mass outreach.
+**Approach.** Win the single highest-ROI, lowest-reputational-risk discovery channel — **ONE value-first PR into `roostorg/awesome-safety-tools`** — and treat the 112 profiled projects (`fightcsam.org/docs/ecosystem`: **24 use / 36 learn-from / 39 reference / 13 out-of-scope**) as an **integration surface to credit and build on, not a list to spam.** The deeper play: **merged upstream contributions are the primary, spam-proof ecosystem channel** — a gift PR is opt-in, durable distribution, a contributor-recruiting funnel, and earns Meta/ROOST standing. The public directory is a **conformance + attribution graph and relationship engine**: accurate, generous crediting (Meta 10×, ROOST/Osprey, Bluesky/Ozone, Thorn, Presidio, IBM Granite) is the entry ticket to co-marketing and the defensible alternative to mass outreach.
 
 **The hepa rule IS the marketing.** Shipping the **~150-line `atproto-adapter`** (hashkit + hashkit-match against an operator-supplied, hashstream-served list) + **Ozone label/report emitter** + a **safemod Ozone reviewer-pane skin** — with one 15-minute copy-paste "add CSAM matching to your hepa instance, synthetic fixtures only" guide — turns "11 interesting libraries" into a paste-and-run drop-in for the exact stack the #1 ICP already runs, in the documented IFTAS vacuum. It is **credential-free in the code** (the gated list stays the operator's), so it ships without NCMEC/counsel.
 
@@ -108,7 +108,7 @@ The unifying ICP: *a small-to-mid platform or AI startup newly obligated by the 
 
 **Channels:** the single `roostorg/awesome-safety-tools` PR; ROOST community (`community@roost.tools`, Discord) — partner + design-partner source; Bluesky/AT-Proto (Ozone + hepa) channels; `awesome-rust`/`-python`/`-go` + AppSec lists; merged upstream PRs (Garak/PyRIT/Promptfoo, python-threatexchange, Bluesky indigo) as the scalable, opt-in channel; `fightcsam.org/docs/ecosystem` as the credit-and-link asset.
 
-**HARD LIMIT:** no mass/automated GitHub issue-or-PR spam across the 111. Do-not-contact list = all 13 out-of-scope + all 39 reference-only (many anonymous/low-provenance dataset dumps) + Big-Tech in-house T&S. Outreach restricted to the 24 "use" + a curated "learn-from" subset, only where there is genuine value to send. (See Guardrails.)
+**HARD LIMIT:** no mass/automated GitHub issue-or-PR spam across the 112. Do-not-contact list = all 13 out-of-scope + all 39 reference-only (many anonymous/low-provenance dataset dumps) + Big-Tech in-house T&S. Outreach restricted to the 24 "use" + a curated "learn-from" subset, only where there is genuine value to send. (See Guardrails.)
 
 ---
 
@@ -176,7 +176,7 @@ Honest framing for a solo, self-funded maintainer in a credibility-first categor
 
 ### Pillar D — Ecosystem
 - **v0.2:** **1** merged `roostorg/awesome-safety-tools` PR (the #1 discovery channel).
-- **Outreach discipline (hard caps):** **≤5 hand-written messages/week**, capped to the **24 "use"-verdict** allies + a curated learn-from subset; **gitignored outreach ledger** (who/when/response/opt-out); **0** automated/bulk issues across the 111; **0** contacts to the do-not-contact list (13 out-of-scope + 39 reference-only + Big-Tech in-house T&S).
+- **Outreach discipline (hard caps):** **≤5 hand-written messages/week**, capped to the **24 "use"-verdict** allies + a curated learn-from subset; **gitignored outreach ledger** (who/when/response/opt-out); **0** automated/bulk issues across the 112; **0** contacts to the do-not-contact list (13 out-of-scope + 39 reference-only + Big-Tech in-house T&S).
 - **Merged-upstream-PR channel:** CSAM-intent red-team pack merged into **≥1** of Garak/PyRIT/Promptfoo by v0.4 (durable distribution + contributor funnel).
 - **Beachhead:** hepa-adapter "add CSAM matching in 15 min" guide shipped (v0.4); **1–2 Fediverse design partners** seeded by v0.5 (cap total design partners at **5–10**).
 - **The trust-currency outcome (v1.0):** **2–3 named reference-adopter logos** (≥1 IFTAS-orphaned Fediverse operator first; then a TAKE-IT-DOWN-deadline platform / an AI startup under Safety-by-Design scrutiny).
@@ -197,7 +197,7 @@ Honest framing for a solo, self-funded maintainer in a credibility-first categor
 In this category **credibility and restraint are the only currency that converts.** Every rule below is a **hard gate, not a guideline.** Violating one can permanently brand the project a spammer or an over-claimer and poison the ROOST/Meta/NCMEC relationships the whole plan depends on.
 
 ### Outreach conduct (anti-spam — the #1 reputational threat)
-- **NO mass/automated GitHub issues or PRs across the 111 profiled projects** (or Meta/ROOST repos). Ever. One scripted blast is reputationally fatal and could get the awesome-safety-tools PR rejected.
+- **NO mass/automated GitHub issues or PRs across the 112 profiled projects** (or Meta/ROOST repos). Ever. One scripted blast is reputationally fatal and could get the awesome-safety-tools PR rejected.
 - All outreach is **human-written, individually relevant, batched ≤5/week, opt-out-respecting**, via email / existing threads / DMs — **never cold GitHub issues**.
 - Capped to the **24 "use"-verdict allies** + a curated "learn-from" subset, **only where there is genuine value to send** (a credit, a working integration, a merged PR). Lead with the value; the ask comes much later, if ever.
 - **Do-not-contact list:** all **13 out-of-scope** + all **39 reference-only** projects (many anonymous/low-provenance dataset dumps) + **Big-Tech in-house T&S** teams.

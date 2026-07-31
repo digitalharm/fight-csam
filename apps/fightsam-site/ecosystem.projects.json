@@ -1219,5 +1219,16 @@
   "verdict": "reference",
   "relatedTool": "",
   "take": "Catches over-refusal: safe prompts a model wrongly declines."
+ },
+ {
+  "slug": "mediawiki-mediamoderation",
+  "name": "MediaModeration",
+  "by": "Wikimedia Foundation",
+  "url": "https://github.com/wikimedia/mediawiki-extensions-MediaModeration",
+  "category": "Perceptual hashing & matching",
+  "blurb": "A MediaWiki extension that scans uploaded media to support the Wikimedia Foundation's child-protection workflows.",
+  "verdict": "learn-from",
+  "relatedTool": "csam-shield",
+  "take": "A production child-protection scanning integration wired straight into a major platform's upload + review pipeline (PhotoDNA-based in Wikimedia's deployment). It's the real-world shape of the detect → flag → human-review flow that csam-shield generalizes platform-agnostically — a useful reference even though it's MediaWiki-specific."
  }
 ]
