@@ -1,0 +1,27 @@
+.claude/skills/csam-safety/references/ecosystem.md
+  s_de93ce73130bc5::t_90fd8cf23a2799 3
+apps/fightsam-site/content/docs/ecosystem/index.mdx
+  s_de93ce73130bc5::t_e8b864167e9785 8,13,21
+apps/fightsam-site/content/docs/ecosystem/perceptual-hashing.mdx
+  s_de93ce73130bc5::t_438bd6299452b2 8,52-59
+apps/fightsam-site/ecosystem.projects.json
+  s_de93ce73130bc5::t_6bc257a5a9af05 1222-1232
+docs/gtm/marketing-acquisition-plan.md
+  s_de93ce73130bc5::t_01a3cfb7d64b9b 96,111,179,200
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "04a8597b5482a21e046b56191fe8be5564bf0b1c",
+  "prompts": {},
+  "sessions": {
+    "s_de93ce73130bc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "35598985-2d02-47cc-b386-6c6f7b39550d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "opencolin <colin@lowenberg.org>"
+    }
+  }
+}
