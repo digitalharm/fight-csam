@@ -12,6 +12,8 @@ from __future__ import annotations
 
 __version__ = "0.0.1"
 
+from .detectors import create_pdq_list_detector, hamming_distance
+from .shield import Shield, create_shield
 from .types import (
     DetectorConfig,
     DetectorKind,
@@ -27,8 +29,6 @@ from .types import (
     VideoBytes,
     VideoUrl,
 )
-from .shield import Shield, create_shield
-from .detectors import create_pdq_list_detector, hamming_distance
 
 __all__ = [
     "DetectorConfig",
@@ -41,11 +41,11 @@ __all__ = [
     "OnErrorPolicy",
     "RetryPolicy",
     "Scannable",
+    "Shield",
     "ShieldConfig",
     "VideoBytes",
     "VideoUrl",
-    "Shield",
-    "create_shield",
     "create_pdq_list_detector",
+    "create_shield",
     "hamming_distance",
 ]

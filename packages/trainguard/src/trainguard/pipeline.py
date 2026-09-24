@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from typing import Iterable, Optional
+from collections.abc import Iterable
 
 from .readers import parse_hash_lines
 from .types import (
@@ -52,7 +52,7 @@ def signing_payload(report: ComplianceReport) -> bytes:
     return "\x00".join(parts).encode("utf-8")
 
 
-def _sign(payload: bytes, signing_key: Optional[bytes]) -> Optional[bytes]:
+def _sign(payload: bytes, signing_key: bytes | None) -> bytes | None:
     """Return an Ed25519 signature over ``payload``, or ``None`` if unsigned.
 
     ``signing_key`` is 32 raw Ed25519 private-key bytes (operator-supplied).
@@ -82,7 +82,7 @@ def scan_dataset(
     scanned_at_iso: str,
     operator: str,
     threshold: int = 31,
-    signing_key: Optional[bytes] = None,
+    signing_key: bytes | None = None,
 ) -> tuple[ComplianceReport, list[ScanResult]]:
     """Scan a dataset stream against the configured hash-list providers.
 
@@ -308,4 +308,4 @@ class HashstreamProvider:
 def _hamming(a: bytes, b: bytes) -> int:
     if len(a) != len(b):
         raise ValueError("hash length mismatch")
-    return sum(bin(ax ^ bx).count("1") for ax, bx in zip(a, b))
+    return sum((ax ^ bx).bit_count() for ax, bx in zip(a, b))

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable, Literal, Protocol, Union
-
+from typing import Any, Literal, Protocol
 
 MatchDecision = Literal["match", "nomatch", "pending", "error"]
 
@@ -59,7 +59,7 @@ class VideoUrl:
     kind: Literal["video-url"] = "video-url"
 
 
-Scannable = Union[ImageBytes, ImageUrl, VideoBytes, VideoUrl]
+Scannable = ImageBytes | ImageUrl | VideoBytes | VideoUrl
 
 
 @dataclass(slots=True)

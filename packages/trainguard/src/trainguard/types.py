@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass, field
-from typing import Iterable, Literal, Protocol
-
+from typing import Literal, Protocol
 
 HashListSource = Literal["ncmec", "iwf", "project-arachnid", "local"]
 
@@ -22,7 +22,7 @@ def hamming_distance(a_hex: str, b_hex: str) -> int:
         raise ValueError(
             f"hamming_distance: length mismatch ({len(a)} vs {len(b)} bytes)"
         )
-    return sum(bin(ax ^ bx).count("1") for ax, bx in zip(a, b))
+    return sum((ax ^ bx).bit_count() for ax, bx in zip(a, b))
 
 
 @dataclass(frozen=True, slots=True)
@@ -127,5 +127,5 @@ class HashListProvider(Protocol):
 class DatasetReader(Protocol):
     """A streaming source of DatasetEntry rows."""
 
-    def __iter__(self) -> Iterable[DatasetEntry]:
+    def __iter__(self) -> Iterator[DatasetEntry]:
         ...

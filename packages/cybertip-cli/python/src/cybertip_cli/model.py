@@ -8,7 +8,6 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-
 IncidentType = Literal[
     "child-pornography",
     "online-enticement",

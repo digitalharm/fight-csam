@@ -14,7 +14,6 @@ score, never lower it, so wiring it in cannot reduce recall.
 from __future__ import annotations
 
 import re
-from typing import Tuple
 
 from .rules import conjunction_score, match_rules
 from .types import MatchedSignal
@@ -29,7 +28,7 @@ class NeuralClassifier:
     """
 
     @classmethod
-    def from_huggingface(cls, model_id: str) -> "NeuralClassifier":
+    def from_huggingface(cls, model_id: str) -> NeuralClassifier:
         """Load a classifier from a Hugging Face model artifact.
 
         Scaffold stage: returns a stub that raises on classify(). The
@@ -38,7 +37,7 @@ class NeuralClassifier:
         """
         return _StubClassifier(model_id)
 
-    def classify(self, normalized_prompt: str) -> Tuple[float, list[MatchedSignal]]:
+    def classify(self, normalized_prompt: str) -> tuple[float, list[MatchedSignal]]:
         """Return (score, signals) for the given normalized prompt.
 
         Score is a calibrated 0.0–1.0 probability. Signals describe
@@ -53,7 +52,7 @@ class _StubClassifier(NeuralClassifier):
     def __init__(self, model_id: str) -> None:
         self._model_id = model_id
 
-    def classify(self, _normalized_prompt: str) -> Tuple[float, list[MatchedSignal]]:
+    def classify(self, _normalized_prompt: str) -> tuple[float, list[MatchedSignal]]:
         raise NotImplementedError(
             f"promptshield: neural classifier for {self._model_id!r} is a "
             f"scaffold stub. A trained model artifact will be published once "
@@ -81,7 +80,7 @@ class HeuristicBaseline(NeuralClassifier):
         re.IGNORECASE,
     )
 
-    def classify(self, normalized_prompt: str) -> Tuple[float, list[MatchedSignal]]:
+    def classify(self, normalized_prompt: str) -> tuple[float, list[MatchedSignal]]:
         signals = match_rules(normalized_prompt)
         score = conjunction_score(signals)
 
