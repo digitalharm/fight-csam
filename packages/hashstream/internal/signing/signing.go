@@ -111,8 +111,14 @@ func ParsePrivateKey(data []byte) (ed25519.PrivateKey, error) {
 		return ed, nil
 	}
 
-	// Raw bytes: accept a trailing newline for convenience.
-	raw := trimTrailingNewline(data)
+	// Raw bytes: accept a trailing newline for convenience, but only when the
+	// untrimmed data is not already a valid key size. A random 64-byte key or
+	// 32-byte seed can legitimately end in 0x0a or 0x0d; trimming those bytes
+	// would corrupt the key and reject it.
+	raw := data
+	if len(raw) != ed25519.PrivateKeySize && len(raw) != ed25519.SeedSize {
+		raw = trimTrailingNewline(data)
+	}
 	switch len(raw) {
 	case ed25519.PrivateKeySize:
 		return ed25519.PrivateKey(raw), nil
@@ -140,7 +146,12 @@ func ParsePublicKey(data []byte) (ed25519.PublicKey, error) {
 		}
 		return ed, nil
 	}
-	raw := trimTrailingNewline(data)
+	// Same rule as ParsePrivateKey: a raw 32-byte key can legitimately end in
+	// 0x0a or 0x0d, so only trim when the data is not already key-sized.
+	raw := data
+	if len(raw) != ed25519.PublicKeySize {
+		raw = trimTrailingNewline(data)
+	}
 	if len(raw) == ed25519.PublicKeySize {
 		return ed25519.PublicKey(raw), nil
 	}
