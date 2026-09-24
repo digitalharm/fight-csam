@@ -23,7 +23,6 @@ from typing import Literal
 
 from .types import MatchedSignal
 
-
 SignalKind = Literal["minor-indicator", "sexual-context", "conjunction-bypass"]
 
 

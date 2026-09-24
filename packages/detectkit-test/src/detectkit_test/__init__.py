@@ -25,21 +25,21 @@ __version__ = "0.0.1"
 from .fixtures import (
     SyntheticImage,
     SyntheticVideo,
+    generate_corpus,
     generate_image,
     generate_video,
-    generate_corpus,
 )
 from .hashing import (
-    HashKind,
     ExpectedHash,
+    HashKind,
 )
 
 __all__ = [
+    "ExpectedHash",
+    "HashKind",
     "SyntheticImage",
     "SyntheticVideo",
+    "generate_corpus",
     "generate_image",
     "generate_video",
-    "generate_corpus",
-    "HashKind",
-    "ExpectedHash",
 ]

@@ -17,13 +17,6 @@ from __future__ import annotations
 
 __version__ = "0.0.1"
 
-from .types import (
-    ComplianceReport,
-    DatasetEntry,
-    HashListSource,
-    ScanResult,
-    hamming_distance,
-)
 from .pipeline import (
     HashListFileProvider,
     HashstreamProvider,
@@ -37,6 +30,13 @@ from .readers import (
     LaionReader,
     WebdatasetReader,
     parse_hash_lines,
+)
+from .types import (
+    ComplianceReport,
+    DatasetEntry,
+    HashListSource,
+    ScanResult,
+    hamming_distance,
 )
 
 __all__ = [

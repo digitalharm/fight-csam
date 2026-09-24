@@ -5,7 +5,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
-
 Verdict = Literal["allow", "block", "review"]
 """Three-tier verdict from the classifier.
 

@@ -7,7 +7,7 @@ calling code never receives image bytes.
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
 from ..classifier import PromptClassifier
 from ..types import ClassificationResult
@@ -26,7 +26,7 @@ class PromptBlockedError(RuntimeError):
 
 def shielded_pipeline(
     pipeline: Any,
-    classifier: Optional[PromptClassifier] = None,
+    classifier: PromptClassifier | None = None,
 ) -> Any:
     """Wrap a diffusers DiffusionPipeline so prompts are gated.
 
