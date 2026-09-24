@@ -197,6 +197,23 @@ func TestLoadSignerFromFileSeedEndingInNewline(t *testing.T) {
 	}
 }
 
+// Regression: a raw 32-byte public key whose final byte is 0x0a must not be
+// truncated by the trailing-newline trim.
+func TestParsePublicKeyRawEndingInNewline(t *testing.T) {
+	pub := make([]byte, ed25519.PublicKeySize)
+	if _, err := rand.Read(pub); err != nil {
+		t.Fatalf("rand pub: %v", err)
+	}
+	pub[len(pub)-1] = '\n'
+	got, err := ParsePublicKey(pub)
+	if err != nil {
+		t.Fatalf("parse raw pub with trailing 0x0a byte: %v", err)
+	}
+	if KeyID(got) != KeyID(ed25519.PublicKey(pub)) {
+		t.Fatal("raw pub key id mismatch")
+	}
+}
+
 func TestParsePublicKeyForms(t *testing.T) {
 	pub, _, _ := ed25519.GenerateKey(rand.Reader)
 

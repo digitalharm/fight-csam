@@ -146,7 +146,12 @@ func ParsePublicKey(data []byte) (ed25519.PublicKey, error) {
 		}
 		return ed, nil
 	}
-	raw := trimTrailingNewline(data)
+	// Same rule as ParsePrivateKey: a raw 32-byte key can legitimately end in
+	// 0x0a or 0x0d, so only trim when the data is not already key-sized.
+	raw := data
+	if len(raw) != ed25519.PublicKeySize {
+		raw = trimTrailingNewline(data)
+	}
 	if len(raw) == ed25519.PublicKeySize {
 		return ed25519.PublicKey(raw), nil
 	}
