@@ -143,6 +143,60 @@ func TestLoadSignerFromFileRawAndSeed(t *testing.T) {
 	}
 }
 
+// Regression: a raw key whose final byte happens to be 0x0a (or 0x0d) must
+// not be truncated by the trailing-newline trim.
+func TestLoadSignerFromFileRawKeyEndingInNewline(t *testing.T) {
+	// Generate keys until the private key's last byte is '\n'. The last 32
+	// bytes of an Ed25519 private key are the public key, which is uniformly
+	// distributed, so this terminates quickly (~1/256 chance per try).
+	var priv ed25519.PrivateKey
+	for {
+		_, p, err := ed25519.GenerateKey(rand.Reader)
+		if err != nil {
+			t.Fatalf("generate key: %v", err)
+		}
+		if p[len(p)-1] == '\n' {
+			priv = p
+			break
+		}
+	}
+	dir := t.TempDir()
+	rawPath := filepath.Join(dir, "key.raw")
+	if err := os.WriteFile(rawPath, priv, 0o600); err != nil {
+		t.Fatalf("write raw: %v", err)
+	}
+	signer, err := LoadSignerFromFile(rawPath)
+	if err != nil {
+		t.Fatalf("load raw signer with trailing 0x0a byte: %v", err)
+	}
+	if signer.KeyID() != KeyID(priv.Public().(ed25519.PublicKey)) {
+		t.Fatal("raw key id mismatch")
+	}
+}
+
+// Regression: a 32-byte seed whose final byte is 0x0a must load intact.
+func TestLoadSignerFromFileSeedEndingInNewline(t *testing.T) {
+	seed := make([]byte, ed25519.SeedSize)
+	if _, err := rand.Read(seed); err != nil {
+		t.Fatalf("rand seed: %v", err)
+	}
+	seed[len(seed)-1] = '\n'
+	want := ed25519.NewKeyFromSeed(seed)
+
+	dir := t.TempDir()
+	seedPath := filepath.Join(dir, "key.seed")
+	if err := os.WriteFile(seedPath, seed, 0o600); err != nil {
+		t.Fatalf("write seed: %v", err)
+	}
+	signer, err := LoadSignerFromFile(seedPath)
+	if err != nil {
+		t.Fatalf("load seed signer with trailing 0x0a byte: %v", err)
+	}
+	if signer.KeyID() != KeyID(want.Public().(ed25519.PublicKey)) {
+		t.Fatal("seed-derived key id mismatch")
+	}
+}
+
 func TestParsePublicKeyForms(t *testing.T) {
 	pub, _, _ := ed25519.GenerateKey(rand.Reader)
 
