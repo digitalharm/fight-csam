@@ -1,7 +1,7 @@
 # Ecosystem Outreach Tracker
 
 > Source of truth for **who we may contact, how, and in what order** across the 113 profiled ecosystem projects (`apps/fightsam-site/ecosystem.projects.json`, published at fightcsam.org/docs/ecosystem).
-> Verdict mix: **24 use** / **35 learn-from** / **41 reference** / **13 out-of-scope** = 113.
+> Verdict mix: **25 use** / **36 learn-from** / **39 reference** / **13 out-of-scope** = 113.
 > **In this space, restraint is the product.** Over-reaching here can permanently brand FightCSAM a spammer and poison the ROOST / Meta / NCMEC relationships the whole plan depends on. Read the protocol before touching any row.
 
 **Status legend:** `todo` (not started) · `drafted` · `sent` · `replied` · `merged` · `opt-out` (never re-contact) · `parked`.
@@ -25,7 +25,7 @@
 
 7. **No-duplicate rule.** One contact per project, ever, until they reply. Check the gitignored ledger before sending. **Never re-contact a non-response; never re-contact an opt-out; never automate.** If a project spans multiple repos (e.g. Meta's ThreatExchange monorepo holds PDQ/TMK/vPDQ/HMA/python-threatexchange), that is **ONE org relationship = one contact**, not one per sub-tool.
 
-8. **Hard caps on who is in scope.** Only the **24 "use"** + a **curated subset of "learn-from"** where there is genuine value to send. Everything else is do-not-contact.
+8. **Hard caps on who is in scope.** Only the **25 "use"** + a **curated subset of "learn-from"** where there is genuine value to send. Everything else is do-not-contact.
 
 9. **DO NOT CONTACT (absolute):**
    - All **13 out-of-scope** projects (see §4).
@@ -40,9 +40,9 @@
 
 ---
 
-## 1. TIER 1 — "use" verdict (24) · personalized, high-touch
+## 1. TIER 1 — "use" verdict (25) · personalized, high-touch
 
-These are tools we **recommend, wrap, build on, or depend on**. The relationship goal is reciprocal credit and (eventually) interop / design-partner / reference standing — *not* a sale and *not* a favor. **9 of the 24 are Big-Tech artifacts flagged `DO-NOT-SOLICIT`** (engage only via substantive upstream PRs, per protocol §9–§10). Prioritize the non-Big-Tech, beachhead-relevant rows first: **ROOST/Osprey → Bluesky/Ozone+hepa → Guardrails AI → Promptfoo/Garak/PyRIT/Aymara/Prompt Fuzzer → CoPE → the infra deps.**
+These are tools we **recommend, wrap, build on, or depend on**. The relationship goal is reciprocal credit and (eventually) interop / design-partner / reference standing — *not* a sale and *not* a favor. **9 of the 25 are Big-Tech artifacts flagged `DO-NOT-SOLICIT`** (engage only via substantive upstream PRs, per protocol §9–§10). Prioritize the non-Big-Tech, beachhead-relevant rows first: **ROOST/Osprey → Bluesky/Ozone+hepa → Guardrails AI → Promptfoo/Garak/PyRIT/Aymara/Prompt Fuzzer → CoPE → the infra deps.**
 
 | Project | Repo / URL | Owner / org | Verdict | Our take (short) | Channel | Draft opener (value-first) | Status |
 |---|---|---|---|---|---|---|---|
@@ -50,6 +50,7 @@ These are tools we **recommend, wrap, build on, or depend on**. The relationship
 | **Ozone** ⭐ | github.com/bluesky-social/ozone | Bluesky (`bluesky-social`) | use | The natural sink for our AT-Proto adapter; hepa rule emits labels/reports into its queue. Planned safemod skin for its reviewer pane. | Merged adapter PR first; AT-Proto Discord; maintainer bsky thread | "We're shipping an AT-Proto adapter that emits CSAM hash-match labels/reports straight into Ozone's queue (synthetic fixtures only) — would a short interop note or a reviewer-pane context patch be useful to you?" | todo |
 | **Automod (hepa)** ⭐ | github.com/bluesky-social/indigo/tree/main/automod | Bluesky (`bluesky-social`) | use | hepa hands rules raw media bytes but ships no perceptual-hash hook — that's the gap. Our adapter is a hepa blob rule wrapping hashkit + hashkit-match → Ozone. **This adapter IS the beachhead.** | Merged PR into indigo (the PR *is* the outreach); AT-Proto Discord | "hepa exposes blob bytes but has no perceptual-hash hook; we've written a ~150-line blob rule wrapping hashkit/hashkit-match against an operator-supplied list — opening it as a contribution, would you want it upstream or as a companion?" | todo |
 | **Guardrails AI** | github.com/guardrails-ai/guardrails | Guardrails AI (`guardrails-ai`) | use | Teams on Guardrails add CSAM-intent screening as one validator; promptshield exposed as a Hub validator. The right place to plug our checks in. | GitHub Discussion → maintainer; later a Hub validator PR | "We'd like to publish promptshield as a Guardrails Hub validator so your users can add CSAM-intent screening to an existing guard — is the Hub validator path the right way in?" | todo |
+| **Realm OmniGuard** | realmlabs.ai | Realm Labs (commercial; no public repo) | use | Multimodal AI firewall (text/image/audio/video, on-prem Docker/Triton). Choke point where promptshield runs as a CSAM-intent policy and csam-shield wraps its image/video verdict as a custom detector. Vendor, not OSS — engage as a design-partner conversation, not a repo PR. | Founder/BD email or LinkedIn (Saurabh Shintre); see `docs/outreach/realm-labs.md` | "We list OmniGuard in our directory as the enforcement layer a CSAM-intent gate plugs into. Would a reference integration (promptshield as an OmniGuard policy + csam-shield custom-detector adapter) be useful to your customers, and did we describe OmniGuard correctly?" | drafted |
 | **Promptfoo** | github.com/promptfoo/promptfoo | Promptfoo (`promptfoo`) | use | Our recommended pick for repeatable, OWASP/NIST-mapped evals of promptshield in CI. We plan to contribute CSAM-intent strategies as a plugin (built-ins omit the domain). | GitHub Discussion; then the red-team-pack plugin PR (v0.4) | "We recommend Promptfoo for CI evals of our CSAM guard and want to contribute a responsibly-scoped CSAM-intent strategy pack the built-ins intentionally leave out — is a plugin PR welcome?" | todo |
 | **Garak** | github.com/NVIDIA/garak | NVIDIA — **DO-NOT-SOLICIT** | use | Our first recommendation for stress-testing promptshield across attack classes; we plan to contribute CSAM-intent probes as a plugin, not rebuild the harness. | Upstream plugin PR only (no promo outreach to NVIDIA) | (PR description, not a message) "Adds an optional, NCMEC-aware CSAM-intent probe pack as a Garak plugin; synthetic/redacted prompts only, gated behind an explicit opt-in flag." | todo |
 | **PyRIT** | github.com/Azure/PyRIT | Microsoft (`Azure`) — **DO-NOT-SOLICIT** | use | The one we reach for when an attack emerges across a multi-turn conversation; our red-team pack plugs into PyRIT rather than replacing it. | Upstream plugin/orchestrator PR only | (PR description) "Adds a multi-turn CSAM-intent orchestrator template for PyRIT, synthetic-only, opt-in — pairs with existing PyRIT converters." | todo |
@@ -73,7 +74,7 @@ These are tools we **recommend, wrap, build on, or depend on**. The relationship
 
 ⭐ = beachhead / relationship-engine priority. Work these first; they unlock the rest.
 
-**Tier 1 contactable (non-Big-Tech) shortlist, in order:** Osprey (ROOST) · Ozone + hepa (Bluesky) · Guardrails AI · Promptfoo · Prompt Fuzzer · Aymara · CoPE · Kanana Safeguard. The infra deps (BullMQ/RabbitMQ/Druid/SpamAssassin/scikit-learn) need crediting, not outreach. The 9 Big-Tech rows are credit-only / upstream-PR-only.
+**Tier 1 contactable (non-Big-Tech) shortlist, in order:** Osprey (ROOST) · Ozone + hepa (Bluesky) · Guardrails AI · Realm Labs (OmniGuard) · Promptfoo · Prompt Fuzzer · Aymara · CoPE · Kanana Safeguard. The infra deps (BullMQ/RabbitMQ/Druid/SpamAssassin/scikit-learn) need crediting, not outreach. The 9 Big-Tech rows are credit-only / upstream-PR-only.
 
 ---
 

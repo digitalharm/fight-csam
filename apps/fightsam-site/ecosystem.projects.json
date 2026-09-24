@@ -352,6 +352,17 @@
   "take": "Open-weight and spanning both text and image (via ShieldGemma 2), so it can back both modalities a CSAM pipeline cares about. We wrap it as a csam-shield detector backend or promptshield companion; as with other general guards, a CSAM policy narrows it to the target harm."
  },
  {
+  "slug": "realm-labs-omniguard",
+  "name": "Realm OmniGuard",
+  "by": "Realm Labs",
+  "url": "https://www.realmlabs.ai/",
+  "category": "Classifiers & AI-safety models",
+  "blurb": "A commercial AI firewall from Realm Labs that screens inputs and outputs for harmful content, jailbreaks, and prompt injection across text, image, audio, and video in 50+ languages, deployable inside your own environment (Docker / Triton) or in front of an AI gateway.",
+  "verdict": "use",
+  "relatedTool": "promptshield",
+  "take": "The same choke-point role as Guardrails AI or OpenGuardrails, but multimodal and vendor-supported: a team already running OmniGuard in front of its models can add promptshield's narrow CSAM-intent gate as one policy inside that firewall, and csam-shield can wrap OmniGuard's image/video verdicts as a custom detector backend beside hash matching. Closed and commercial, with no public SDK we could verify and no CSAM-specific claim in its published material, so it never replaces dedicated CSAM signals or hash matching; it is the enforcement surface those signals plug into."
+ },
+ {
   "slug": "risk-atlas-nexus-ibm",
   "name": "Risk Atlas Nexus",
   "by": "IBM Research",
