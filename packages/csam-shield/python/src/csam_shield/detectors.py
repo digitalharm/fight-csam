@@ -62,7 +62,9 @@ async def run_ncmec_hash(
     if not isinstance(creds.get("username"), str) or not isinstance(
         creds.get("password"), str
     ):
-        raise ValueError("ncmec-hash config: credentials.{username,password} required")
+        raise ValueError(  # noqa: TRY004 - config errors are ValueError by contract
+            "ncmec-hash config: credentials.{username,password} required"
+        )
     raise NotImplementedError(
         "csam-shield: NCMEC Hash Sharing adapter is a scaffold stub. "
         "Requires NCMEC ESP credentialing."
@@ -79,7 +81,7 @@ def hamming_distance(a: bytes, b: bytes) -> float:
         return float("inf")
     distance = 0
     for x, y in zip(a, b):
-        distance += bin(x ^ y).count("1")
+        distance += (x ^ y).bit_count()
     return distance
 
 
@@ -160,8 +162,7 @@ async def run_pdq(
     for entry in hash_list:
         entry_bytes = bytes(entry)
         distance = hamming_distance(query_hash, entry_bytes)
-        if distance < best:
-            best = distance
+        best = min(best, distance)
         if best <= threshold:
             break
 
@@ -211,10 +212,12 @@ async def run_custom(
     """Escape hatch for adopters wiring a non-built-in detector."""
     scan = config.get("scan")
     if not callable(scan):
-        raise ValueError("custom config: scan must be an awaitable callable")
+        raise ValueError(  # noqa: TRY004 - config errors are ValueError by contract
+            "custom config: scan must be an awaitable callable"
+        )
     result = await scan(content, request_id)
     if not isinstance(result, dict):
-        raise ValueError("custom scan must return a dict")
+        raise ValueError("custom scan must return a dict")  # noqa: TRY004
     return {
         "matched": bool(result.get("matched", False)),
         "confidence": result.get("confidence"),

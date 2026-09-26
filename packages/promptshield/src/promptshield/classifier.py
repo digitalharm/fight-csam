@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from .neural import NeuralClassifier
 from .rules import (
@@ -60,7 +59,7 @@ class PromptClassifier:
     def __init__(
         self,
         thresholds: Thresholds = _DEFAULT_THRESHOLDS,
-        neural: Optional[NeuralClassifier] = None,
+        neural: NeuralClassifier | None = None,
         policy_version: str = "v0.0.0",
     ) -> None:
         self._thresholds = thresholds
@@ -68,7 +67,7 @@ class PromptClassifier:
         self._policy_version = policy_version
 
     @classmethod
-    def from_default(cls) -> "PromptClassifier":
+    def from_default(cls) -> PromptClassifier:
         """Return a classifier with the bootstrap rules and no neural stage.
 
         Suitable for testing, CI, and deployments that don't want a model
@@ -81,7 +80,7 @@ class PromptClassifier:
     def from_baseline(
         cls,
         thresholds: Thresholds = _DEFAULT_THRESHOLDS,
-    ) -> "PromptClassifier":
+    ) -> PromptClassifier:
         """Return a classifier with Stage 1 plus the honest heuristic Stage 2
         baseline (``HeuristicBaseline``). No model download, no network — the
         baseline is transparent feature scoring that does strictly more than
@@ -96,7 +95,7 @@ class PromptClassifier:
         cls,
         model_id: str,
         thresholds: Thresholds = _DEFAULT_THRESHOLDS,
-    ) -> "PromptClassifier":
+    ) -> PromptClassifier:
         """Return a classifier with the bootstrap rules + a neural stage
         loaded from a Hugging Face Hub model artifact.
 
@@ -110,7 +109,7 @@ class PromptClassifier:
         self,
         prompt: str,
         *,
-        negative_prompt: Optional[str] = None,
+        negative_prompt: str | None = None,
     ) -> ClassificationResult:
         """Classify a single prompt.
 
@@ -171,7 +170,7 @@ class PromptClassifier:
 def guard(
     prompt: str,
     *,
-    negative_prompt: Optional[str] = None,
+    negative_prompt: str | None = None,
 ) -> ClassificationResult:
     """Convenience one-liner using the default classifier.
 

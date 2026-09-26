@@ -18,13 +18,13 @@ from __future__ import annotations
 
 __version__ = "0.0.1"
 
+from .classifier import PromptClassifier, guard
 from .types import (
     ClassificationResult,
     ClassificationSource,
     MatchedSignal,
     Verdict,
 )
-from .classifier import PromptClassifier, guard
 
 __all__ = [
     "ClassificationResult",
