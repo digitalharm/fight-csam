@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import time
 import uuid
 from typing import Any
@@ -82,11 +83,9 @@ class Shield:
         )
 
         if self._config.on_decision is not None:
-            try:
+            # Audit-log failures must not break the request path.
+            with contextlib.suppress(Exception):
                 await self._config.on_decision(response)
-            except Exception:
-                # Audit-log failures must not break the request path.
-                pass
 
         return response
 
@@ -125,7 +124,7 @@ async def _run_detector(
             )
         except asyncio.TimeoutError:
             last_error = f"{config.detector} timed out after {config.timeout_ms}ms"
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - error containment is the contract
             last_error = str(exc)
 
         if attempt < max_retries and backoff_ms > 0:
