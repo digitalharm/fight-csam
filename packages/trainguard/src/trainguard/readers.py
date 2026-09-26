@@ -8,7 +8,7 @@ job. Readers exist so trainguard understands the metadata shape.
 from __future__ import annotations
 
 import json
-from typing import Iterable, Iterator
+from collections.abc import Iterable, Iterator
 
 from .types import DatasetEntry
 
@@ -106,13 +106,13 @@ class LaionJsonReader:
             )
         items = data["items"]
         if not isinstance(items, list):
-            raise ValueError(f"{path}: 'items' must be a list")
+            raise ValueError(f"{path}: 'items' must be a list")  # noqa: TRY004 - manifest errors are ValueError by contract
         self._items = items
 
     def __iter__(self) -> Iterator[DatasetEntry]:
         for i, item in enumerate(self._items):
             if not isinstance(item, dict):
-                raise ValueError(f"{self._path}: item {i} is not an object")
+                raise ValueError(f"{self._path}: item {i} is not an object")  # noqa: TRY004
             try:
                 entry_id = str(item["id"])
                 url = str(item["url"])
@@ -142,7 +142,7 @@ class LaionReader:
     def __init__(self, parquet_path: str) -> None:
         self._path = parquet_path
 
-    def __iter__(self) -> Iterable[DatasetEntry]:
+    def __iter__(self) -> Iterator[DatasetEntry]:
         raise NotImplementedError(
             "trainguard: LaionReader (parquet) is a scaffold stub. "
             "Install with `pip install trainguard[laion]` and the reader "
@@ -162,7 +162,7 @@ class WebdatasetReader:
     def __init__(self, shard_glob: str) -> None:
         self._glob = shard_glob
 
-    def __iter__(self) -> Iterable[DatasetEntry]:
+    def __iter__(self) -> Iterator[DatasetEntry]:
         raise NotImplementedError(
             "trainguard: WebdatasetReader is a scaffold stub."
         )

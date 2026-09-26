@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 import time
 import uuid
 from typing import Any
@@ -17,6 +18,8 @@ from .types import (
     Scannable,
     ShieldConfig,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def create_shield(config: ShieldConfig) -> Shield:
@@ -86,7 +89,7 @@ class Shield:
                 await self._config.on_decision(response)
             except Exception:
                 # Audit-log failures must not break the request path.
-                pass
+                logger.exception("csam-shield: on_decision hook failed")
 
         return response
 
@@ -125,7 +128,7 @@ async def _run_detector(
             )
         except asyncio.TimeoutError:
             last_error = f"{config.detector} timed out after {config.timeout_ms}ms"
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - one bad detector never breaks the scan
             last_error = str(exc)
 
         if attempt < max_retries and backoff_ms > 0:

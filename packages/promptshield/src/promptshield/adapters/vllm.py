@@ -12,19 +12,19 @@ once vllm is in dev deps.
 
 from __future__ import annotations
 
-from typing import Awaitable, Callable, Optional
+from collections.abc import Awaitable, Callable
 
 from ..classifier import PromptClassifier
 from ..types import ClassificationResult
 
 
 def vllm_guard(
-    classifier: Optional[PromptClassifier] = None,
+    classifier: PromptClassifier | None = None,
     refusal_text: str = (
         "I can't help with that request. If you're a researcher or operator "
         "investigating prompt classifiers, contact the maintainers."
     ),
-) -> Callable[[str], Awaitable[Optional[str]]]:
+) -> Callable[[str], Awaitable[str | None]]:
     """Return an async hook callable that vLLM's server harness can invoke
     before token generation.
 
@@ -42,7 +42,7 @@ def vllm_guard(
     """
     cls = classifier or PromptClassifier.from_default()
 
-    async def _guard(prompt: str) -> Optional[str]:
+    async def _guard(prompt: str) -> str | None:
         result: ClassificationResult = cls.classify(prompt)
         if result.verdict == "block":
             return refusal_text
